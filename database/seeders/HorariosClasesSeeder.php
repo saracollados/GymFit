@@ -1,0 +1,96 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class HorariosClasesSeeder extends Seeder {
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void {
+        DB::statement('ALTER TABLE horarios_clases AUTO_INCREMENT = 1');
+        DB::table('horarios_clases')->insert([
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '1', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '2', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '3', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '4', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '5', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '6', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '7', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '9', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '11', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '12', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '13', 'clase_id' => '3', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '14', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '15', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '1', 'franja_horaria_id' => '16', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '1', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '2', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '3', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '4', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '5', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '6', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '7', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '9', 'clase_id' => '3', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '11', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '12', 'clase_id' => '4', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '13', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '14', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '15', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '2', 'franja_horaria_id' => '16', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '1', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '2', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '3', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '4', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '5', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '6', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '7', 'clase_id' => '4', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '9', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '11', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '12', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '13', 'clase_id' => '3', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '14', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '15', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '3', 'franja_horaria_id' => '16', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '1', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '2', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '3', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '4', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '5', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '6', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '7', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '9', 'clase_id' => '3', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '11', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '12', 'clase_id' => '3', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '13', 'clase_id' => '4', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '14', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '15', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '4', 'franja_horaria_id' => '16', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '1', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '2', 'clase_id' => '8', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '3', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '1'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '4', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '5', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '6', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '3'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '7', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '9', 'clase_id' => '4', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '11', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '12', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '13', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '7'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '14', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '15', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '5', 'franja_horaria_id' => '16', 'clase_id' => '9', 'sala_id' => '1', 'monitor_id' => '8'],
+            ['horario_id' => '1', 'dia_semana_id' => '6', 'franja_horaria_id' => '5', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '6', 'franja_horaria_id' => '6', 'clase_id' => '2', 'sala_id' => '2', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '6', 'franja_horaria_id' => '7', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '6', 'franja_horaria_id' => '8', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '7', 'franja_horaria_id' => '5', 'clase_id' => '7', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '7', 'franja_horaria_id' => '6', 'clase_id' => '1', 'sala_id' => '3', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '7', 'franja_horaria_id' => '7', 'clase_id' => '5', 'sala_id' => '1', 'monitor_id' => '6'],
+            ['horario_id' => '1', 'dia_semana_id' => '7', 'franja_horaria_id' => '8', 'clase_id' => '6', 'sala_id' => '2', 'monitor_id' => '6'],
+        ]);
+    }
+}
