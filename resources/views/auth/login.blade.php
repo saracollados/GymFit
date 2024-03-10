@@ -7,6 +7,16 @@
     <x-slot name="logo">
         <x-authentication-card-logo />
     </x-slot>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <x-authentication-card>
         <div>
             <nav class="flex">
@@ -52,7 +62,7 @@
             </div>
         </div>
         <div id="form-personal" class="tab-content" style="display:none;">
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login.show') }}">
                 @csrf
                 <input type="hidden" name="user_type" value="personal">
 
@@ -86,6 +96,12 @@
             </form>
         </div>
     </x-authentication-card>
+
+
+</x-guest-layout>
+@endsection
+
+@section('script')
     <script>
         function changeTab(selectedTab) {
             // Ocultar ambos contenedores de formularios
@@ -106,7 +122,5 @@
             document.getElementById('tab-' + selectedTab).classList.add('tab-active');
         }
     </script>
-
-</x-guest-layout>
 @endsection
 

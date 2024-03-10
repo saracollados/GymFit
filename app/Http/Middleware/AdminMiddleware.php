@@ -14,9 +14,10 @@ class AdminMiddleware {
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response {
+        $user = Auth::guard('personal')->user();
+
         // Verifica si el usuario no está autenticado o no es administrador
-        if (!Auth::check() || Auth::user()->role_id != 1) {
-            // Redirige al usuario a donde desees si no tiene permiso
+        if (!Auth::guard('personal')->check() || $user->role_id != 1) {
             return redirect('/login');
         }
 

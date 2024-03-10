@@ -26,11 +26,15 @@ Route::get('/', function () {
 })->name('home');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['guest:usuarios,personal'])->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.show');
+    Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+});
 
 
+Route::middleware(['auth:personal', 'admin'])->group(function() {
 
-Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/mostrarUsuarios', [UsuariosController::class, 'mostrarUsuarios']);
     Route::get('/crearUsuarioForm', [UsuariosController::class, 'crearUsuarioForm']);
     Route::post('/crearUsuario', [UsuariosController::class, 'crearUsuario'])->name('crearUsuario');
@@ -64,9 +68,12 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/verHorario/{id}', [HorariosClasesController::class, 'mostrarClasesHorario']);
 });
 
-Route::middleware(['auth'])->group(function() {
+Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
+
+Route::middleware(['auth:usuarios,personal'])->group(function() {
     // REVISAR!!
-    Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
     Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
     Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
     Route::post('/crearReservaClaseForm', [ReservasController::class, 'crearReservaClaseForm'])->name('crearReservaClaseForm');

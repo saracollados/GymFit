@@ -27,8 +27,8 @@
     <title>@yield('title')</title>
 </head>
 <body>
-    <div class="min-h-screen bg-slate-100 overflow-auto ">
-            @yield('content')
+    <div class="min-h-screen bg-slate-100 overflow-auto">
+        @yield('content')
     </div>
     @yield('script')
 </body>

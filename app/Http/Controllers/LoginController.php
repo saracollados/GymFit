@@ -6,18 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller; 
 
-use Illuminate\Support\Facades\Log;
-
 class LoginController extends Controller {
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
         $userType = $request->input('user_type');
-
-        Log::error('Usuario: '.$userType);
         
         // Determina el guard basado en el tipo de usuario
         $guard = $userType === 'personal' ? 'personal' : 'usuarios';
-        Log::error('Guard: '.$guard);
 
         if ($userType === 'personal' && Auth::guard('personal')->attempt($credentials)) {
             $user = Auth::guard($guard)->user();
@@ -27,7 +22,7 @@ class LoginController extends Controller {
                 session(['isAdmin' => true]);
             }
 
-            return redirect()->intended('/mostrarUsuarios');
+            return redirect()->intended('/mostrarReservasClases');
         } elseif ($userType !== 'personal' && Auth::guard('usuarios')->attempt($credentials)) {
             session(['userType' => 'usuario']);
             return redirect()->intended('/mostrarReservasClases');
@@ -38,7 +33,8 @@ class LoginController extends Controller {
 
     public function logout(Request $request) {
         // Cierra la sesión del usuario
-        Auth::logout();
+        Auth::guard('personal')->logout();
+        Auth::guard('usuarios')->logout();
 
         // Limpiar datos específicos del usuario en la sesión
         $request->session()->forget(['userType', 'isAdmin']);
@@ -51,6 +47,10 @@ class LoginController extends Controller {
 
         // Redirecciona al usuario a la página de inicio o a donde prefieras después del logout
         return redirect('/');
+    }
+
+    public function showLoginForm(){
+        return view('auth.login');
     }
 }
 
