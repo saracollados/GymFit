@@ -30,22 +30,22 @@
                 <img src="https://www.loopple.com/img/loopple-logo.png" alt="Logo Gimnasio" class="h-4">
             </a>
             <nav>
-                @guest
-                    <a href="{{ route('login') }}" class="btn secondaryBtn">
-                        Iniciar sesión
-                    </a>
-                    <a href="{{ route('register') }}" class="btn secondaryBtn">
-                        Registrarse
-                    </a>
-                @endguest
-                @auth
+                @authany
+                    {{-- Contenido visible para cualquier usuario autenticado --}}
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn secondaryBtn">
                             Cerrar sesión
                         </button>
                     </form>
-                @endauth
+                @else
+                    <a href="{{ route('login.show') }}" class="btn secondaryBtn">
+                        Iniciar sesión
+                    </a>
+                    <a href="{{ route('register') }}" class="btn secondaryBtn">
+                        Registrarse
+                    </a>
+                @endauthany      
             </nav>
         </div>
     </header>
