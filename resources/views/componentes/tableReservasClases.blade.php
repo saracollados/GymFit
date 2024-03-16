@@ -9,9 +9,11 @@
         <a class="py-2.5 text-sm my-0 mx-0.5 px-4 rounded-lg text-dark-blue" href="/verReserva/{{$item->id}}" title="Ver Reserva">
             <i class="fa-solid fa-eye"></i>
         </a>
-        <a class="py-2 text-sm my-0 mx-0.5 px-3 rounded-lg text-dark-blue " href="/eliminarReserva/{{$item->id}}" title="Eliminar Reserva">
-            <i class="fa-solid fa-trash"></i>
-        </a>
+        @if (!$item->pasada)
+            <a class="py-2 text-sm my-0 mx-0.5 px-3 rounded-lg text-dark-blue " href="/eliminarReserva/{{$item->id}}" title="Eliminar Reserva">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        @endif
     </td>
 </tr>
 

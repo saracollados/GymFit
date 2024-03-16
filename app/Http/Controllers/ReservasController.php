@@ -26,11 +26,9 @@ class ReservasController extends Controller {
             $reservasClases = Reserva::getReservasClases();
         }
 
-        // AQUI--------
-                        // use Illuminate\Support\Facades\Log;
-
-                Log::error('Hora actual: '.$hora_actual);
-
+        foreach ($reservasClases as &$reserva) {
+            $reserva->pasada = ReservasController::isClasePasada($reserva->fecha, $reserva->franja_horaria_nombre);
+        }
 
         return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'usuarioInfo'));
     }
@@ -157,23 +155,7 @@ class ReservasController extends Controller {
                 $clase->reserva_id = $reserva_id;
 
                 // Verificar si la clase ya ha pasado
-                $fecha_actual = Carbon::now()->format('d/m/Y');
-                $hora_actual = Carbon::now()->startOfHour()->format('H');
-                $hora_clase_inicio_str = explode('-', $clase->franja_horaria_nombre)[0];
-                $hora_clase_inicio = Carbon::createFromFormat('H', $hora_clase_inicio_str)->format('H');
-
-                if ($fecha_actual > $fecha) {
-                    $clase->pasada = true;
-                } elseif($fecha_actual == $fecha) {
-                    if ($hora_actual >= $hora_clase_inicio) {
-                        $clase->pasada = true;
-                    } else {
-                        $clase->pasada = false;
-                    }
-                } else {
-                    $clase->pasada = false;
-                }
-
+                $clase->pasada = ReservasController::isClasePasada($fecha_formato, $clase->franja_horaria_nombre);
             }
 
             $clasesSemana = $clasesSemana->concat($clasesDia);
@@ -185,6 +167,28 @@ class ReservasController extends Controller {
         }
 
         return $clasesHorarioOrganizado;
+    }
+
+    public function isClasePasada($fecha_clase, $franja_horaria_clase) {
+        $fecha_actual = Carbon::now()->startOfDay();
+        $hora_actual = Carbon::now()->startOfHour()->format('H');
+        $hora_clase_inicio_str = explode('-', $franja_horaria_clase)[0];
+        $hora_clase_inicio = Carbon::createFromFormat('H', $hora_clase_inicio_str)->format('H');
+
+
+        $fecha_clase = Carbon::createFromFormat('Y-m-d', $fecha_clase)->startOfDay();
+
+        if ($fecha_actual->gt($fecha_clase)) {
+            return true;
+        } elseif($fecha_actual->eq($fecha_clase)) {
+            if ($hora_actual >= $hora_clase_inicio) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public function crearReservaClase(Request $request) {
