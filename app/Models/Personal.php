@@ -40,11 +40,19 @@ class Personal extends Authenticatable {
         return $personal->id;
     }
 
-    public static function getPersonal($id) {
+    public static function getPersonalByRole($role_id) {
         $personal = Personal::join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
             ->select('personal.id', 'personal.nombre', 'roles_personal_tabla_maestra.id as role_id', 'roles_personal_tabla_maestra.nombre as role', 'personal.email', 'personal.password')
-            ->where('personal.role_id', '=', $id)
+            ->where('personal.role_id', '=', $role_id)
             ->get();
+        return $personal;
+    }
+
+    public static function getPersonalById($personal_id) {
+        $personal = Personal::join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
+            ->select('personal.id', 'personal.nombre', 'roles_personal_tabla_maestra.id as role_id', 'roles_personal_tabla_maestra.nombre as role', 'personal.email', 'personal.password')
+            ->where('personal.id', '=', $personal_id)
+            ->first();
         return $personal;
     }
 }

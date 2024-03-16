@@ -30,7 +30,7 @@ class HorariosClasesController extends Controller {
     public function crearHorarioForm() {
         $clases = Clase::getAll();
         $salas = Sala::getAll();
-        $monitores = Personal::getPersonal('2');
+        $monitores = Personal::getPersonalByRole('2');
         $franjasHorarias = Horario::getFranjasHorarias();
         $diasSemana = Horario::getDiasSemana();
         return view('gymfit/horario/crearHorarioForm', compact('clases', 'salas', 'monitores', 'franjasHorarias', 'diasSemana'));

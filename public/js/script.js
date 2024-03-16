@@ -66,28 +66,35 @@ $(function() {
 
     $('.reservaUsuario').on("click", function(){
         var object = $(this).data('object');
-        
-        if(object) {
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                method: "post",
-                url: '/usuarioReservaForm',
-                data: {
-                    object: object,
-                },
-                success: function(data) {
-                    // Actualiza el contenido del modal con las variables
-                    $('#reserva-modal-content').empty().append(data);
-                    // Muestra el modal
-                    $('#modal-usuario-reserva').modal('show');
-                },
-                error: function(error) {
-                    console.error('Error en la solicitud Ajax:', error);
-                }
-            });
+        var userInfo = JSON.parse($(this).attr('data-userinfo')); 
+        var userType = $(this).data('usertype');
+
+        if (userType == 'usuario') {
+            window.location.href = "/crearReservaClaseForm";
+        } else { // ToDo: AQUI HABRIA QUE DIFERENCIAR TAMBIEN AL PERSONAL QUE NO ES ADMINISTRADOR, HABRIA QUE RESTRINGIR TODAS LAS RUTAS DE CLASES, YA
+            if(object) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "post",
+                    url: '/usuarioReservaForm',
+                    data: {
+                        object: object,
+                    },
+                    success: function(data) {
+                        // Actualiza el contenido del modal con las variables
+                        $('#reserva-modal-content').empty().append(data);
+                        // Muestra el modal
+                        $('#modal-usuario-reserva').modal('show');
+                    },
+                    error: function(error) {
+                        console.error('Error en la solicitud Ajax:', error);
+                    }
+                });
+            }
         }
+        
     });
     
     $('.reserva-clase').on("click", function(){

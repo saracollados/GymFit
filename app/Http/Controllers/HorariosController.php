@@ -81,7 +81,7 @@ class HorariosController extends Controller {
         $franjasHorarias = Horario::getFranjasHorarias();
         $clases = Clase::getAll();
         $salas = Sala::getAll();
-        $monitores = Personal::getPersonal('2');
+        $monitores = Personal::getPersonalByRole('2');
 
         $error = '';
         $success = '';

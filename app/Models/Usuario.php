@@ -47,9 +47,9 @@ class Usuario extends Authenticatable {
         return $usuario->id;
     }
 
-    public static function getUsuarioById($id) {
+    public static function getUsuarioById($usuario_id) {
         $usuario = Usuario::select('id', 'dni', 'nombre')
-            ->where('id', '=', $id)
+            ->where('id', '=', $usuario_id)
             ->first();
         
         return $usuario;
