@@ -71,9 +71,9 @@
                                 <td class="py-2.5">
                                     @if(isset($clasesSemanaActual[$diaSemana[1]][$hora->id]))
                                         @foreach($clasesSemanaActual[$diaSemana[1]][$hora->id] as $clase)
-                                            <div class="rounded mx-1 p-1" style="background-color: {{ $clase->plazas['libres'] == 0 ? '#d4d4d4' : ($clase->color ?? '') }}">
+                                            <div class="rounded mx-1 p-1" style="background-color: {{ $clase->plazas['libres'] == 0 || $clase->pasada ? '#d4d4d4' : ($clase->color ?? '') }}">
                                                 @if (!empty($clase->clase_nombre))
-                                                    <a class="{{$clase->plazas['libres'] == 0 ? 'text-gray-500' : ''}} {{$clase->reserva_id || $clase->plazas['libres'] != 0 ? 'link-btn reserva-clase' : ''}}" style="position: relative;" data-clase="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}">
+                                                    <a class="{{$clase->plazas['libres'] == 0 || $clase->pasada ? 'text-gray-500' : ''}} {{$clase->pasada ? '' : ($clase->plazas['libres'] != 0 ? 'link-btn reserva-clase' : ($clase->reserva_id ? 'link-btn reserva-clase' : ''))}}" style="position: relative;" data-clase="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}">
                                                         <p class="text-sm font-semibold">
                                                             {{$clase->clase_nombre}}
                                                         </p>

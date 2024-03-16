@@ -142,6 +142,25 @@ class ReservasController extends Controller {
 
                 $reserva_id = Reserva::getReservaId($usuario_id, $clase->id, $clase->fecha['fecha_id']);
                 $clase->reserva_id = $reserva_id;
+
+                // Verificar si la clase ya ha pasado
+                $fecha_actual = Carbon::now()->format('d/m/Y');
+                $hora_actual = Carbon::now()->startOfHour()->format('H');
+                $hora_clase_inicio_str = explode('-', $clase->franja_horaria_nombre)[0];
+                $hora_clase_inicio = Carbon::createFromFormat('H', $hora_clase_inicio_str)->format('H');
+
+                if ($fecha_actual > $fecha) {
+                    $clase->pasada = true;
+                } elseif($fecha_actual == $fecha) {
+                    if ($hora_actual >= $hora_clase_inicio) {
+                        $clase->pasada = true;
+                    } else {
+                        $clase->pasada = false;
+                    }
+                } else {
+                    $clase->pasada = false;
+                }
+
             }
 
             $clasesSemana = $clasesSemana->concat($clasesDia);
