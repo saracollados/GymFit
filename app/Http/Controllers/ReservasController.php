@@ -16,10 +16,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 
 class ReservasController extends Controller {
-    public function mostrarReservasClases() {
-        $reservasClases = Reserva::getReservasClases();
+    public function mostrarReservasClases(Request $request) {
+        $usuarioInfo = session('userInfo');
+        $usuarioTipo = session('userType');
 
-        return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases'));
+        if ($usuarioTipo == 'usuario' || $usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
+            $reservasClases = Reserva::getReservasClases($usuarioInfo['id']);
+        } else {
+            $reservasClases = Reserva::getReservasClases();
+        }
+
+        // AQUI--------
+                        // use Illuminate\Support\Facades\Log;
+
+                Log::error('Hora actual: '.$hora_actual);
+
+
+        return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'usuarioInfo'));
     }
 
     public function mostrarReservasServicios() {

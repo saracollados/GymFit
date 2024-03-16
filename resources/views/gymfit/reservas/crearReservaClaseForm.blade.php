@@ -26,10 +26,12 @@
         </div>
     @endif
 
-        <div class="text-sm mb-4">
-            <p class="mb-2">Usuario: <span class="font-bold">{{$usuario->nombre}}</span></p>
-            <p>DNI: <span class="font-bold">{{$usuario->dni}}</span></p>
-        </div>
+        @if(session('isAdmin'))
+            <div class="text-sm mb-4">
+                <p class="mb-2">Usuario: <span class="font-bold">{{$usuario->nombre}}</span></p>
+                <p>DNI: <span class="font-bold">{{$usuario->dni}}</span></p>
+            </div>
+        @endif
         <div class="flex justify-end">
             <div class="flex items-center py-2.5 text-sm mb-2.5 px-4 rounded-lg bg-white custom-box-shadow-xl font-semibold text-slate-700">
                 <?php 

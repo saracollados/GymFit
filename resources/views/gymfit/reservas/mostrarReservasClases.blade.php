@@ -2,13 +2,24 @@
 
 @section('reservasButton')
     <div class="mb-14">
-        <a class="btn primaryBtn reservaUsuario" data-object="reserva">
-            Crear Reserva
-        </a>
+        @if(session('userType') == 'usuario')
+            <form action="{{route('crearReservaClaseForm')}}" method="POST" autocomplete='off'>
+                @csrf
+                <input name="dni" type="hidden" id="dni" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50 outline-1" value={{session('userInfo')['dni']}}>
+                <button type="submit" class="btn primaryBtn">
+                    Crear Reserva
+                </button>
+            </form>
+        @else
+            <a class="btn primaryBtn reservaUsuario" data-object="reserva" data-userinfo="{{json_encode(session('userInfo'))}}" data-usertype="{{session('userType')}}">
+                Crear Reserva
+            </a>
+        @endif
     </div>
 @endsection
 
 @section('reservasContent')
+
     @if (isset($error))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10" role="alert">
             <span class="block sm:inline">{{$error}}</span>

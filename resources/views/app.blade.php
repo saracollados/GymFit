@@ -36,6 +36,12 @@
                     <a class="loopple-navbar-brand" href="https://www.loopple.com">
                         <img src="https://www.loopple.com/img/loopple-logo.png" style="width:70px">
                     </a>
+                    
+                    <?php $userInfo = session('userInfo'); ?>
+
+                    <li class="mt-0.5 w-full">
+                        <p class="py-2.5 text-sm my-0 mx-4">Hola, {{$userInfo['nombre']}}</p>
+                    </li>
 
                     @if(session('userType') == 'personal')
                         @if(session('isAdmin'))
