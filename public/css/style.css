@@ -135,15 +135,11 @@ td.icon {
 }
 
 /* Login */
-.tab.tab-inactive {
-    background-color: var(--light-blue);
-    color: gray;
-}
-
 .tab.tab-active {
-    background-color: white;
-    color: var(--dark-blue);
-    border-bottom: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    font-weight: 600;
+    color: #374151;
 }
 
 /* Home */
@@ -164,6 +160,11 @@ td.icon {
 #section {
     background-color: var(--dark-blue);
     min-height: 40vh;
+}
+
+/* Horarios */
+#horario td {
+    min-height: 68px;
 }
 
 

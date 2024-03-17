@@ -17,14 +17,17 @@
         </div>
     @endif
 
-    <x-authentication-card>
-        <div>
-            <nav class="flex">
-                <button id="tab-usuarios" onclick="changeTab('usuarios')" type="button" class="py-3 px-4 border rounded-t-lg tab tab-active">Usuarios</button>
-                <button id="tab-personal" onclick="changeTab('personal')" type="button" class="py-3 px-4 border rounded-t-lg tab tab-inactive">Personal</button>
-            </nav>
+    <div class="flex justify-center">
+        <div class="mx-auto mb-6 flex inline-flex space-x-8 justify-center rounded-lg bg-slate-200 p-1">
+            <button id="tab-usuarios" onclick="changeTab('usuarios')" type="button" class="py-2.5 text-sm my-0 px-4 rounded-lg tab tab-active">
+                <span class="opacity-100">Usuarios</span>
+            </button>
+            <button id="tab-personal" onclick="changeTab('personal')" type="button" class="py-2.5 text-sm my-0 px-4 rounded-lg tab tab-inactive">
+                <span class="opacity-100">Personal</span>
+            </button>
         </div>
-        
+    </div>
+    <x-authentication-card>       
         <div class="mt-3">
             <div id="form-usuarios" class="tab-content">
                 <form method="POST" action="{{ route('login') }}">
