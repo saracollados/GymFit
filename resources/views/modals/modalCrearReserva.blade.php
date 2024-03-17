@@ -28,8 +28,6 @@
                     </body>
                 </table>
 
-                {{-- <form action="{{route('crearReservaClase')}}" method="POST" autocomplete='off'> --}}
-                {{-- <form action="{{route({{$reserva == '1' ? 'eliminarReservaClase' : 'crearReservaClase'}})}}" method="POST" autocomplete='off'> --}}
                 <form action="{{ $reserva ? route('eliminarReservaClase') : route('crearReservaClase') }}" method="POST" autocomplete="off">
                     @csrf
 
@@ -38,6 +36,7 @@
                     <input type="hidden" name="clase_id" value="{{$clase['id']}}">
                     <input type="hidden" name="fecha_id" value="{{$clase['fecha']['fecha_id']}}">
                     <input type="hidden" name="franja_horaria_id" value="{{$clase['franja_horaria_id']}}">
+                    <input type="hidden" name="inicioSemana" value="{{$fecha}}">
 
                     <div class="mt-4 text-center">
                         @if ($reserva)

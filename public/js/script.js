@@ -101,6 +101,7 @@ $(function() {
         var clase = $(this).data('clase');
         var usuario_id = $(this).data('usuario');
         var reserva = $(this).data('reserva');
+        var fecha = $(this).data('fecha');
 
         if(clase) {
             $.ajax({
@@ -112,7 +113,8 @@ $(function() {
                 data: {
                     clase: clase,
                     usuario_id: usuario_id,
-                    reserva: reserva
+                    reserva: reserva,
+                    fecha: fecha
                 },
                 success: function(data) {
                     // Actualiza el contenido del modal con las variables

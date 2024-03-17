@@ -37,17 +37,29 @@
                 <?php 
                     $fechaDesde = $fechasSemanaActual[0][0];
                     $fechaHasta = end($fechasSemanaActual)[0];
+                    $fechaInicioSemanaSiguiente = $fechasSemanaSiguiente[0][0];
+                    $fechaInicioSemanaAnterior = $fechasSemanaAnterior[0][0];
                 ?>
-                <div class="py-1" style="cursor:pointer">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </div>
-                
+                <form action="{{route('crearReservaClaseForm')}}" method="POST" autocomplete='off'>
+                    @csrf
+                    
+                    <input type="hidden" name="inicioSemana" value="{{$fechaInicioSemanaAnterior}}">
+                    <input type="hidden" name="dni" value="{{$usuario->dni}}">
+                    <button type="submit" class="py-1">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                </form>
                 <span class="py-1 px-4">{{$fechaDesde}} - {{$fechaHasta}}</span>
-                <div class="py-1" style="cursor:pointer">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-            </span>
-        </div>
+                <form action="{{route('crearReservaClaseForm')}}" method="POST" autocomplete='off'>
+                    @csrf
+                    
+                    <input type="hidden" name="inicioSemana" value="{{$fechaInicioSemanaSiguiente}}">
+                    <input type="hidden" name="dni" value="{{$usuario->dni}}">
+                    <button type="submit" class="py-1">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </form>
+            </div>
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded">
             <table id="horario" class="w-full text-sm text-center text-gray-500 border-collapse">
@@ -75,7 +87,7 @@
                                         @foreach($clasesSemanaActual[$diaSemana[1]][$hora->id] as $clase)
                                             <div class="rounded mx-1 p-1" style="background-color: {{ $clase->plazas['libres'] == 0 || $clase->pasada ? '#d4d4d4' : ($clase->color ?? '') }}">
                                                 @if (!empty($clase->clase_nombre))
-                                                    <a class="{{$clase->plazas['libres'] == 0 || $clase->pasada ? 'text-gray-500' : ''}} {{$clase->pasada ? '' : ($clase->plazas['libres'] != 0 ? 'link-btn reserva-clase' : ($clase->reserva_id ? 'link-btn reserva-clase' : ''))}}" style="position: relative;" data-clase="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}">
+                                                    <a class="{{$clase->plazas['libres'] == 0 || $clase->pasada ? 'text-gray-500' : ''}} {{$clase->pasada ? '' : ($clase->plazas['libres'] != 0 ? 'link-btn reserva-clase' : ($clase->reserva_id ? 'link-btn reserva-clase' : ''))}}" style="position: relative;" data-clase="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}" data-fecha="{{$fechaDesde}}">
                                                         <p class="text-sm font-semibold">
                                                             {{$clase->clase_nombre}}
                                                         </p>

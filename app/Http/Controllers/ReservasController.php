@@ -48,8 +48,9 @@ class ReservasController extends Controller {
         $usuario = Usuario::getUsuarioById($usuario_id);
         $clase = $request->post('clase');
         $reserva = $request->post('reserva');
+        $fecha = $request->post('fecha');
 
-        return View::make('modals.modalCrearReserva', compact('usuario_id', 'clase', 'usuario', 'reserva'));
+        return View::make('modals.modalCrearReserva', compact('usuario_id', 'clase', 'usuario', 'reserva', 'fecha'));
         die();
     }
 
@@ -64,14 +65,25 @@ class ReservasController extends Controller {
 
             return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'error'));
         } else {
+
+            if (session('inicioSemana')) {
+                $inicioSemana = session('inicioSemana');
+            } elseif ($request->input('inicioSemana')) {
+                $inicioSemana = $request->input('inicioSemana');
+            }
+            
+            if (isset($inicioSemana)) {
+                $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $inicioSemana)->startOfWeek();
+            } else {
+                $hoy = Carbon::now()->format('d/m/Y');
+                $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $hoy)->startOfWeek();
+            }
+            
+
             Carbon::setWeekStartsAt(Carbon::MONDAY);
     
             $diasSemana = Horario::getDiasSemana();
             $franjasHorarias = Horario::getFranjasHorarias();
-    
-            $hoy = Carbon::now()->format('d/m/Y');
-    
-            $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $hoy)->startOfWeek();
     
             // Calcula las fechas de la semana actual
             $fechasSemanaActual = [];
@@ -79,17 +91,27 @@ class ReservasController extends Controller {
                 $fecha = $inicioSemanaActual->copy()->addDays($i);
                 $fechasSemanaActual[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
             }
-    
+
             // Calcula las fechas de la semana siguiente
-            $inicioSemanaSiguiente = Carbon::createFromFormat('d/m/Y', $hoy)->addWeek()->startOfWeek();
+            $inicioSemanaActual = Carbon::parse($inicioSemanaActual)->startOfWeek();
+            $inicioSemanaSiguiente = $inicioSemanaActual->copy()->addWeek()->startOfWeek();
             $fechasSemanaSiguiente = [];
             for ($i = 0; $i < 7; $i++) {
                 $fecha = $inicioSemanaSiguiente->copy()->addDays($i);
                 $fechasSemanaSiguiente[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
             }
+
+            // Calcula las fechas de la semana anterior
+            $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
+            $fechasSemanaAnterior = [];
+            for ($i = 0; $i < 7; $i++) {
+                $fecha = $inicioSemanaAnterior->copy()->addDays($i);
+                $fechasSemanaAnterior[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
+            }
     
             $clasesSemanaActual = ReservasController::getClasesSemanaUsuario($fechasSemanaActual, $usuario->id);
             $clasesSemanaSiguiente = ReservasController::getClasesSemanaUsuario($fechasSemanaSiguiente, $usuario->id);
+            $clasesSemanaAnterior = ReservasController::getClasesSemanaUsuario($fechasSemanaSiguiente, $usuario->id);
 
             foreach ($fechasSemanaActual as &$fecha) {
                 $diaSemana = Horario::getDiaSemanaById($fecha[1]);
@@ -98,11 +120,11 @@ class ReservasController extends Controller {
             }
 
             if (isset($error)) {
-                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'clasesSemanaSiguiente','fechasSemanaActual', 'franjasHorarias', 'usuario', 'error'));
+                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario', 'error'));
             } elseif (isset($success)) {
-                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'clasesSemanaSiguiente','fechasSemanaActual', 'franjasHorarias', 'usuario', 'success'));
+                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario', 'success'));
             } else {
-                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'clasesSemanaSiguiente','fechasSemanaActual', 'franjasHorarias', 'usuario'));
+                return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario'));
             }
     
         }
@@ -196,9 +218,13 @@ class ReservasController extends Controller {
         $clase_id = $request->input('clase_id'); 
         $fecha_id = $request->input('fecha_id');
         $franja_horaria_id = $request->input('franja_horaria_id');
+        $inicioSemana = $request->input('inicioSemana');
 
         $reserva_id = Reserva::getReservaId($usuario_id, $clase_id, $fecha_id);
         $existeReservaHora = Reserva::existeReservaHora($usuario_id, $fecha_id, $franja_horaria_id);
+
+        $nuevoRequest = ['inicioSemana', $inicioSemana];
+        $request->merge($nuevoRequest);
 
         if($reserva_id) {
             $error = 'El usuario ya tiene reservada esta clase.';
@@ -225,9 +251,10 @@ class ReservasController extends Controller {
         $usuario_id = $request->input('usuario_id');
         $clase_id = $request->input('clase_id'); 
         $fecha_id = $request->input('fecha_id');
+        $inicioSemana = $request->input('inicioSemana');
 
         $usuario = Usuario::getUsuarioById($usuario_id);
-        $nuevoRequest = ['dni' => $usuario->dni];
+        $nuevoRequest = ['dni' => $usuario->dni, 'inicioSemana', $inicioSemana];
         $request->merge($nuevoRequest);
 
         $reserva_id = Reserva::getReservaId($usuario_id, $clase_id, $fecha_id);
