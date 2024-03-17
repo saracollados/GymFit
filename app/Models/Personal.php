@@ -40,12 +40,22 @@ class Personal extends Authenticatable {
         return $personal->id;
     }
 
-    public static function getPersonalByRole($role_id) {
-        $personal = Personal::join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
-            ->select('personal.id', 'personal.nombre', 'roles_personal_tabla_maestra.id as role_id', 'roles_personal_tabla_maestra.nombre as role', 'personal.email', 'personal.password')
-            ->where('personal.role_id', '=', $role_id)
-            ->get();
+    public static function getPersonalByRole($role_id, $role_id2 = null) {
+        $query = Personal::join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
+        ->select('personal.id', 'personal.nombre', 'roles_personal_tabla_maestra.id as role_id', 'roles_personal_tabla_maestra.nombre as role', 'personal.email', 'personal.password');
+
+        if ($role_id2 !== null) {
+            $personal = $query->whereIn('personal.role_id', [$role_id, $role_id2])->get();
+        } else {
+            $personal = $query->where('personal.role_id', '=', $role_id)->get();
+        }
+
         return $personal;
+        // $personal = Personal::join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
+        //     ->select('personal.id', 'personal.nombre', 'roles_personal_tabla_maestra.id as role_id', 'roles_personal_tabla_maestra.nombre as role', 'personal.email', 'personal.password')
+        //     ->where('personal.role_id', '=', $role_id)
+        //     ->get();
+        // return $personal;
     }
 
     public static function getPersonalById($personal_id) {
