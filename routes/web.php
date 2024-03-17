@@ -8,6 +8,7 @@ use App\Http\Controllers\ClasesController;
 use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\HorariosController;
 use App\Http\Controllers\HorariosClasesController;
+use App\Http\Controllers\HorariosServiciosController;
 use App\Http\Controllers\LoginController;
 
 /*
@@ -66,14 +67,17 @@ Route::middleware(['auth:personal', 'admin'])->group(function() {
     Route::post('/eliminarClaseHorarioForm', [HorariosClasesController::class, 'eliminarClaseHorarioModal']);
     Route::post('/eliminarClaseHorario', [HorariosClasesController::class, 'eliminarClaseHorario'])->name('eliminarClaseHorario');
     Route::get('/verHorario/{id}', [HorariosClasesController::class, 'mostrarClasesHorario']);
+    
+    Route::get('/mostrarHorariosServicios', [HorariosServiciosController::class, 'mostrarHorariosServicios'])->name('mostrarHorariosServicios');
+    Route::post('/crearServicioHorario', [HorariosServiciosController::class, 'crearServicioHorario'])->name('crearServicioHorario');
 });
 
-Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
 
 Route::middleware(['auth:usuarios,personal'])->group(function() {
     // REVISAR!!
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
+    
+    Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
     Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
     Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
     Route::post('/crearReservaClaseForm', [ReservasController::class, 'crearReservaClaseForm'])->name('crearReservaClaseForm');

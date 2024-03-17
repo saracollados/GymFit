@@ -12,14 +12,6 @@
 @endsection
 
 @section('content')
-    {{-- <div class="mb-14">
-        <a href="/mostrarUsuarios" class="w-1/4">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                <i class="fa fa-arrow-left mr-2" aria-hidden="true"></i>Atrás
-            </button>
-        </a>
-    </div> --}}
-
     <?php 
         $error = session('error');
         $success = session('success');

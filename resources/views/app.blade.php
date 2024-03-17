@@ -86,6 +86,14 @@
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
+                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarHorariosServicios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarHorariosServicios">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarHorariosServicios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
+                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarHorariosServicios') #ffffff @else  #070d49 @endif;"></i>
+                                    </div>
+                                    <span class="ml-1 opacity-100">Servicios</span>
+                                </a>
+                            </li>
+                            <li class="mt-0.5 w-full">
                                 <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarPersonal') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarPersonal">
                                     <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarPersonal') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
                                         <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarPersonal') #ffffff @else  #070d49 @endif;"></i>
