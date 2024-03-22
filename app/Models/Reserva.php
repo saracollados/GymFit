@@ -51,10 +51,6 @@ class Reserva extends Model {
         return $reservas;
     }
 
-    public static function getReservasServicios() {
-        $reservas = new \Illuminate\Database\Eloquent\Collection;
-        return $reservas;
-    }
 
     public static function getPlazasOcupadas($clase_id, $fecha_id) {
         $plazasOcupadas = Reserva::where('clase_id', $clase_id)

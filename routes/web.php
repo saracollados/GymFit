@@ -68,8 +68,12 @@ Route::middleware(['auth:personal', 'admin'])->group(function() {
     Route::post('/eliminarClaseHorario', [HorariosClasesController::class, 'eliminarClaseHorario'])->name('eliminarClaseHorario');
     Route::get('/verHorario/{id}', [HorariosClasesController::class, 'mostrarClasesHorario']);
     
+    Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
+    
     Route::get('/mostrarHorariosServicios', [HorariosServiciosController::class, 'mostrarHorariosServicios'])->name('mostrarHorariosServicios');
     Route::post('/crearServicioHorario', [HorariosServiciosController::class, 'crearServicioHorario'])->name('crearServicioHorario');
+    Route::post('/eliminarServicioHorarioForm', [HorariosServiciosController::class, 'eliminarServicioHorarioModal']);
+    Route::post('/eliminarServicioHorario', [HorariosServiciosController::class, 'eliminarServicioHorario'])->name('eliminarServicioHorario');
 });
 
 
@@ -78,10 +82,14 @@ Route::middleware(['auth:usuarios,personal'])->group(function() {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     
     Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
-    Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
-    Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
     Route::post('/crearReservaClaseForm', [ReservasController::class, 'crearReservaClaseForm'])->name('crearReservaClaseForm');
     Route::post('/reservaClaseForm', [ReservasController::class, 'reservaClaseForm']);
     Route::post('/crearReservaClase', [ReservasController::class, 'crearReservaClase'])->name('crearReservaClase');
     Route::post('/eliminarReservaClase', [ReservasController::class, 'eliminarReservaClase'])->name('eliminarReservaClase');
+    
+    Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
+    Route::post('/crearReservaServicioForm', [ReservasController::class, 'crearReservaServicioForm'])->name('crearReservaServicioForm');
+    Route::post('/crearReservaServicio', [ReservasController::class, 'crearReservaServicio'])->name('crearReservaServicio');
+    Route::post('/eliminarReservaServicio', [ReservasController::class, 'eliminarReservaServicio'])->name('eliminarReservaServicio');
+    
 });

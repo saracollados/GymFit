@@ -73,9 +73,27 @@ class HorarioServicios extends Model {
         return $serviciosDia;
     }
 
-    public static function eliminarClase($id) {
-        $clase = HorarioClases::find($id);
-        $clase->delete();
-        return $clase;
+    public static function getServicioById($servicio_id) {
+        $servicioHorario = HorarioServicios::join ('personal', 'personal.id', '=', 'horarios_servicios.personal_id')
+            ->join ('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
+            ->join ('franjas_horarias_tabla_maestra', 'franjas_horarias_tabla_maestra.id', '=', 'horarios_servicios.franja_horaria_id')
+            ->select('horarios_servicios.id as id',
+                'horarios_servicios.personal_id as profesional_id',
+                'personal.nombre as profesional_nombre',
+                'personal.role_id as role_id',
+                'roles_personal_tabla_maestra.nombre as role_nombre',
+                'horarios_servicios.fecha as fecha',
+                'horarios_servicios.franja_horaria_id as franja_horaria_id',
+                'franjas_horarias_tabla_maestra.nombre as franja_horaria_nombre')
+            ->where('horarios_servicios.id', '=', $servicio_id)
+            ->first();
+
+        return $servicioHorario;
+    }
+
+    public static function eliminarServicio($id) {
+        $servicio = HorarioServicios::find($id);
+        $servicio->delete();
+        return $servicio;
     }
 }

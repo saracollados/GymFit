@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reserva;
+use App\Models\ReservaServicio;
 use App\Models\Horario;
 use App\Models\Usuario;
 use App\Models\Sala;
@@ -15,8 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 
+use Illuminate\Support\Facades\Log;
+
 class ReservasController extends Controller {
-    public function mostrarReservasClases(Request $request) {
+    public function mostrarReservasClases() {
         $usuarioInfo = session('userInfo');
         $usuarioTipo = session('userType');
 
@@ -34,23 +37,37 @@ class ReservasController extends Controller {
     }
 
     public function mostrarReservasServicios() {
-        $reservasServicios = Reserva::getReservasServicios();
+        $usuarioInfo = session('userInfo');
+        $usuarioTipo = session('userType');
+
+        if ($usuarioTipo == 'usuario' || $usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
+            $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
+        } else {
+            $reservasServicios = ReservaServicio::getReservasServicios();
+        }
+
+        $reservasServicios = ReservaServicio::getReservasServicios();
         return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios'));
     }
 
-    public function usuarioReservaModal(){
-        return View::make('modals.modalUsuarioReserva');
+    public function usuarioReservaModal(Request $request){
+        $tipo = $request->post('tipo');
+        return View::make('modals.modalUsuarioReserva', compact('tipo'));
         die();
     }
 
     public function reservaClaseForm(Request $request){
         $usuario_id = $request->post('usuario_id');
         $usuario = Usuario::getUsuarioById($usuario_id);
-        $clase = $request->post('clase');
+        $item = $request->post('item');
         $reserva = $request->post('reserva');
         $fecha = $request->post('fecha');
+        $tipo = $request->post('type');
 
-        return View::make('modals.modalCrearReserva', compact('usuario_id', 'clase', 'usuario', 'reserva', 'fecha'));
+        $item['existsReserva'] = ($item['existsReserva'] === "true") ? true : false;
+        $item['pasada'] = ($item['pasada'] === "true") ? true : false;
+
+        return View::make('modals.modalCrearReserva', compact('usuario_id', 'item', 'usuario', 'reserva', 'fecha', 'tipo'));
         die();
     }
 
@@ -113,9 +130,66 @@ class ReservasController extends Controller {
             } else {
                 return view('gymfit/reservas/crearReservaClaseForm', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario'));
             }
-    
         }
+    }
 
+    public function crearReservaServicioForm(Request $request, $success = null, $error = null) {
+        $usuario_dni = $request->post('dni');
+
+        $usuario = Usuario::where('dni', $usuario_dni)->first();
+
+        if(!$usuario) {
+            $reservasServicios = ReservaServicio::getReservasServicios();
+            $error = 'Ese usuario no existe';
+
+            return view('gymfit/reservas/mostrarReservasServicio', compact('reservasServicios', 'error'));
+        } else {    
+            if (session('inicioSemana')) {
+                $inicioSemana = session('inicioSemana');
+            } elseif ($request->input('inicioSemana')) {
+                $inicioSemana = $request->input('inicioSemana');
+            }
+            
+            if (isset($inicioSemana)) {
+                $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $inicioSemana)->startOfWeek();
+            } else {
+                $hoy = Carbon::now()->format('d/m/Y');
+                $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $hoy)->startOfWeek();
+            }
+
+            Carbon::setWeekStartsAt(Carbon::MONDAY);
+
+            $diasSemana = Horario::getDiasSemana();
+            $franjasHorarias = Horario::getFranjasHorarias();
+    
+            // Calcula las fechas de la semana actual
+            $fechasSemanaActual = HorariosController::getFechasSemana($inicioSemanaActual);
+
+            // Calcula las fechas de la semana siguiente
+            $inicioSemanaActual = Carbon::parse($inicioSemanaActual)->startOfWeek();
+            $inicioSemanaSiguiente = $inicioSemanaActual->copy()->addWeek()->startOfWeek();
+            $fechasSemanaSiguiente = HorariosController::getFechasSemana($inicioSemanaSiguiente);
+            
+            // Calcula las fechas de la semana anterior
+            $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
+            $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
+    
+            $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuario->id);
+
+            foreach ($fechasSemanaActual as &$fecha) {
+                $diaSemana = Horario::getDiaSemanaById($fecha[1]);
+                $diaSemana = $diaSemana;
+                $fecha[] = $diaSemana;
+            }
+
+            if (isset($error)) {
+                return view('gymfit/reservas/crearReservaServicioForm', compact('serviciosSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario', 'error'));
+            } elseif (isset($success)) {
+                return view('gymfit/reservas/crearReservaServicioForm', compact('serviciosSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario', 'success'));
+            } else {
+                return view('gymfit/reservas/crearReservaServicioForm', compact('serviciosSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario'));
+            }
+        }
     }
 
     public function getClasesSemanaUsuario($array_fechas, $usuario_id) {
@@ -138,7 +212,7 @@ class ReservasController extends Controller {
                 $horario_id = $horario_id_collection->first()->horario_id;
             } else {
                 /* ------------------------------------------
-                    ¿QUÉ PASA SI EL HORARIO ES NULL?
+                    ToDo: ¿QUÉ PASA SI EL HORARIO ES NULL?
                 -------------------------------------------*/
                 $horario_id = null;
             }
@@ -178,7 +252,7 @@ class ReservasController extends Controller {
         return $clasesHorarioOrganizado;
     }
 
-    public function isClasePasada($fecha_clase, $franja_horaria_clase) {
+    public static function isClasePasada($fecha_clase, $franja_horaria_clase) {
         $fecha_actual = Carbon::now()->startOfDay();
         $hora_actual = Carbon::now()->startOfHour()->format('H');
         $hora_clase_inicio_str = explode('-', $franja_horaria_clase)[0];
@@ -207,18 +281,18 @@ class ReservasController extends Controller {
         $franja_horaria_id = $request->input('franja_horaria_id');
         $inicioSemana = $request->input('inicioSemana');
 
-        $reserva_id = Reserva::getReservaId($usuario_id, $clase_id, $fecha_id);
-        $existeReservaHora = Reserva::existeReservaHora($usuario_id, $fecha_id, $franja_horaria_id);
+        $reserva_usuario = Reserva::getReservaId($usuario_id, $clase_id, $fecha_id);
+        $reserva_clase = Reserva::existeReservaHora($usuario_id, $fecha_id, $franja_horaria_id);
 
         $nuevoRequest = ['inicioSemana', $inicioSemana];
         $request->merge($nuevoRequest);
 
-        if($reserva_id) {
+        if($reserva_usuario) {
             $error = 'El usuario ya tiene reservada esta clase.';
             return $this->crearReservaClaseForm($request, null, $error);
         }
 
-        if($existeReservaHora) {
+        if($reserva_clase) {
             $error = 'El usuario ya tiene reservada una clase a esa hora.';
             return $this->crearReservaClaseForm($request, null, $error);
         }
@@ -254,6 +328,59 @@ class ReservasController extends Controller {
         } else {
             $error = 'No se ha podido eliminar la reserva.';
             return $this->crearReservaClaseForm($request, null, $error);
+        }
+    }
+
+    public function crearReservaServicio (Request $request) {
+        $usuario_id = $request->input('usuario_id');
+        $servicio = json_decode($_POST['servicio'], true); 
+        $servicio_id = $request->input('servicio_id');
+        $fecha = $request->input('fecha');
+        $franja_horaria_id = $request->input('franja_horaria_id');
+        $inicioSemana = $request->input('inicioSemana');
+
+        $nuevoRequest = ['inicioSemana', $inicioSemana];
+        $request->merge($nuevoRequest);
+        $reservaHoraUsuario = ReservaServicio::getReservasServicios($usuario_id, $fecha, $franja_horaria_id);
+
+        if ($servicio['pasada']) {
+            $error = 'No se puesen reservar servicios pasados.';
+            return $this->crearReservaServicioForm($request, null, $error);
+        }
+        if($servicio['reserva_id']) {
+            $error = 'El usuario ya tiene reservado ese servicio.';
+            return $this->crearReservaServicioForm($request, null, $error);
+        }
+        if($servicio['existsReserva']) {
+            $error = 'Ese servicio ya esta reservado.';
+            return $this->crearReservaServicioForm($request, null, $error);
+        }
+        if(count($reservaHoraUsuario) != 0) {
+            $error = 'El usuario ya tiene reservado un servicio a esa hora.';
+            return $this->crearReservaServicioForm($request, null, $error);
+        }
+
+        $id_reserva = ReservaServicio::createServicio($request);
+
+        if ($id_reserva) {
+            $success = 'La reserva se ha realizado con éxito.';
+            return $this->crearReservaServicioForm($request, $success, null);
+        } else {
+            $error = 'No se ha podido realizar la reserva.';
+            return $this->crearReservaServicioForm($request, null, $error);
+        }
+
+    }
+    public function eliminarReservaServicio(Request $request) {
+        $reserva_id = $request->input('reserva_id');
+
+        if ($reserva_id) {
+            ReservaServicio::deleteReserva($reserva_id);
+            $success = 'La reserva se ha eliminado con éxito.';
+            return $this->crearReservaServicioForm($request, $success, null);
+        } else {
+            $error = 'No se ha podido eliminar la reserva.';
+            return $this->crearReservaServicioForm($request, null, $error);
         }
     }
 }
