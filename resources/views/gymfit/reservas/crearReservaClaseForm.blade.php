@@ -1,10 +1,10 @@
 @extends('app')
 
-@section('title', 'Crear Reservas')
+@section('title', 'Crear Reservas Clases')
 
 @section('header')
     <div class="flex justify-between items-center">
-        <h6 class="text-base font-bold text-gray-900">Crear Reserva</h6>
+        <h6 class="text-base font-bold text-gray-900">Crear Reserva Clase</h6>
     </div>
 @endsection
 
@@ -87,7 +87,7 @@
                                         @foreach($clasesSemanaActual[$diaSemana[1]][$hora->id] as $clase)
                                             <div class="rounded mx-1 p-1" style="background-color: {{ $clase->plazas['libres'] == 0 || $clase->pasada ? '#d4d4d4' : ($clase->color ?? '') }}">
                                                 @if (!empty($clase->clase_nombre))
-                                                    <a class="{{$clase->plazas['libres'] == 0 || $clase->pasada ? 'text-gray-500' : ''}} {{$clase->pasada ? '' : ($clase->plazas['libres'] != 0 ? 'link-btn reserva-clase' : ($clase->reserva_id ? 'link-btn reserva-clase' : ''))}}" style="position: relative;" data-clase="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}" data-fecha="{{$fechaDesde}}">
+                                                    <a class="{{$clase->plazas['libres'] == 0 || $clase->pasada ? 'text-gray-500' : ''}} {{$clase->pasada ? '' : ($clase->plazas['libres'] != 0 ? 'link-btn reserva-item' : ($clase->reserva_id ? 'link-btn reserva-item' : ''))}}" style="position: relative;" data-item="{{$clase}}" data-usuario="{{$usuario->id}}" data-reserva="{{$clase->reserva_id}}" data-fecha="{{$fechaDesde}}" data-type="clase">
                                                         <p class="text-sm font-semibold">
                                                             {{$clase->clase_nombre}}
                                                         </p>
@@ -108,6 +108,6 @@
                 </tbody>
             </table>
         </div>
-        <div id="reserva-clase-modal-content"></div>
+        <div id="reserva-item-modal-content"></div>
     @endif
 @endsection

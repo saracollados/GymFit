@@ -86,7 +86,7 @@ class HorariosClasesController extends Controller {
     public function eliminarClaseHorarioModal(Request $request) {
         $clase = HorarioClases::getClaseById($request->post('id'));
 
-        return View::make('modals.modalEliminarClaseHorario')->with('clase', $clase);
+        return View::make('modals.modalEliminarItemHorario')->with('clase', $clase);
         die();
     }
 

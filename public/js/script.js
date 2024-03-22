@@ -68,9 +68,15 @@ $(function() {
         var object = $(this).data('object');
         var userInfo = JSON.parse($(this).attr('data-userinfo')); 
         var userType = $(this).data('usertype');
+        var type = $(this).data('type');
 
         if (userType == 'usuario') {
-            window.location.href = "/crearReservaClaseForm";
+            if (type == 'clase') {
+                window.location.href = "/crearReservaClaseForm";
+            }
+            if (type == 'servicio') {
+                window.location.href = "/crearReservaServicioForm";
+            }
         } else { // ToDo: AQUI HABRIA QUE DIFERENCIAR TAMBIEN AL PERSONAL QUE NO ES ADMINISTRADOR, HABRIA QUE RESTRINGIR TODAS LAS RUTAS DE CLASES, YA
             if(object) {
                 $.ajax({
@@ -81,11 +87,10 @@ $(function() {
                     url: '/usuarioReservaForm',
                     data: {
                         object: object,
+                        tipo: type,
                     },
                     success: function(data) {
-                        // Actualiza el contenido del modal con las variables
                         $('#reserva-modal-content').empty().append(data);
-                        // Muestra el modal
                         $('#modal-usuario-reserva').modal('show');
                     },
                     error: function(error) {
@@ -97,13 +102,14 @@ $(function() {
         
     });
     
-    $('.reserva-clase').on("click", function(){
-        var clase = $(this).data('clase');
+    $('.reserva-item').on("click", function(){
+        var item = $(this).data('item');
         var usuario_id = $(this).data('usuario');
         var reserva = $(this).data('reserva');
         var fecha = $(this).data('fecha');
+        var type = $(this).data('type');
 
-        if(clase) {
+        if(item) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -111,14 +117,15 @@ $(function() {
                 method: "post",
                 url: '/reservaClaseForm',
                 data: {
-                    clase: clase,
+                    item: item,
                     usuario_id: usuario_id,
                     reserva: reserva,
-                    fecha: fecha
+                    fecha: fecha,
+                    type: type
                 },
                 success: function(data) {
                     // Actualiza el contenido del modal con las variables
-                    $('#reserva-clase-modal-content').empty().append(data);
+                    $('#reserva-item-modal-content').empty().append(data);
                     // Muestra el modal
                     $('#modal-crear-reserva').modal('show');
                 },
@@ -129,10 +136,18 @@ $(function() {
         }
     });
 
-    $('.eliminar-claseHorario').on("click", function(){
+    $('.eliminar-itemHorario').on("click", function(){
         var object_id = $(this).data('id');
+        var type = $(this).data('type');
+        var fecha = $(this).data('fecha');
 
-        console.log(object_id);
+        if (type == 'clase') {
+            url = '/eliminarClaseHorarioForm';
+        } 
+        
+        if (type == 'servicio') {
+            url = '/eliminarServicioHorarioForm';
+        }
 
         if(object_id) {
             $.ajax({
@@ -140,15 +155,16 @@ $(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 method: "post",
-                url: '/eliminarClaseHorarioForm',
+                url: url,
                 data: {
                     id: object_id,
+                    fecha: fecha,
                 },
                 success: function(data) {
                     // Actualiza el contenido del modal con las variables
-                    $('#horarioclases-modal-content').empty().append(data);
+                    $('#horario-modal-content').empty().append(data);
                     // Muestra el modal
-                    $('#modal-eliminar-claseHorario').modal('show');
+                    $('#modal-eliminar-horario').modal('show');
                 },
                 error: function(error) {
                     console.error('Error en la solicitud Ajax:', error);

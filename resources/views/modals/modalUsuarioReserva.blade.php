@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{route('crearReservaClaseForm')}}" method="POST" autocomplete='off'>
+                <form action="{{$tipo === 'clase' ? route('crearReservaClaseForm') : route('crearReservaServicioForm')}}" method="POST" autocomplete='off'>
                     @csrf
                     <div class="flex justify-between mb-6">
                         <div class="w-full">

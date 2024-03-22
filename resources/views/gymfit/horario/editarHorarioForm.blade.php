@@ -117,7 +117,7 @@
                                         @foreach($clasesHorarioOrganizado[$diaSemana->id][$hora->id] as $clase)
                                             <div class="rounded mx-1 p-1" style="background-color: {{$clase->color ?? ''}}">
                                                 @if (!empty($clase->clase_nombre))
-                                                    <a class="link-btn eliminar-claseHorario" data-id="{{$clase->id}}">
+                                                    <a class="link-btn eliminar-itemHorario" data-id="{{$clase->id}}" data-type="clase">
                                                         <p class="text-sm font-semibold">
                                                             {{$clase->clase_nombre}}
                                                         </p>
@@ -134,6 +134,6 @@
                 </tbody>
             </table>
         </div>
-        <div id="horarioclases-modal-content"></div>
+        <div id="horario-modal-content"></div>
     @endif
 @endsection

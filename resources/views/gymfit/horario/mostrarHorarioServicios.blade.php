@@ -106,9 +106,9 @@
                             <td class="py-2.5">
                                 @if(isset($serviciosSemanaActual[$diaSemana->id][$hora->id]))
                                     @foreach($serviciosSemanaActual[$diaSemana->id][$hora->id] as $servicio)
-                                        <div class="rounded mx-1 p-1 @if($servicio->role_id == '3') bg-emerald-300 @elseif($servicio->role_id == '4') bg-cyan-300 @endif">
+                                        <div class="rounded mx-1 p-1 @if($servicio->role_id == '3') bg-emerald-300 @elseif($servicio->role_id == '4') bg-cyan-300 @endif" style="background-color: {{$servicio->pasada ? '#d4d4d4' : '' }}">
                                             @if (!empty($servicio->role_nombre))
-                                                <a class="link-btn eliminar-servicioHorario" data-id="{{$servicio->id}}">
+                                                <a class="{{$servicio->pasada ? 'text-gray-500' : 'link-btn eliminar-itemHorario'}}" data-id="{{$servicio->id}}" data-type="servicio" data-fecha="{{$fechasSemanaActual[0][0]}}">
                                                     <p class="text-sm font-semibold">
                                                         {{$servicio->role_nombre}}
                                                     </p>
@@ -125,5 +125,5 @@
             </tbody>
         </table>
     </div>
-    <div id="horarioclases-modal-content"></div>
+    <div id="horario-modal-content"></div>
 @endsection
