@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Personal;
 use App\Models\Horario;
+use App\Models\Reserva;
+use App\Models\ReservaServicio;
 use App\Models\HorarioServicios;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
@@ -37,33 +39,19 @@ class HorariosServiciosController extends Controller {
             $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $hoy)->startOfWeek();
         }
 
-
         // Calcula las fechas de la semana actual
-        $fechasSemanaActual = [];
-        for ($i = 0; $i < 7; $i++) {
-            $fecha = $inicioSemanaActual->copy()->addDays($i);
-            $fechasSemanaActual[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-        }
+        $fechasSemanaActual = HorariosController::getFechasSemana($inicioSemanaActual);
 
         // Calcula las fechas de la semana siguiente
+        $inicioSemanaActual = Carbon::parse($inicioSemanaActual)->startOfWeek();
         $inicioSemanaSiguiente = $inicioSemanaActual->copy()->addWeek()->startOfWeek();
-        $fechasSemanaSiguiente = [];
-        for ($i = 0; $i < 7; $i++) {
-            $fecha = $inicioSemanaSiguiente->copy()->addDays($i);
-            $fechasSemanaSiguiente[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-        }
-
+        $fechasSemanaSiguiente = HorariosController::getFechasSemana($inicioSemanaSiguiente);
+        
         // Calcula las fechas de la semana anterior
         $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
-        $fechasSemanaAnterior = [];
-        for ($i = 0; $i < 7; $i++) {
-            $fecha = $inicioSemanaAnterior->copy()->addDays($i);
-            $fechasSemanaAnterior[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-        }
+        $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
 
         $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual);
-        $serviciosSemanaSiguiente = HorariosServiciosController::getServiciosSemana($fechasSemanaSiguiente);
-        $serviciosSemanaAnterior = HorariosServiciosController::getServiciosSemana($fechasSemanaAnterior);
 
         foreach ($fechasSemanaActual as &$fecha) {
             $diaSemana = Horario::getDiaSemanaById($fecha[1]);
@@ -97,7 +85,7 @@ class HorariosServiciosController extends Controller {
         }
     }
 
-    public function getServiciosSemana($array_fechas) {
+    public static function getServiciosSemana($array_fechas, $usuario_id = null) {
         $serviciosHorarioOrganizado = [];
 
         foreach ($array_fechas as $fecha_array) {
@@ -110,13 +98,42 @@ class HorariosServiciosController extends Controller {
             ];
             
             $serviciosDia = HorarioServicios::getServiciosByDia($fecha_formato);
-            
-            
+                        
             foreach ($serviciosDia as &$servicio) {
+                if ($usuario_id) {
+                    $reserva_id = ReservaServicio::getReservaServicioId($usuario_id, $servicio->id);
+                    $existsReserva = ReservaServicio::existeReservaServicio($servicio->id);
+                    $servicio->reserva_id = $reserva_id;
+                    $servicio->existsReserva = $existsReserva;
+                }
+
+                // Verificar si el servicio ya ha pasado
+                $servicio->pasada = ReservasController::isClasePasada($servicio['fecha'], $servicio['franja_horaria_nombre']);
                 $serviciosHorarioOrganizado[$fecha_servicio['dia_semana_id']][$servicio->franja_horaria_id][] = $servicio;
             }
         }
-        
+
         return $serviciosHorarioOrganizado;
+    }
+
+    public function eliminarServicioHorarioModal(Request $request) {
+        $servicio = HorarioServicios::getServicioById($request->post('id'));
+        $inicioSemana = $request->post('fecha');
+
+        return View::make('modals.modalEliminarItemHorario', compact('servicio', 'inicioSemana'));
+        die();
+    }
+    
+    public function eliminarServicioHorario(Request $request) {
+        $id_servicio = HorarioServicios::eliminarServicio($request->post('servicio_id'));
+        $inicioSemana = $request->post('inicioSemana');
+
+        if ($id_servicio) {
+            $success = 'La servicio se ha eliminado con éxito';
+            return Redirect::to('/mostrarHorariosServicios')->with(['success' => $success, 'inicioSemana' => $inicioSemana]);
+        } else {
+            $error = 'La servicio no se ha podido eliminar';
+            return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $inicioSemana]);
+        }
     }
 }

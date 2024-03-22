@@ -86,32 +86,19 @@ class ReservasController extends Controller {
             $franjasHorarias = Horario::getFranjasHorarias();
     
             // Calcula las fechas de la semana actual
-            $fechasSemanaActual = [];
-            for ($i = 0; $i < 7; $i++) {
-                $fecha = $inicioSemanaActual->copy()->addDays($i);
-                $fechasSemanaActual[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-            }
+            $fechasSemanaActual = HorariosController::getFechasSemana($inicioSemanaActual);
 
             // Calcula las fechas de la semana siguiente
             $inicioSemanaActual = Carbon::parse($inicioSemanaActual)->startOfWeek();
             $inicioSemanaSiguiente = $inicioSemanaActual->copy()->addWeek()->startOfWeek();
-            $fechasSemanaSiguiente = [];
-            for ($i = 0; $i < 7; $i++) {
-                $fecha = $inicioSemanaSiguiente->copy()->addDays($i);
-                $fechasSemanaSiguiente[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-            }
-
+            $fechasSemanaSiguiente = HorariosController::getFechasSemana($inicioSemanaSiguiente);
+            
             // Calcula las fechas de la semana anterior
             $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
-            $fechasSemanaAnterior = [];
-            for ($i = 0; $i < 7; $i++) {
-                $fecha = $inicioSemanaAnterior->copy()->addDays($i);
-                $fechasSemanaAnterior[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
-            }
+            $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
+            
     
             $clasesSemanaActual = ReservasController::getClasesSemanaUsuario($fechasSemanaActual, $usuario->id);
-            $clasesSemanaSiguiente = ReservasController::getClasesSemanaUsuario($fechasSemanaSiguiente, $usuario->id);
-            $clasesSemanaAnterior = ReservasController::getClasesSemanaUsuario($fechasSemanaSiguiente, $usuario->id);
 
             foreach ($fechasSemanaActual as &$fecha) {
                 $diaSemana = Horario::getDiaSemanaById($fecha[1]);

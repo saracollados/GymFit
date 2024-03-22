@@ -94,6 +94,15 @@ class HorariosController extends Controller {
         }
         return view('gymfit/horario/editarHorarioForm', compact('horario','clasesHorarioOrganizado', 'diasSemana', 'franjasHorarias', 'clases', 'salas' , 'monitores', 'error', 'success'));
     }
+
+    public static function getFechasSemana($inicioSemana) {
+        $fechasSemana = [];
+        for ($i = 0; $i < 7; $i++) {
+            $fecha = $inicioSemana->copy()->addDays($i);
+            $fechasSemana[] = [$fecha->format('d/m/Y'), ($fecha->dayOfWeek == 0) ? 7 : $fecha->dayOfWeek];
+        }
+        return $fechasSemana;
+    }
 }
 
 ?>
