@@ -24,16 +24,37 @@ class Clase extends Model {
     }
 
     public static function getAll() {
-        return Clase::all();
+        return Clase::where('activo', 1)->get();
     }
 
-    public static function create(Request $request) {
+    public static function getClaseById($id) {
+        return Clase::where('id', $id)->first();
+    }
+
+    public static function create($nombre, $descripcion, $color) {
         $clase = new Clase();
-        $clase->nombre = $request->input('nombre');
-        $clase->descripcion = $request->input('descripcion');
-        $clase->color = $request->input('color');
+        $clase->nombre = $nombre;
+        $clase->descripcion = $descripcion;
+        $clase->color = $color;
         $clase->save(); 
 
         return $clase->id;
+    }
+
+    public static function updateClase($id, $nombre, $descripcion, $color) {
+        $clase = Clase::find($id);
+        $clase->nombre = $nombre;
+        $clase->descripcion = $descripcion;
+        $clase->color = $color;
+        $clase->save(); 
+
+        return $clase;
+    }
+
+    public static function deleteClase($id) {
+        $clase = Clase::find($id);
+        $clase->activo = 0;
+        $clase->save();
+        return $clase;
     }
 }

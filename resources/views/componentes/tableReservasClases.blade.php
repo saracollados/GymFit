@@ -3,6 +3,7 @@
     <td class="px-6 py-3 text-center">{{$item->usuario_dni}}</td>
     <td class="px-6 py-3 text-center">{{$item->usuario_nombre}}</td>
     <td class="px-6 py-3 text-center">{{$item->clase_nombre}}</td>
+    <td class="px-6 py-3 text-center">{{$item->monitor_nombre}}</td>
     <td class="px-6 py-3 text-center">{{$item->fecha}}</td>
     <td class="px-6 py-3 text-center">{{$item->franja_horaria_nombre}}</td>
     <td class="px-6 py-3 text-center">

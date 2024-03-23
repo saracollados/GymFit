@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Clase;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View; 
 
 class ClasesController extends Controller {
     public function mostrarClases() {
         $clases = Clase::getAll();
-        return view('gymfit/clases/mostrarClases', compact('clases'));
+
+        $success = session('success');
+        $error = session('error');
+
+        return view('gymfit/clases/mostrarClases', compact('clases', 'success', 'error'));
     }
 
     public function crearClaseForm() {
@@ -19,8 +24,62 @@ class ClasesController extends Controller {
     }
 
     public function crearClase(Request $request) {
-        $id_clase = Clase::create($request);
-        return Redirect::to('/mostrarClases');
+        $nombre = $request->input('nombre');
+        $descripcion = $request->input('descripcion');
+        $color = $request->input('color');
+        $id_clase = Clase::create($nombre, $descripcion, $color);
+
+        if($id_clase) {
+            $success='La clase se ha creado con éxito.';
+            return redirect('/mostrarClases')->with(compact('success'));
+        } else {
+            $success='No se ha podido crear al clase.';
+            return redirect('/mostrarClases')->with(compact('error'));
+        }
+    }
+
+    public function editarClaseForm($id) {
+        $clase = Clase::getClaseById($id);
+
+        return view('gymfit/clases/crearClaseForm', compact('clase'));
+    }
+
+    public function editarClase(Request $request) {
+        $id = $request->post('clase_id');
+        $nombre = $request->input('nombre');
+        $descripcion = $request->input('descripcion');
+        $color = $request->input('color');
+
+        $clase = Clase::updateClase($id, $nombre, $descripcion, $color);
+
+        if($clase) {
+            $success='La clase se ha eliminado con éxito.';
+            return redirect('/mostrarClases')->with(compact('success'));
+        } else {
+            $error='No se ha podido eliminar al clase.';
+            return redirect('/mostrarClases')->with(compact('error'));
+        }
+    }
+    
+    public function eliminarClaseForm(Request $request) {
+        $clase_id = $request->post('id');
+        $clase = Clase::getClaseById($clase_id);
+
+        return View::make('modals.modalEliminarClase', compact('clase'));
+        die();
+    }
+
+    public function eliminarClase(Request $request) {
+        $clase_id = $request->post('clase_id');
+        $clase = Clase::deleteClase($clase_id);
+
+        if($clase) {
+            $success='La clase se ha eliminado con éxito.';
+            return redirect('/mostrarClases')->with(compact('success'));
+        } else {
+            $error='No se ha podido eliminar al clase.';
+            return redirect('/mostrarClases')->with(compact('error'));
+        }
     }
 }
 

@@ -199,6 +199,32 @@ $(function() {
         }
     });
 
+    $('.eliminar-clase').on("click", function(){
+        var object_id = $(this).data('id');
+
+        if(object_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: "post",
+                url: '/eliminarClaseForm',
+                data: {
+                    id: object_id,
+                },
+                success: function(data) {
+                    // Actualiza el contenido del modal con las variables
+                    $('#clase-modal-content').empty().append(data);
+                    // Muestra el modal
+                    $('#modal-eliminar-clase').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error en la solicitud Ajax:', error);
+                }
+            });
+        }
+    });
+
     $('.close-btn').on("click", function() {
         $message = $(this).parent()[0];
         $message.style.display = 'none';
