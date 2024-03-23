@@ -22,6 +22,7 @@ class Usuario extends Authenticatable {
     public static function getAll() {
         $usuarios = Usuario::join('generos_tabla_maestra', 'usuarios.genero_id', '=', 'generos_tabla_maestra.id')
             ->select('usuarios.id', 'usuarios.dni', 'usuarios.nombre', 'generos_tabla_maestra.id as genero_id', 'generos_tabla_maestra.nombre as genero', 'usuarios.fecha_nacimiento', 'usuarios.email', 'usuarios.password')
+            ->where('activo', 1)
             ->get();
         
         return $usuarios;
@@ -48,10 +49,38 @@ class Usuario extends Authenticatable {
     }
 
     public static function getUsuarioById($usuario_id) {
-        $usuario = Usuario::select('id', 'dni', 'nombre')
+        $usuario = Usuario::select('id', 'dni', 'nombre', 'email', 'password', 'genero_id', 'fecha_nacimiento')
             ->where('id', '=', $usuario_id)
             ->first();
         
+        return $usuario;
+    }
+
+    public static function updateUsuario($id, $nombre, $fecha_nacimiento, $email, $genero_id, $password_nueva_encriptada = null) {
+        $usuario = Usuario::find($id);
+        $usuario->nombre = $nombre;
+        $usuario->fecha_nacimiento = $fecha_nacimiento;
+        $usuario->email = $email;
+        $usuario->genero_id = $genero_id;
+        if($password_nueva_encriptada) {
+            $usuario->password = $password_nueva_encriptada;
+        }
+        $usuario->save(); 
+
+        return $usuario;
+    }
+
+    public static function deleteUsuario($id) {
+        $usuario = Usuario::find($id);
+        $usuario->activo = 0;
+        $usuario->save();
+        return $usuario;
+    }
+
+    public static function existsUsuarioDni($dni) {
+        $usuario = Usuario::where('dni', $dni)
+            ->where('activo', 1)
+            ->first();
         return $usuario;
     }
 }

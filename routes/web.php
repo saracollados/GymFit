@@ -38,6 +38,10 @@ Route::middleware(['admin'])->group(function() {
     Route::get('/mostrarUsuarios', [UsuariosController::class, 'mostrarUsuarios']);
     Route::get('/crearUsuarioForm', [UsuariosController::class, 'crearUsuarioForm']);
     Route::post('/crearUsuario', [UsuariosController::class, 'crearUsuario'])->name('crearUsuario');
+    Route::post('/eliminarUsuarioForm', [UsuariosController::class, 'eliminarUsuarioForm']);
+    Route::post('/eliminarUsuario', [UsuariosController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+    Route::get('/editarUsuario/{id}', [UsuariosController::class, 'editarUsuarioForm']);
+    Route::post('/editarUsuario', [UsuariosController::class, 'editarUsuario'])->name('editarUsuario');
 
     Route::get('/mostrarSalas', [SalasController::class, 'mostrarSalas']);
     Route::get('/crearSalaForm', [SalasController::class, 'crearSalaForm']);

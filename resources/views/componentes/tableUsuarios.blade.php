@@ -9,9 +9,9 @@
         <a class="py-2.5 text-sm my-0 mx-0.5 px-4 rounded-lg text-dark-blue" href="/editarUsuario/{{$item->id}}" title="Editar Usuario">
             <i class="fa-solid fa-pencil"></i>
         </a>
-        <a class="py-2 text-sm my-0 mx-0.5 px-3 rounded-lg text-dark-blue " href="/eliminarUsuario/{{$item->id}}" title="Eliminar Usuario">
+        <button class="py-2 text-sm my-0 mx-0.5 px-3 rounded-lg text-dark-blue eliminar-usuario" title="Eliminar Usuario" data-id={{$item->id}}>
             <i class="fa-solid fa-trash"></i>
-        </a>
+        </button>
     </td>
 </tr>
 
