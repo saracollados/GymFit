@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware {
+class ServiciosMiddleware {
     /**
      * Handle an incoming request.
      *
@@ -16,8 +16,8 @@ class AdminMiddleware {
     public function handle(Request $request, Closure $next): Response {
         $user = Auth::guard('personal')->user();
 
-        // Verifica si el usuario no está autenticado o no es administrador
-        if (Auth::guard('personal')->check() && $user->role_id == 1) {
+        // Verifica si el usuario no está autenticado o no es ser
+        if (Auth::guard('personal')->check() && ($user->role_id == 3 || $user->role_id == 4)) {
             return $next($request);
         }
         
