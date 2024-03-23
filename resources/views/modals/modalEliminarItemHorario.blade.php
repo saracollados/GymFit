@@ -18,11 +18,13 @@
                                 <td class="icon"><i class="fa-regular fa-star"></i></td>
                                 <td class="icon"><i class="fa-regular fa-calendar"></i></td>
                                 <td class="icon"><i class="fa-regular fa-clock"></i></td>
+                                <td class="icon"><i class="fa-solid fa-person"></i></td>
                             </tr>
                             <tr class="text-center">
                                 <td class="icon">{{$clase->clase_nombre}}</td>
                                 <td class="icon">{{$clase->dia_semana_nombre}}</td>
                                 <td class="icon">{{$clase->franja_horaria_nombre}}</td>
+                                <td class="icon">{{$clase->monitor_nombre}}</td>
                             </tr>
                         </body>
                     </table>

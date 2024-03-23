@@ -5,9 +5,9 @@
 @section('header')
     <div class="flex justify-between items-center">
         <h6 class="text-base font-bold text-gray-900">Editar <?= $horario->nombre ?></h6>
-        <button type="submit" class="btn secondaryBtn">
-            Guardar Horario
-        </button>
+        <a class="btn secondaryBtn" href="/mostrarHorarios">
+            <span class="ml-1 opacity-100">Guardar Horario</span>
+        </a>
     </div>
 @endsection
 

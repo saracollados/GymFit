@@ -103,6 +103,11 @@ class HorariosController extends Controller {
         }
         return $fechasSemana;
     }
+
+    public function guardarHorario () {
+        $horarios = Horario::getHorarios();
+        return view('gymfit/horario/mostrarHorarios', compact('horarios'));
+    }
 }
 
 ?>
