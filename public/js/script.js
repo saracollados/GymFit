@@ -227,6 +227,14 @@ $(function() {
 
     $('.eliminar-usuario').on("click", function(){
         var object_id = $(this).data('id');
+        var page = $(this).data('page');
+
+        if(page == 'usuarios') {
+            url = '/eliminarUsuarioForm';
+        }
+        if(page == 'personal') {
+            url = '/eliminarPersonalForm';
+        }
 
         if(object_id) {
             $.ajax({
@@ -234,7 +242,7 @@ $(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 method: "post",
-                url: '/eliminarUsuarioForm',
+                url: url,
                 data: {
                     id: object_id,
                 },

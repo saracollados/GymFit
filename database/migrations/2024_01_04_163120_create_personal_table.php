@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('personal', function (Blueprint $table) {
             $table->id();
+            $table->string('dni', 9)->unique();
             $table->string('nombre');
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles_personal_tabla_maestra');
