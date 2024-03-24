@@ -31,8 +31,8 @@
 
                     <form action="{{route('eliminarClaseHorario')}}" method="POST" autocomplete='off'>
                         @csrf
-                        <input type="hidden" name="clase_id" value={{$clase->id}}>
-                        <input type="hidden" name="horario_id" value={{$clase->horario_id}}>
+                        <input type="hidden" name="clase_id" value="{{$clase->id}}">
+                        <input type="hidden" name="horario_id" value="{{$clase->horario_id}}">
 
                         <div class="mt-4 text-center">
                             <button type="submit" class="btn btn-outline-danger">
@@ -61,8 +61,8 @@
 
                     <form action="{{route('eliminarServicioHorario')}}" method="POST" autocomplete='off'>
                         @csrf
-                        <input type="hidden" name="servicio_id" value={{$servicio->id}}>
-                        <input type="hidden" name="inicioSemana" value={{$inicioSemana}}>
+                        <input type="hidden" name="servicio_id" value="{{$servicio->id}}">
+                        <input type="hidden" name="inicioSemana" value="{{$inicioSemana}}">
 
                         <div class="mt-4 text-center">
                             <button type="submit" class="btn btn-outline-danger">

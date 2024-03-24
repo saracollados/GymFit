@@ -15,7 +15,7 @@
 
                 <form action="{{route('eliminarClase')}}" method="POST" autocomplete='off'>
                     @csrf
-                    <input type="hidden" name="clase_id" value={{$clase->id}}>
+                    <input type="hidden" name="clase_id" value="{{$clase->id}}">
 
                     <div class="mt-4 text-center">
                         <button type="submit" class="btn btn-outline-danger">

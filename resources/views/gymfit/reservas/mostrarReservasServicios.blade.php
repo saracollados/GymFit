@@ -5,7 +5,7 @@
         @if(session('userType') == 'usuario')
             <form action="{{route('crearReservaServicioForm')}}" method="POST" autocomplete='off'>
                 @csrf
-                <input name="dni" type="hidden" id="dni" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50 outline-1" value={{session('userInfo')['dni']}}>
+                <input name="dni" type="hidden" id="dni" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50 outline-1" value="{{session('userInfo')['dni']}}">
                 <button type="submit" class="btn primaryBtn">
                     Crear Reserva
                 </button>
