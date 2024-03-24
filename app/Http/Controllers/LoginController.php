@@ -19,20 +19,26 @@ class LoginController extends Controller {
         if ($userType === 'personal' && Auth::guard('personal')->attempt($credentials)) {
             
             $usuario_id = Auth::guard('personal')->id();
-            $usuarioInfo = Personal::getPersonalById($usuario_id);
+            $usuarioInfo = Personal::getPersonalInfoSession($usuario_id);
             session(['userInfo' => $usuarioInfo]);
             
             $user = Auth::guard('personal')->user();
             session(['userType' => 'personal']);
             if ($user->role_id == 1) {
                 session(['isAdmin' => true]);
+                return redirect()->intended('/mostrarReservasClases');
+            } elseif ($user->role_id == 2) {
+                session(['isClases' => true]);
+                return redirect()->intended('/mostrarReservasClases');
+            }elseif ($user->role_id == 3 || $user->role_id == 4) {
+                session(['isServicios' => true]);
+                return redirect()->intended('/mostrarReservasServicios');
             }
 
-            return redirect()->intended('/mostrarReservasClases');
         } elseif ($userType !== 'personal' && Auth::guard('usuarios')->attempt($credentials)) {
             
             $usuario_id = Auth::id();
-            $usuarioInfo = Usuario::getUsuarioById($usuario_id);
+            $usuarioInfo = Usuario::getUsuarioInfoSession($usuario_id);
             session(['userType' => 'usuario']);
             session(['userInfo' => $usuarioInfo]);
             return redirect()->intended('/mostrarReservasClases');
@@ -47,7 +53,7 @@ class LoginController extends Controller {
         Auth::guard('usuarios')->logout();
 
         // Limpiar datos específicos del usuario en la sesión
-        $request->session()->forget(['userType', 'isAdmin']);
+        $request->session()->forget(['userInfo', 'userType', 'isAdmin', 'isClases', 'isServicios']);
 
         // Invalida la sesión actual para evitar que se reutilice el token CSRF
         $request->session()->invalidate();
@@ -55,7 +61,7 @@ class LoginController extends Controller {
         // Regenera el token de la sesión para proteger contra ataques de fijación de sesión
         $request->session()->regenerateToken();
 
-        // Redirecciona al usuario a la página de inicio o a donde prefieras después del logout
+        // Redirecciona al usuario a la página de inicio
         return redirect('/');
     }
 
