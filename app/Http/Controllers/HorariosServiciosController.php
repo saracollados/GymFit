@@ -51,7 +51,20 @@ class HorariosServiciosController extends Controller {
         $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
         $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
 
-        $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual);
+        $usuarioInfo = session('userInfo');
+        $usuarioTipo = session('userType');
+
+        if ($usuarioTipo == 'usuario'){
+            $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
+            $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuarioInfo['id'], null);
+        } elseif ($usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
+            $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
+            $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, null, $usuarioInfo['id']);
+        } else {
+            $reservasServicios = ReservaServicio::getReservasServicios();
+            $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual);
+        }
+
 
         foreach ($fechasSemanaActual as &$fecha) {
             $diaSemana = Horario::getDiaSemanaById($fecha[1]);
@@ -85,7 +98,7 @@ class HorariosServiciosController extends Controller {
         }
     }
 
-    public static function getServiciosSemana($array_fechas, $usuario_id = null) {
+    public static function getServiciosSemana($array_fechas, $usuario_id = null, $profesional_id = null) {
         $serviciosHorarioOrganizado = [];
 
         foreach ($array_fechas as $fecha_array) {
@@ -96,8 +109,8 @@ class HorariosServiciosController extends Controller {
                 'fecha_formato' => $fecha_formato,
                 'dia_semana_id' => $fecha_array[1]
             ];
-            
-            $serviciosDia = HorarioServicios::getServiciosByDia($fecha_formato);
+
+            $serviciosDia = HorarioServicios::getServiciosByDia($fecha_formato, $profesional_id);
                         
             foreach ($serviciosDia as &$servicio) {
                 if ($usuario_id) {

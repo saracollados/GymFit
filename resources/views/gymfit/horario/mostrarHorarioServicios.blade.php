@@ -28,39 +28,48 @@
 
     <form action="{{route('crearServicioHorario')}}" method="POST" autocomplete='off' class="mb-16">
         @csrf
-        
-        <div class="flex justify-between mb-6">
-            <div class="w-3/12">
-                <label for="profesional_id" class="block mb-2 text-sm font-medium text-gray-900">Profesional:</label>
-                <select name="profesional_id" id="profesional_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
-                    <option value="" selected disabled>Seleccione un profesional</option>
-                    @foreach ($profesionales as $profesional)
-                        <option value="{{$profesional->id}}">{{$profesional->nombre}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="w-3/12">
-                <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900">Fecha:</label>
-                <input type="date" name="fecha" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" min="<?php echo date('Y-m-d'); ?>" required>
-            </div>
-            <div class="w-3/12">
-                <label for="franja_horaria_id" class="block mb-2 text-sm font-medium text-gray-900">Hora:</label>
-                <select name="franja_horaria_id" id="franja_horaria_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
-                    <option value="" selected disabled>Seleccione hora</option>
-                    @foreach ($franjasHorarias as $franjaHoraria)
-                        <option value="{{$franjaHoraria->id}}">{{$franjaHoraria->nombre}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <input type="hidden" name="fechaInicioSemana" value="{{ $fechasSemanaActual[0][0] }}">
 
-        <div class="mt-10 text-center">
-            <button type="submit" class="btn secondaryBtn">
-                Añadir Servicio
-            </button>
-        </div>
-    </form>
+        <div class="flex justify-between mb-6">
+            <form action="{{route('crearReservaClaseForm')}}" method="POST" autocomplete='off'>
+                @csrf
+
+                @if(session('userType') == 'personal' && session('userInfo')['role_id'] == 1)
+                    <div class="w-3/12">
+                        <label for="profesional_id" class="block mb-2 text-sm font-medium text-gray-900">Profesional:</label>
+                        <select name="profesional_id" id="profesional_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
+                            <option value="" selected disabled>Seleccione un profesional</option>
+                            @foreach ($profesionales as $profesional)
+                                <option value="{{$profesional->id}}">{{$profesional->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+                <div class="w-3/12">
+                    <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900">Fecha:</label>
+                    <input type="date" name="fecha" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" min="<?php echo date('Y-m-d'); ?>" required>
+                </div>
+                <div class="w-3/12">
+                    <label for="franja_horaria_id" class="block mb-2 text-sm font-medium text-gray-900">Hora:</label>
+                    <select name="franja_horaria_id" id="franja_horaria_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
+                        <option value="" selected disabled>Seleccione hora</option>
+                        @foreach ($franjasHorarias as $franjaHoraria)
+                            <option value="{{$franjaHoraria->id}}">{{$franjaHoraria->nombre}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" name="fechaInicioSemana" value="{{ $fechasSemanaActual[0][0] }}">
+
+            <div class="mt-10 text-center">
+
+                <button type="submit" class="btn secondaryBtn">
+                        @if(session('userType') == 'personal' && session('userInfo')['role_id'] != 1)
+                            <input type="hidden" name="profesional_id" value="{{session('userInfo')['id']}}">
+                        @endif
+                    Añadir Servicio
+                </button>
+            </div>
+        </form>
 
 
     <div class="flex justify-between">
