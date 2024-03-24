@@ -90,6 +90,7 @@ class Kernel extends HttpKernel
         'adminClases' => \App\Http\Middleware\AdminClasesMiddleware::class,
         'adminServiciosUsuarios' => \App\Http\Middleware\AdminServiciosUserMiddleware::class,
         'adminClasesUsuarios' => \App\Http\Middleware\AdminClasesUserMiddleware::class,
+        'adminUsuarios' => \App\Http\Middleware\AdminUserMiddleware::class,
     ];
 
 }
