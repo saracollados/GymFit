@@ -10,7 +10,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-// class Usuario extends Model {
 class Usuario extends Authenticatable {
     use HasFactory;
     use Notifiable;
@@ -42,13 +41,13 @@ class Usuario extends Authenticatable {
         $usuario->genero_id = $request->input('genero_id'); 
         $usuario->fecha_nacimiento = $request->input('fecha_nacimiento');
         $usuario->email = $request->input('email');
-        $usuario->password = $request->input('password');
+        $usuario->password = $request->input('dni');
         $usuario->save(); 
 
         return $usuario->id;
     }
 
-    public static function getUsuarioById($usuario_id) {
+    public static function getUsuarioInfoSession($usuario_id) {
         $usuario = Usuario::select('id', 'dni', 'nombre', 'email', 'password', 'genero_id', 'fecha_nacimiento')
             ->where('id', '=', $usuario_id)
             ->first();
@@ -56,14 +55,23 @@ class Usuario extends Authenticatable {
         return $usuario;
     }
 
-    public static function updateUsuario($id, $nombre, $fecha_nacimiento, $email, $genero_id, $password_nueva_encriptada = null) {
+    public static function getUsuarioById($usuario_id) {
+        $usuario = Usuario::join('generos_tabla_maestra', 'usuarios.genero_id', '=', 'generos_tabla_maestra.id')
+            ->select('usuarios.id as id', 'usuarios.dni as dni', 'usuarios.nombre as nombre', 'usuarios.email as email', 'usuarios.password as password', 'usuarios.genero_id as genero_id', 'generos_tabla_maestra.nombre as genero_nombre', 'usuarios.fecha_nacimiento as fecha_nacimiento')
+            ->where('usuarios.id', '=', $usuario_id)
+            ->first();
+        
+        return $usuario;
+    }
+
+    public static function updateUsuario($id, $nombre, $fecha_nacimiento, $email, $genero_id, $password = null) {
         $usuario = Usuario::find($id);
         $usuario->nombre = $nombre;
         $usuario->fecha_nacimiento = $fecha_nacimiento;
         $usuario->email = $email;
         $usuario->genero_id = $genero_id;
-        if($password_nueva_encriptada) {
-            $usuario->password = $password_nueva_encriptada;
+        if($password) {
+            $usuario->password = $password;
         }
         $usuario->save(); 
 
