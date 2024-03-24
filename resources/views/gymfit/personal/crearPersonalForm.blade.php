@@ -16,7 +16,7 @@
         @if(isset($miPerfil) && $miPerfil)
             Editar mi perfil
         @elseif (isset($personal))
-            Editar Trabajador {{$personal->nombre}}
+            Editar Trabajador: {{$personal->nombre}}
         @else                                                                                          
             Crear Trabajador
         @endif

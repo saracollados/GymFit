@@ -12,7 +12,7 @@
   <div class="flex justify-between items-center">
     <h6 class="text-base font-bold text-gray-900">
         @if(isset($usuario))
-            Editar usuario {{$usuario->nombre}}
+            Editar usuario: {{$usuario->nombre}}
         @else
             Crear usuario
         @endif

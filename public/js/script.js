@@ -225,6 +225,32 @@ $(function() {
         }
     });
 
+    $('.eliminar-sala').on("click", function(){
+        var object_id = $(this).data('id');
+
+        if(object_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: "post",
+                url: '/eliminarSalaForm',
+                data: {
+                    id: object_id,
+                },
+                success: function(data) {
+                    // Actualiza el contenido del modal con las variables
+                    $('#sala-modal-content').empty().append(data);
+                    // Muestra el modal
+                    $('#modal-eliminar-sala').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error en la solicitud Ajax:', error);
+                }
+            });
+        }
+    });
+
     $('.eliminar-usuario').on("click", function(){
         var object_id = $(this).data('id');
         var page = $(this).data('page');

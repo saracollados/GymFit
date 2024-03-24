@@ -15,7 +15,7 @@ class Sala extends Model {
     }
 
     public static function getAll() {
-        return Sala::all();
+        return Sala::where('activo', 1)->get();
     }
 
     public static function create(Request $request) {
@@ -33,5 +33,25 @@ class Sala extends Model {
             ->first()->aforo;
 
         return $aforo;
+    }
+
+    public static function getSalaById($id) {
+        return Sala::where('id', $id)->first();
+    }
+
+    public static function updateSala($id, $nombre, $aforo) {
+        $sala = Sala::find($id);
+        $sala->nombre = $nombre;
+        $sala->aforo = $aforo;
+        $sala->save(); 
+
+        return $sala;
+    }
+
+    public static function deleteSala($id) {
+        $sala = Sala::find($id);
+        $sala->activo = 0;
+        $sala->save();
+        return $sala;
     }
 }

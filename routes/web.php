@@ -45,7 +45,10 @@ Route::middleware(['admin'])->group(function() {
     Route::get('/mostrarSalas', [SalasController::class, 'mostrarSalas']);
     Route::get('/crearSalaForm', [SalasController::class, 'crearSalaForm']);
     Route::post('/crearSala', [SalasController::class, 'crearSala'])->name('crearSala');
-    Route::get('/editarSalaForm/{id}', [SalasController::class, 'editarSalaForm']);
+    Route::get('/editarSala/{id}', [SalasController::class, 'editarSalaForm']);
+    Route::post('/editarSala', [SalasController::class, 'editarSala'])->name('editarSala');
+    Route::post('/eliminarSalaForm', [SalasController::class, 'eliminarSalaForm']);
+    Route::post('/eliminarSala', [SalasController::class, 'eliminarSala'])->name('eliminarSala');
     
     Route::get('/mostrarClases', [ClasesController::class, 'mostrarClases']);
     Route::get('/crearClaseForm', [ClasesController::class, 'crearClaseForm']);

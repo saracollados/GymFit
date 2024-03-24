@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nombre');
             $table->integer('aforo');
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

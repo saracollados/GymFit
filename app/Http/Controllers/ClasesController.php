@@ -53,10 +53,10 @@ class ClasesController extends Controller {
         $clase = Clase::updateClase($id, $nombre, $descripcion, $color);
 
         if($clase) {
-            $success='La clase se ha eliminado con éxito.';
+            $success='La clase se ha actualizado con éxito.';
             return redirect('/mostrarClases')->with(compact('success'));
         } else {
-            $error='No se ha podido eliminar al clase.';
+            $error='No se ha podido actualizar la clase.';
             return redirect('/mostrarClases')->with(compact('error'));
         }
     }

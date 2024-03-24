@@ -12,7 +12,7 @@
   <div class="flex justify-between items-center">
     <h6 class="text-base font-bold text-gray-900">
         @if(isset($clase))
-            Editar Clase {{$clase->nombre}}
+            Editar Clase: {{$clase->nombre}}
         @else
             Crear Clase
         @endif
