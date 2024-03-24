@@ -22,10 +22,15 @@ class ReservasController extends Controller {
     public function mostrarReservasClases() {
         $usuarioInfo = session('userInfo');
         $usuarioTipo = session('userType');
-
-        if ($usuarioTipo == 'usuario' || $usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
-            $reservasClases = Reserva::getReservasClases($usuarioInfo['id']);
-        } else {
+        $isUsuarioAdmin = session('isAdmin');
+        $isUsuarioClases = session('isClases');
+        $isUsuarioServicios = session('isServicios');
+        
+        if ($usuarioTipo == 'usuario') {
+            $reservasClases = Reserva::getReservasClases($usuarioInfo['id'], null);
+        } elseif ($usuarioTipo == 'personal' && $isUsuarioClases) {
+            $reservasClases = Reserva::getReservasClases(null, $usuarioInfo['id']);
+        } elseif ($usuarioTipo == 'personal' && $isUsuarioAdmin) {
             $reservasClases = Reserva::getReservasClases();
         }
 
@@ -42,11 +47,11 @@ class ReservasController extends Controller {
 
         if ($usuarioTipo == 'usuario' || $usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
             $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
+
         } else {
             $reservasServicios = ReservaServicio::getReservasServicios();
         }
 
-        $reservasServicios = ReservaServicio::getReservasServicios();
         return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios'));
     }
 
@@ -64,8 +69,8 @@ class ReservasController extends Controller {
         $fecha = $request->post('fecha');
         $tipo = $request->post('type');
 
-        $item['existsReserva'] = ($item['existsReserva'] === "true") ? true : false;
-        $item['pasada'] = ($item['pasada'] === "true") ? true : false;
+        $item['existsReserva'] = (isset($item['existsReserva']) && $item['existsReserva'] === "true") ? true : false;
+        $item['pasada'] = (isset($item['pasada']) && $item['pasada'] === "true") ? true : false;
 
         return View::make('modals.modalCrearReserva', compact('usuario_id', 'item', 'usuario', 'reserva', 'fecha', 'tipo'));
         die();
@@ -74,7 +79,7 @@ class ReservasController extends Controller {
     public function crearReservaClaseForm(Request $request, $success=null, $error=null) {
         $usuario_dni = $request->post('dni');
 
-        $usuario = Usuario::where('dni', $usuario_dni)->first();
+        $usuario = Usuario::existsUsuarioDni($usuario_dni);
 
         if(!$usuario) {
             $reservasClases = Reserva::getReservasClases();
@@ -136,13 +141,13 @@ class ReservasController extends Controller {
     public function crearReservaServicioForm(Request $request, $success = null, $error = null) {
         $usuario_dni = $request->post('dni');
 
-        $usuario = Usuario::where('dni', $usuario_dni)->first();
+        $usuario = Usuario::existsUsuarioDni($usuario_dni);
 
         if(!$usuario) {
             $reservasServicios = ReservaServicio::getReservasServicios();
             $error = 'Ese usuario no existe';
 
-            return view('gymfit/reservas/mostrarReservasServicio', compact('reservasServicios', 'error'));
+            return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios', 'error'));
         } else {    
             if (session('inicioSemana')) {
                 $inicioSemana = session('inicioSemana');

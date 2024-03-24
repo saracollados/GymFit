@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
+
 class Reserva extends Model {
     use HasFactory;
 
@@ -18,7 +20,7 @@ class Reserva extends Model {
         return $this->belongsTo(Usuario::class);
     }
 
-    public static function getReservasClases($id = null) {
+    public static function getReservasClases($usuario_id = null, $personal_id = null) {
         $reservas = Reserva::join('usuarios', 'reservas.usuario_id', '=', 'usuarios.id')
             ->join('horarios_clases', 'reservas.clase_id', '=', 'horarios_clases.id')
             ->join('clases_historico', 'reservas.fecha_id', '=', 'clases_historico.id')
@@ -43,8 +45,11 @@ class Reserva extends Model {
             'personal.nombre as monitor_nombre',
             'salas.id as sala_id',
             'salas.nombre as sala_nombre')
-            ->when($id, function ($query, $id) {
-                return $query->where('reservas.usuario_id', $id);
+            ->when($usuario_id, function ($query, $usuario_id) {
+                return $query->where('reservas.usuario_id', $usuario_id);
+            })
+            ->when($personal_id, function ($query, $personal_id) {
+                return $query->where('personal.id', $personal_id);
             })
             ->get();
 
