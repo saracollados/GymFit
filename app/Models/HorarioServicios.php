@@ -71,7 +71,6 @@ class HorarioServicios extends Model {
             ->when($personal_id, function ($query, $personal_id) {
                 return $query->where('horarios_servicios.personal_id', $personal_id);
             })
-
             ->get();
 
         return $serviciosDia;

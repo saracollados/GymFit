@@ -26,7 +26,7 @@
         </div>
     @endif
 
-        @if(session('isAdmin'))
+        @if(session('userType') == 'personal')
             <div class="text-sm mb-4">
                 <p class="mb-2">Usuario: <span class="font-bold">{{$usuario->nombre}}</span></p>
                 <p>DNI: <span class="font-bold">{{$usuario->dni}}</span></p>

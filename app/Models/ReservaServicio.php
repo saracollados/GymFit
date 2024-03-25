@@ -22,7 +22,7 @@ class ReservaServicio extends Model {
 
     protected $table = 'reservas_servicios';
 
-    public static function getReservasServicios($usuario_id = null, $fecha = null, $franja_horaria_id = null) {
+    public static function getReservasServicios($usuario_id = null, $profesional_id = null, $fecha = null, $franja_horaria_id = null) {
         $reservasServicios = ReservaServicio::join('usuarios', 'usuarios.id', '=', 'reservas_servicios.usuario_id')
             ->join ('horarios_servicios', 'horarios_servicios.id', '=', 'reservas_servicios.servicio_id')
             ->join ('personal', 'personal.id', '=', 'horarios_servicios.personal_id')
@@ -42,6 +42,9 @@ class ReservaServicio extends Model {
             'franjas_horarias_tabla_maestra.nombre as franja_horaria_nombre')
             ->when($usuario_id, function ($query, $usuario_id) {
                 return $query->where('reservas_servicios.usuario_id', $usuario_id);
+            })
+            ->when($profesional_id, function ($query, $profesional_id) {
+                return $query->where('horarios_servicios.personal_id', $profesional_id);
             })
             ->when($fecha, function ($query, $fecha) {
                 return $query->where('horarios_servicios.fecha', $fecha);

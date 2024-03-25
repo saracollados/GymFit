@@ -87,40 +87,28 @@ $(function() {
 
     $('.reservaUsuario').on("click", function(){
         var object = $(this).data('object');
-        var userInfo = JSON.parse($(this).attr('data-userinfo')); 
-        var userType = $(this).data('usertype');
         var type = $(this).data('type');
-
-        if (userType == 'usuario') {
-            if (type == 'clase') {
-                window.location.href = "/crearReservaClaseForm";
-            }
-            if (type == 'servicio') {
-                window.location.href = "/crearReservaServicioForm";
-            }
-        } else { // ToDo: AQUI HABRIA QUE DIFERENCIAR TAMBIEN AL PERSONAL QUE NO ES ADMINISTRADOR, HABRIA QUE RESTRINGIR TODAS LAS RUTAS DE CLASES, YA
-            if(object) {
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    method: "post",
-                    url: '/usuarioReservaForm',
-                    data: {
-                        object: object,
-                        tipo: type,
-                    },
-                    success: function(data) {
-                        $('#reserva-modal-content').empty().append(data);
-                        $('#modal-usuario-reserva').modal('show');
-                    },
-                    error: function(error) {
-                        console.error('Error en la solicitud Ajax:', error);
-                    }
-                });
-            }
-        }
         
+        if(object) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: "post",
+                url: '/usuarioReservaForm',
+                data: {
+                    object: object,
+                    tipo: type,
+                },
+                success: function(data) {
+                    $('#reserva-modal-content').empty().append(data);
+                    $('#modal-usuario-reserva').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error en la solicitud Ajax:', error);
+                }
+            });
+        }
     });
     
     $('.reserva-item').on("click", function(){
@@ -130,13 +118,19 @@ $(function() {
         var fecha = $(this).data('fecha');
         var type = $(this).data('type');
 
+        if (type == 'clase') {
+            url = '/reservaClaseForm';
+        }
+        if (type == 'servicio') {
+            url = '/reservaServicioForm';
+        }
         if(item) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 method: "post",
-                url: '/reservaClaseForm',
+                url: url,
                 data: {
                     item: item,
                     usuario_id: usuario_id,

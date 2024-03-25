@@ -94,8 +94,13 @@ class HorariosServiciosController extends Controller {
         $error = '';
 
         if ($existeServicio) {
-            $error = 'Ese profesional ya tiene un servicio a esa hora.';
-            return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);
+            if (session('isServicios')) {
+                $error = 'Ya tienes un servicio a esa hora.';
+                return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);
+            } else {
+                $error = 'Ese profesional ya tiene un servicio a esa hora.';
+                return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);
+            }
         } elseif ($isPasada) {
             $error = 'No se pueden crear servicios pasados.';
             return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);

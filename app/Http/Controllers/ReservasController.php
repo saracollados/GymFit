@@ -188,8 +188,14 @@ class ReservasController extends Controller {
             // Calcula las fechas de la semana anterior
             $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
             $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
+
+            if(session('isServicios')) {
+                $profesional_id = session('userInfo')['id'];
+                $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuario->id, $profesional_id);
+            } else {
+                $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuario->id);
+            }
     
-            $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuario->id);
 
             foreach ($fechasSemanaActual as &$fecha) {
                 $diaSemana = Horario::getDiaSemanaById($fecha[1]);
