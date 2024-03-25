@@ -54,11 +54,9 @@ class HorariosController extends Controller {
         if ($id_horario) {
             $success = 'El horario se ha eliminado con éxito';
             return Redirect::to('/mostrarHorarios')->with('success', $success);
-            // return view('gymfit/horario/mostrarHorarios', compact('horarios', 'success'));
         } else {
             $error = 'El horario no se ha podido eliminar';
             return Redirect::to('/mostrarHorarios')->with('error', $error);
-            // return view('gymfit/horario/mostrarHorarios', compact('horarios', 'error'));
         }
     }
     

@@ -50,10 +50,17 @@ class Horario extends Model {
     }
 
     public static function getFranjasHorarias() {
-        $diasSemana = DB::table('franjas_horarias_tabla_maestra')
+        $franjas_horarias = DB::table('franjas_horarias_tabla_maestra')
             ->select('*')
             ->get();
-        return $diasSemana;
+        return $franjas_horarias;
+    }
+
+    public static function getFranjaHorariaById($id) {
+        $franja_horaria = DB::table('franjas_horarias_tabla_maestra')->where('id', $id)
+            ->select('nombre')
+            ->first();
+        return $franja_horaria;
     }
 
     public static function create(Request $request) {

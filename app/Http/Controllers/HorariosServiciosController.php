@@ -82,14 +82,22 @@ class HorariosServiciosController extends Controller {
         $fechaInicio = $request->input('fechaInicioSemana');
 
         $existeServicio = HorarioServicios::existeServicio($profesional_id, $fecha, $franja_horaria_id);
+
+        $franja_horaria_nombre = Horario::getFranjaHorariaById($franja_horaria_id)->nombre;
+        $isPasada = ReservasController::isClasePasada($fecha, $franja_horaria_nombre);
+
         $diasSemana = Horario::getDiasSemana();
         $franjasHorarias = Horario::getFranjasHorarias();
         $profesionales = Personal::getPersonalByRole('3', '4');
+
         $success = '';
         $error = '';
 
         if ($existeServicio) {
             $error = 'Ese profesional ya tiene un servicio a esa hora.';
+            return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);
+        } elseif ($isPasada) {
+            $error = 'No se pueden crear servicios pasados.';
             return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $fechaInicio]);
         } else {
             $id_servicio = HorarioServicios::create($profesional_id, $fecha, $franja_horaria_id);
