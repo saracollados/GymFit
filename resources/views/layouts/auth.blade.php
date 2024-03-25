@@ -19,6 +19,8 @@
     <script src="{{ asset('js/script.js') }}"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="/images/GymFit-Icon.png">
     
     @vite('resources/css/app.css')
 

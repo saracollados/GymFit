@@ -18,6 +18,8 @@
     <script src="{{ asset('js/script.js') }}"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="/images/GymFit-Icon.png">
     
     @vite('resources/css/app.css')
 
@@ -33,9 +35,8 @@
             <?php $routeName = Request::path();?>
             <nav class="text-gray-800 w-64 p-2">
                 <ul class="flex flex-col pl-0 mb-0">
-                    <a class="loopple-navbar-brand" href="https://www.loopple.com">
-                        <img src="https://www.loopple.com/img/loopple-logo.png" style="width:70px">
-                    </a>
+
+                    <div id="logo"></div>
                     
                     <?php $userInfo = session('userInfo'); ?>
 
@@ -178,14 +179,6 @@
                                     <i class="fa-solid fa-house" style="color: #070d49;"></i>
                                 </div>
                                 <span class="ml-1 opacity-100">Iniciar sesión</span>
-                            </a>
-                        </li>
-                        <li class="mt-0.5 w-full">
-                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4"  href="/register">
-                                <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                                    <i class="fa-solid fa-house" style="color: #070d49;"></i>
-                                </div>
-                                <span class="ml-1 opacity-100">Registrarse</span>
                             </a>
                         </li>
                     @endauthany                 

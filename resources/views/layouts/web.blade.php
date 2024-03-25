@@ -16,6 +16,8 @@
     <script src="{{ asset('js/script.js') }}"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="/images/GymFit-Icon.png">
     
     @vite('resources/css/app.css')
 
@@ -26,24 +28,39 @@
 <body class="bg-gray text-black">
     <header class="bg-gray p-4 text-dark-blue">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-2xl font-bold">
-                <img src="https://www.loopple.com/img/loopple-logo.png" alt="Logo Gimnasio" class="h-4">
-            </a>
+            <div id="logo-header"></div>
             <nav>
                 @authany
+                <div class="flex flex-row">
+                    @if(session('userType') == 'personal')
+                        <li class="mt-0.5 w-full">
+                            <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/">
+                                <span class="ml-1 opacity-100">Dashboard</span>
+                            </a>
+                        </li>
+                    @elseif ((session('userType') == 'usuario')) 
+                        <a class="py-2.5 text-sm my-0 flex items-center pr-4" href="/mostrarReservasClases">
+                            <span class="ml-1 opacity-100">Mis reservas</span>
+                        </a>
+                    @endif
                     {{-- Contenido visible para cualquier usuario autenticado --}}
+                    <form action="{{session('userType') == 'personal' ? route('miPerfilPersonal') : route('miPerfilUsuario')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id" value="{{session('userInfo')['id']}}">
+                        <button type="submit" class="py-2.5 text-sm my-0 mr-4 flex items-center px-4">
+                            <span class="ml-1 opacity-100">Mi perfil</span>
+                        </button>
+                    </form> 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn secondaryBtn">
                             Cerrar sesión
                         </button>
                     </form>
+                </div>
                 @else
                     <a href="{{ route('login.show') }}" class="btn secondaryBtn">
                         Iniciar sesión
-                    </a>
-                    <a href="{{ route('register') }}" class="btn secondaryBtn">
-                        Registrarse
                     </a>
                 @endauthany      
             </nav>
