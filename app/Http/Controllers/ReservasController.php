@@ -34,11 +34,14 @@ class ReservasController extends Controller {
             $reservasClases = Reserva::getReservasClases();
         }
 
+        $success = session('success');
+        $error = session('error');
+
         foreach ($reservasClases as &$reserva) {
             $reserva->pasada = ReservasController::isClasePasada($reserva->fecha, $reserva->franja_horaria_nombre);
         }
-
-        return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'usuarioInfo'));
+        
+        return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'usuarioInfo', 'success', 'error'));
     }
 
     public function mostrarReservasServicios() {
@@ -52,7 +55,10 @@ class ReservasController extends Controller {
             $reservasServicios = ReservaServicio::getReservasServicios();
         }
 
-        return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios'));
+        $success = session('success');
+        $error = session('error');
+
+        return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios', 'success', 'error'));
     }
 
     public function usuarioReservaModal(Request $request){
@@ -310,6 +316,57 @@ class ReservasController extends Controller {
         } else {
             $error = 'No se ha podido realizar la reserva.';
             return $this->crearReservaClaseForm($request, null, $error);
+        }
+    }
+
+    public function eliminarReservaClaseForm(Request $request) {
+        $reserva_id = $request->input('reserva_id');
+        $type = $request->input('type');
+
+        if($type == 'clases') {
+            $reserva = Reserva::getReservaById($reserva_id);
+        }
+        if($type == 'servicios') {
+            $reserva = ReservaServicio::getReservaById($reserva_id);
+        }
+
+        return View::make('modals.modalEliminarReservaList', compact('reserva', 'type'));
+        die();
+    }
+
+    public function eliminarReservaClaseList(Request $request) {
+        $reserva_id = $request->input('reserva_id');
+        $type = $request->input('type');
+
+        if ($reserva_id) {
+            if ($type == 'clase') {
+                $reserva = Reserva::deleteReserva($reserva_id);
+            } elseif ($type == 'servicio') {
+                $reserva = ReservaServicio::deleteReserva($reserva_id);
+            }
+
+            if ($reserva) {
+                if ($type == 'clase') {
+                    $success = 'La reserva se ha eliminado con éxito.';
+                    return redirect('/mostrarReservasClases')->with(compact('success'));
+                } elseif ($type == 'servicio') {
+                    $success = 'La reserva se ha eliminado con éxito.';
+                    return redirect('/mostrarReservasServicios')->with(compact('success'));
+                }
+            } else {
+                if ($type == 'clase') {
+                    $error = 'No se ha podido eliminar la reserva.';
+                    return redirect('/mostrarReservasClases')->with(compact('error'));
+                } elseif ($type == 'servicio') {
+                    $error = 'No se ha podido eliminar la reserva.';
+                    return redirect('/mostrarReservasServicios')->with(compact('error'));
+                }
+            }
+
+        
+        } else {
+            $error = 'No se ha podido eliminar la reserva.';
+            return redirect('/mostrarReservasClases')->with(compact('error'));
         }
     }
 

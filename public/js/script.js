@@ -1,13 +1,34 @@
 $(function() {
     // DataTables
     $('.datatable').DataTable({
-        "paging": false,    // Habilitar paginación
-        "ordering": true,  // Habilitar ordenación
-        "searching": true,  // Habilitar búsqueda
+        "paging": false,    
+        "ordering": true,  
+        "searching": true,
         language: {
             search: 'Buscar:'
         }
     });
+
+    $('#reservasClases-table').DataTable({
+        "paging": false,   
+        "ordering": true,  
+        "searching": true,
+        "order": [[1, "desc"], [2, "desc"]], 
+        language: {
+            search: 'Buscar:'
+        }
+    });
+
+    $('#reservasServicios-table').DataTable({
+        "paging": false,   
+        "ordering": true,  
+        "searching": true,
+        "order": [[6, "desc"], [1, "desc"]], 
+        language: {
+            search: 'Buscar:'
+        }
+    });
+    
 
     // Duplicar Horario Modal
     $('.duplicar-horario').on("click", function(){
@@ -128,6 +149,41 @@ $(function() {
                     $('#reserva-item-modal-content').empty().append(data);
                     // Muestra el modal
                     $('#modal-crear-reserva').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error en la solicitud Ajax:', error);
+                }
+            });
+        }
+    });
+
+    $('.reserva-item-list').on("click", function(){
+        var reserva_id = $(this).data('id');
+        var type = $(this).data('type');
+
+        if(type == 'clases') {
+            url = '/eliminarReservaClaseForm'
+        }
+        if (type == 'servicios') {
+            url = '/eliminarReservaServicioForm'
+        }
+
+        if(reserva_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: "post",
+                url: url,
+                data: {
+                    reserva_id: reserva_id,
+                    type: type
+                },
+                success: function(data) {
+                    // Actualiza el contenido del modal con las variables
+                    $('#reserva-item-modal-content').empty().append(data);
+                    // Muestra el modal
+                    $('#modal-eliminar-reserva-list').modal('show');
                 },
                 error: function(error) {
                     console.error('Error en la solicitud Ajax:', error);

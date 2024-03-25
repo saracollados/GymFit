@@ -51,9 +51,42 @@ class Reserva extends Model {
             ->when($personal_id, function ($query, $personal_id) {
                 return $query->where('personal.id', $personal_id);
             })
+            ->orderByDesc('clases_historico.id')
+            ->orderByDesc('franjas_horarias_tabla_maestra.id')
             ->get();
 
         return $reservas;
+    }
+
+    public static function getReservaById($reserva_id) {
+        $reserva = Reserva::join('usuarios', 'reservas.usuario_id', '=', 'usuarios.id')
+            ->join('horarios_clases', 'reservas.clase_id', '=', 'horarios_clases.id')
+            ->join('clases_historico', 'reservas.fecha_id', '=', 'clases_historico.id')
+            ->join('clases', 'horarios_clases.clase_id', '=', 'clases.id')
+            ->join('dias_semana_tabla_maestra', 'horarios_clases.dia_semana_id', '=', 'dias_semana_tabla_maestra.id')
+            ->join('franjas_horarias_tabla_maestra', 'horarios_clases.franja_horaria_id', '=', 'franjas_horarias_tabla_maestra.id')
+            ->join('personal', 'horarios_clases.monitor_id', '=', 'personal.id')
+            ->join('salas', 'horarios_clases.sala_id', '=', 'salas.id')
+            ->select('reservas.id',
+            'usuarios.id as usuario_id',
+            'usuarios.dni as usuario_dni',
+            'usuarios.nombre as usuario_nombre',
+            'clases_historico.id as fecha_id',
+            'clases_historico.fecha as fecha',
+            'clases.id as clase_id',
+            'clases.nombre as clase_nombre',
+            'dias_semana_tabla_maestra.id as dia_semana_id',
+            'dias_semana_tabla_maestra.nombre as dia_semana_nombre',
+            'franjas_horarias_tabla_maestra.id as franja_horaria_id',
+            'franjas_horarias_tabla_maestra.nombre as franja_horaria_nombre',
+            'personal.id as monitor_id',
+            'personal.nombre as monitor_nombre',
+            'salas.id as sala_id',
+            'salas.nombre as sala_nombre')
+            ->where('reservas.id', $reserva_id)
+            ->first();
+
+        return $reserva;
     }
 
 
@@ -105,6 +138,8 @@ class Reserva extends Model {
     public static function deleteReserva ($reserva_id) {
         $reserva = Reserva::find($reserva_id);
         $reserva->delete();
+
+        return true;
     }
 
 }

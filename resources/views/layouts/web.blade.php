@@ -30,39 +30,45 @@
         <div class="container mx-auto flex justify-between items-center">
             <div id="logo-header"></div>
             <nav>
-                @authany
-                <div class="flex flex-row">
-                    @if(session('userType') == 'personal')
-                        <li class="mt-0.5 w-full">
-                            <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/">
-                                <span class="ml-1 opacity-100">Dashboard</span>
-                            </a>
+                <ul class="flex flex-row">
+                    @authany
+                        @if(session('userType') == 'personal')
+                            <li>
+                                <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/">
+                                    <span class="ml-1 opacity-100">Dashboard</span>
+                                </a>
+                            </li>
+                        @elseif ((session('userType') == 'usuario')) 
+                            <li>
+                                <a class="py-2.5 text-sm my-0 flex items-center pr-4" href="/mostrarReservasClases">
+                                    <span class="ml-1 opacity-100">Mis reservas</span>
+                                </a>
+                            </li>
+                        @endif
+                        {{-- Contenido visible para cualquier usuario autenticado --}}
+                        <li>
+                            <form action="{{session('userType') == 'personal' ? route('miPerfilPersonal') : route('miPerfilUsuario')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" value="{{session('userInfo')['id']}}">
+                                <button type="submit" class="py-2.5 text-sm my-0 mr-4 flex items-center px-4">
+                                    <span class="ml-1 opacity-100">Mi perfil</span>
+                                </button>
+                            </form> 
                         </li>
-                    @elseif ((session('userType') == 'usuario')) 
-                        <a class="py-2.5 text-sm my-0 flex items-center pr-4" href="/mostrarReservasClases">
-                            <span class="ml-1 opacity-100">Mis reservas</span>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn secondaryBtn">
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </li>
+                    @else
+                        <a href="{{ route('login.show') }}" class="btn secondaryBtn">
+                            Iniciar sesión
                         </a>
-                    @endif
-                    {{-- Contenido visible para cualquier usuario autenticado --}}
-                    <form action="{{session('userType') == 'personal' ? route('miPerfilPersonal') : route('miPerfilUsuario')}}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" value="{{session('userInfo')['id']}}">
-                        <button type="submit" class="py-2.5 text-sm my-0 mr-4 flex items-center px-4">
-                            <span class="ml-1 opacity-100">Mi perfil</span>
-                        </button>
-                    </form> 
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn secondaryBtn">
-                            Cerrar sesión
-                        </button>
-                    </form>
-                </div>
-                @else
-                    <a href="{{ route('login.show') }}" class="btn secondaryBtn">
-                        Iniciar sesión
-                    </a>
-                @endauthany      
+                    @endauthany    
+                </ul>  
             </nav>
         </div>
     </header>

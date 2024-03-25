@@ -104,12 +104,8 @@ Route::middleware(['adminClasesUsuarios'])->group(function() {
     Route::post('/reservaClaseForm', [ReservasController::class, 'reservaClaseForm']);
     Route::post('/crearReservaClase', [ReservasController::class, 'crearReservaClase'])->name('crearReservaClase');
     Route::post('/eliminarReservaClase', [ReservasController::class, 'eliminarReservaClase'])->name('eliminarReservaClase');
-
-    Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
-    Route::post('/crearReservaServicioForm', [ReservasController::class, 'crearReservaServicioForm'])->name('crearReservaServicioForm');
-    Route::post('/crearReservaServicio', [ReservasController::class, 'crearReservaServicio'])->name('crearReservaServicio');
-    Route::post('/eliminarReservaServicio', [ReservasController::class, 'eliminarReservaServicio'])->name('eliminarReservaServicio');
-    
+    Route::post('/eliminarReservaClaseForm', [ReservasController::class, 'eliminarReservaClaseForm']);
+    Route::post('/eliminarReservaClaseList', [ReservasController::class, 'eliminarReservaClaseList'])->name('eliminarReservaClaseList');
 });
 
 Route::middleware(['adminServiciosUsuarios'])->group(function() {
@@ -117,10 +113,11 @@ Route::middleware(['adminServiciosUsuarios'])->group(function() {
     Route::post('/crearReservaServicioForm', [ReservasController::class, 'crearReservaServicioForm'])->name('crearReservaServicioForm');
     Route::post('/crearReservaServicio', [ReservasController::class, 'crearReservaServicio'])->name('crearReservaServicio');
     Route::post('/eliminarReservaServicio', [ReservasController::class, 'eliminarReservaServicio'])->name('eliminarReservaServicio');
+    Route::post('/eliminarReservaServicioForm', [ReservasController::class, 'eliminarReservaClaseForm']);
+    Route::post('/eliminarReservaServicioList', [ReservasController::class, 'eliminarReservaClaseList'])->name('eliminarReservaServicioList');
 });
 
 Route::middleware(['adminUsuarios'])->group(function() {
-    // Route::get('/editarUsuario/{id}', [UsuariosController::class, 'editarUsuarioForm']);
     Route::post('/editarPerfilUsuario', [UsuariosController::class, 'editarUsuarioForm'])->name('editarPerfilUsuario');
     Route::post('/editarUsuario', [UsuariosController::class, 'editarUsuario'])->name('editarUsuario');
 });
