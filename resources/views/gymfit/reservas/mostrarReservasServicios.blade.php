@@ -11,7 +11,7 @@
                 </button>
             </form>
         @else
-            <a class="btn primaryBtn reservaUsuario" data-object="reserva" data-userinfo="{{json_encode(session('userInfo'))}}" data-usertype="{{session('userType')}}" data-type="servicio">
+            <a class="btn primaryBtn reservaUsuario" data-object="reserva" data-type="servicio">
                 Crear Reserva
             </a>
         @endif

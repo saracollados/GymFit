@@ -126,19 +126,27 @@
                     @endif
 
                     <li class="mt-0.5 w-full">
-                        <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarReservasClases') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarReservasClases">
-                            <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarReservasClases') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarReservasClases') #ffffff @else  #070d49 @endif;"></i>
-                            </div>
-                            
-                            @if(session('userType') == 'personal')
-                                <span class="ml-1 opacity-100">Reservas</span>
-                            @endif
+                        @if (session('isAdmin') || session('isClases') || session('userType') == 'usuario')
+                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarReservasClases') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarReservasClases">
+                                <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarReservasClases') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
+                                    <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarReservasClases') #ffffff @else  #070d49 @endif;"></i>
+                                </div>
+                                @if(session('userType') == 'personal')
+                                    <span class="ml-1 opacity-100">Reservas</span>
+                                @endif
 
-                            @if(session('userType') == 'usuario') 
-                                <span class="ml-1 opacity-100">Mis reservas</span>
-                            @endif
-                        </a>
+                                @if(session('userType') == 'usuario') 
+                                    <span class="ml-1 opacity-100">Mis reservas</span>
+                                @endif
+                            </a>
+                        @elseif (session('isServicios'))
+                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarReservasServicios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarReservasServicios">
+                                <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarReservasServicios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
+                                    <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarReservasServicios') #ffffff @else  #070d49 @endif;"></i>
+                                </div>
+                                <span class="ml-1 opacity-100">Reservas</span>
+                            </a>
+                        @endif
                     </li>
 
                     <li class="w-full mt-4">

@@ -77,7 +77,7 @@ class HorarioClases extends Model {
         return $clases_id;
     }
 
-    public static function getClasesByHorarioDia($horario_id, $dia_semana_id) {
+    public static function getClasesByHorarioDia($horario_id, $dia_semana_id, $profesional_id = null) {
         $clasesHorarioDia = HorarioClases::join ('horarios', 'horarios.id', '=', 'horarios_clases.horario_id')
             ->join ('dias_semana_tabla_maestra', 'dias_semana_tabla_maestra.id', '=', 'horarios_clases.dia_semana_id')
             ->join ('franjas_horarias_tabla_maestra', 'franjas_horarias_tabla_maestra.id', '=', 'horarios_clases.franja_horaria_id')
@@ -101,6 +101,9 @@ class HorarioClases extends Model {
                 'salas.nombre as sala_nombre')
             ->where('horarios_clases.horario_id', '=', $horario_id)
             ->where('horarios_clases.dia_semana_id', '=', $dia_semana_id)
+            ->when($profesional_id, function ($query, $profesional_id) {
+                return $query->where('horarios_clases.monitor_id', $profesional_id);
+            })
             ->get();
 
         return $clasesHorarioDia;

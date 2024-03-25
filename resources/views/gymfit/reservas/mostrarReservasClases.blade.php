@@ -10,7 +10,7 @@
                     Crear Reserva
                 </button>
             </form>
-        @else
+        @elseif(session('isAdmin'))
             <a class="btn primaryBtn reservaUsuario" data-object="reserva" data-userinfo="{{json_encode(session('userInfo'))}}" data-usertype="{{session('userType')}}" data-type="clase">
                 Crear Reserva
             </a>
@@ -32,9 +32,15 @@
     @endif
 
     @if ($reservasClases->isEmpty())
+    @if (session('isClases'))
+        <div class="text-center">
+            <p >No tienes clases reservadas</p>
+        </div>
+    @else
         <div class="text-center">
             <p >No hay clases reservadas</p>
         </div>
+    @endif
     @else
         <div class="relative overflow-x-auto">
             <table id="reservasClases-table" class="w-full text-sm text-center text-gray-500">

@@ -28,11 +28,13 @@ Route::get('/', function () {
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+// Rutas para usuarios no autenticados
 Route::middleware(['guest:usuarios,personal'])->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.show');
     Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 });
 
+// Rutas para administradores
 Route::middleware(['admin'])->group(function() {
     Route::get('/mostrarUsuarios', [UsuariosController::class, 'mostrarUsuarios']);
     Route::get('/crearUsuarioForm', [UsuariosController::class, 'crearUsuarioForm']);
@@ -40,7 +42,6 @@ Route::middleware(['admin'])->group(function() {
     Route::post('/eliminarUsuarioForm', [UsuariosController::class, 'eliminarUsuarioForm']);
     Route::post('/eliminarUsuario', [UsuariosController::class, 'eliminarUsuario'])->name('eliminarUsuario');
     Route::post('/restablecerContraseñaUsuario', [UsuariosController::class, 'restablecerContraseña'])->name('restablecerContraseñaUsuario');
-    
     
     Route::get('/mostrarSalas', [SalasController::class, 'mostrarSalas']);
     Route::get('/crearSalaForm', [SalasController::class, 'crearSalaForm']);
@@ -80,24 +81,23 @@ Route::middleware(['admin'])->group(function() {
     Route::post('/eliminarClaseHorarioForm', [HorariosClasesController::class, 'eliminarClaseHorarioModal']);
     Route::post('/eliminarClaseHorario', [HorariosClasesController::class, 'eliminarClaseHorario'])->name('eliminarClaseHorario');
     Route::get('/verHorario/{id}', [HorariosClasesController::class, 'mostrarClasesHorario']);
-    
-    Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
 });
 
-// Rutas para usuarios con el rol de clases
+// Rutas para administradore y entrenadores
 Route::middleware(['adminClases'])->group(function() {
     Route::get('/mostrarHorarioPersonalClases', [HorariosClasesController::class, 'mostrarHorarioPersonalClases']);
 });
 
-// Rutas para usuarios con el rol de servicios
+// Rutas para administradores, fisioterapeutas y nutricionistas
 Route::middleware(['adminServicios'])->group(function() {
     Route::get('/mostrarHorariosServicios', [HorariosServiciosController::class, 'mostrarHorariosServicios'])->name('mostrarHorariosServicios');
     Route::post('/crearServicioHorario', [HorariosServiciosController::class, 'crearServicioHorario'])->name('crearServicioHorario');
     Route::post('/eliminarServicioHorarioForm', [HorariosServiciosController::class, 'eliminarServicioHorarioModal']);
     Route::post('/eliminarServicioHorario', [HorariosServiciosController::class, 'eliminarServicioHorario'])->name('eliminarServicioHorario');
+    Route::post('/usuarioReservaForm', [ReservasController::class, 'usuarioReservaModal']);
 });
 
-// Rutas accesibles por todos los usuarios autenticados
+// Rutas para administradores, entrenadores y usuarios
 Route::middleware(['adminClasesUsuarios'])->group(function() {
     Route::get('/mostrarReservasClases', [ReservasController::class, 'mostrarReservasClases']);
     Route::post('/crearReservaClaseForm', [ReservasController::class, 'crearReservaClaseForm'])->name('crearReservaClaseForm');
@@ -108,25 +108,35 @@ Route::middleware(['adminClasesUsuarios'])->group(function() {
     Route::post('/eliminarReservaClaseList', [ReservasController::class, 'eliminarReservaClaseList'])->name('eliminarReservaClaseList');
 });
 
+// Rutas para administradores, fisioterapeutas, nutricionistas y usuarios
 Route::middleware(['adminServiciosUsuarios'])->group(function() {
     Route::get('/mostrarReservasServicios', [ReservasController::class, 'mostrarReservasServicios']);
     Route::post('/crearReservaServicioForm', [ReservasController::class, 'crearReservaServicioForm'])->name('crearReservaServicioForm');
+    Route::post('/reservaServicioForm', [ReservasController::class, 'reservaClaseForm']);
     Route::post('/crearReservaServicio', [ReservasController::class, 'crearReservaServicio'])->name('crearReservaServicio');
     Route::post('/eliminarReservaServicio', [ReservasController::class, 'eliminarReservaServicio'])->name('eliminarReservaServicio');
     Route::post('/eliminarReservaServicioForm', [ReservasController::class, 'eliminarReservaClaseForm']);
     Route::post('/eliminarReservaServicioList', [ReservasController::class, 'eliminarReservaClaseList'])->name('eliminarReservaServicioList');
 });
 
+// Rutas para administradores y usuarios
 Route::middleware(['adminUsuarios'])->group(function() {
     Route::post('/editarPerfilUsuario', [UsuariosController::class, 'editarUsuarioForm'])->name('editarPerfilUsuario');
     Route::post('/editarUsuario', [UsuariosController::class, 'editarUsuario'])->name('editarUsuario');
 });
 
+// Rutas para entrenadores
+Route::middleware(['clases'])->group(function () {
+    Route::post('/mostrarHorarioPersonalClases', [HorariosClasesController::class, 'mostrarHorarioPersonalClases'])->name('mostrarHorarioPersonalClases');
+});
+
+// Rutas para usuarios
 Route::middleware(['auth:usuarios'])->group(function () {
     Route::post('/miPerfilUsuario', [UsuariosController::class, 'verUsuario'])->name('miPerfilUsuario');
     Route::get('/miPerfilUsuario', [UsuariosController::class, 'verUsuarioGet']);
 });
 
+// Rutas para a administradores, entrenadores, fisioterapeutas y nutricionistas
 Route::middleware(['auth:personal'])->group(function () {
     Route::post('/miPerfilPersonal', [PersonalController::class, 'verPersonal'])->name('miPerfilPersonal');
     Route::get('/miPerfilPersonal', [PersonalController::class, 'verPersonalGet']);
@@ -134,6 +144,9 @@ Route::middleware(['auth:personal'])->group(function () {
     Route::post('/editarPersonal', [PersonalController::class, 'editarPersonal'])->name('editarPersonal');
 });
 
+// Rutas para a administradores, entrenadores, fisioterapeutas, nutricionistas y usuarios
 Route::middleware(['auth:usuarios,personal'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+
+// mostrarHorarioPersonalClases

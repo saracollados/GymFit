@@ -47,10 +47,14 @@ class ReservasController extends Controller {
     public function mostrarReservasServicios() {
         $usuarioInfo = session('userInfo');
         $usuarioTipo = session('userType');
-
-        if ($usuarioTipo == 'usuario' || $usuarioTipo == 'personal' && $usuarioInfo['role_id'] != 1) {
+        
+        if ($usuarioTipo == 'usuario') {
+            $usuario_id = $usuarioInfo['id'];
             $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
-
+            
+        } elseif(session('isServicios')) { 
+            $profesional_id = $usuarioInfo['id'];
+            $reservasServicios = ReservaServicio::getReservasServicios(null, $profesional_id);
         } else {
             $reservasServicios = ReservaServicio::getReservasServicios();
         }
@@ -203,7 +207,7 @@ class ReservasController extends Controller {
         }
     }
 
-    public function getClasesSemanaUsuario($array_fechas, $usuario_id) {
+    public static function getClasesSemanaUsuario($array_fechas, $usuario_id, $profesional_id = null) {
         $clasesSemana = collect();
 
         foreach ($array_fechas as $fecha_array) {
@@ -228,28 +232,35 @@ class ReservasController extends Controller {
                 $horario_id = null;
             }
 
-            
-            $clasesDia = HorarioClases::getClasesByHorarioDia($horario_id, $dia_semana_id);
 
-            foreach($clasesDia as &$clase) {
-                $clase->fecha = $fecha_clase;
+            if($profesional_id) {
+                $clasesDia = HorarioClases::getClasesByHorarioDia($horario_id, $dia_semana_id, $profesional_id);
+            } else {
+                $clasesDia = HorarioClases::getClasesByHorarioDia($horario_id, $dia_semana_id);
+            }
 
-                $plazas_totales = Sala::getAforo($clase->sala_id);
-                $plazas_ocupadas = Reserva::getPlazasOcupadas($clase->id, $clase->fecha['fecha_id']);
-                $plazas_libres = $plazas_totales - $plazas_ocupadas;
-                $plazas = [
-                    'total' => $plazas_totales,
-                    'ocupadas' => $plazas_ocupadas,
-                    'libres' => $plazas_libres
-                ];
 
-                $clase->plazas = $plazas;
-
-                $reserva_id = Reserva::getReservaId($usuario_id, $clase->id, $clase->fecha['fecha_id']);
-                $clase->reserva_id = $reserva_id;
-
-                // Verificar si la clase ya ha pasado
-                $clase->pasada = ReservasController::isClasePasada($fecha_formato, $clase->franja_horaria_nombre);
+                foreach($clasesDia as &$clase) {
+                    $clase->fecha = $fecha_clase;
+    
+                    $plazas_totales = Sala::getAforo($clase->sala_id);
+                    $plazas_ocupadas = Reserva::getPlazasOcupadas($clase->id, $clase->fecha['fecha_id']);
+                    $plazas_libres = $plazas_totales - $plazas_ocupadas;
+                    $plazas = [
+                        'total' => $plazas_totales,
+                        'ocupadas' => $plazas_ocupadas,
+                        'libres' => $plazas_libres
+                    ];
+    
+                    $clase->plazas = $plazas;
+    
+                    if ($usuario_id) {
+                        $reserva_id = Reserva::getReservaId($usuario_id, $clase->id, $clase->fecha['fecha_id']);
+                        $clase->reserva_id = $reserva_id;
+                    } 
+    
+                    // Verificar si la clase ya ha pasado
+                    $clase->pasada = ReservasController::isClasePasada($fecha_formato, $clase->franja_horaria_nombre);
             }
 
             $clasesSemana = $clasesSemana->concat($clasesDia);
@@ -403,7 +414,7 @@ class ReservasController extends Controller {
 
         $nuevoRequest = ['inicioSemana', $inicioSemana];
         $request->merge($nuevoRequest);
-        $reservaHoraUsuario = ReservaServicio::getReservasServicios($usuario_id, $fecha, $franja_horaria_id);
+        $reservaHoraUsuario = ReservaServicio::getReservasServicios($usuario_id, null, $fecha, $franja_horaria_id);
 
         if ($servicio['pasada']) {
             $error = 'No se puesen reservar servicios pasados.';

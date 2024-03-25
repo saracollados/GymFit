@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Log;
 
 class HorariosClasesController extends Controller {
     public function mostrarClasesHorario($id) {
@@ -25,6 +28,52 @@ class HorariosClasesController extends Controller {
             $clasesHorarioOrganizado[$clase->dia_semana_id][$clase->franja_horaria_id][] = $clase;
         }
         return view('gymfit/horario/mostrarHorarioClases', compact('clasesHorarioOrganizado', 'diasSemana', 'franjasHorarias', 'horario'));
+    }
+
+    public function mostrarHorarioPersonalClases(Request $request) {
+        $profesional_id = session('userInfo')['id'];
+        
+        if (session('inicioSemana')) {
+            $inicioSemana = session('inicioSemana');
+        } elseif ($request->input('inicioSemana')) {
+            $inicioSemana = $request->input('inicioSemana');
+        }
+        
+        if (isset($inicioSemana)) {
+            $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $inicioSemana)->startOfWeek();
+        } else {
+            $hoy = Carbon::now()->format('d/m/Y');
+            $inicioSemanaActual = Carbon::createFromFormat('d/m/Y', $hoy)->startOfWeek();
+        }
+        
+        Carbon::setWeekStartsAt(Carbon::MONDAY);
+
+        $diasSemana = Horario::getDiasSemana();
+        $franjasHorarias = Horario::getFranjasHorarias();
+
+        // Calcula las fechas de la semana actual
+        $fechasSemanaActual = HorariosController::getFechasSemana($inicioSemanaActual);
+
+        // Calcula las fechas de la semana siguiente
+        $inicioSemanaActual = Carbon::parse($inicioSemanaActual)->startOfWeek();
+        $inicioSemanaSiguiente = $inicioSemanaActual->copy()->addWeek()->startOfWeek();
+        $fechasSemanaSiguiente = HorariosController::getFechasSemana($inicioSemanaSiguiente);
+        
+        // Calcula las fechas de la semana anterior
+        $inicioSemanaAnterior = $inicioSemanaActual->copy()->subWeek()->startOfWeek();
+        $fechasSemanaAnterior = HorariosController::getFechasSemana($inicioSemanaAnterior);
+        
+
+        $clasesSemanaActual = ReservasController::getClasesSemanaUsuario($fechasSemanaActual, null, $profesional_id);
+
+
+        foreach ($fechasSemanaActual as &$fecha) {
+            $diaSemana = Horario::getDiaSemanaById($fecha[1]);
+            $diaSemana = $diaSemana;
+            $fecha[] = $diaSemana;
+        }
+
+            return view('gymfit/horario/mostrarHorarioClasesPersonal', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias'));
     }
 
     public function crearHorarioForm() {
