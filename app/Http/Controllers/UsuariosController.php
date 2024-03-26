@@ -17,6 +17,11 @@ class UsuariosController extends Controller {
     public function mostrarUsuarios() {
         $usuarios = Usuario::getAll();
 
+        foreach ($usuarios as &$usuario) {
+            $fecha_formateada = date('d-m-Y', strtotime($usuario->fecha_nacimiento));
+            $usuario->fecha_nacimiento = $fecha_formateada;
+        }
+
         $success = session('success');
         $error = session('error');
 
