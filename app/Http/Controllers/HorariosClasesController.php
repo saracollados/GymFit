@@ -66,14 +66,13 @@ class HorariosClasesController extends Controller {
 
         $clasesSemanaActual = ReservasController::getClasesSemanaUsuario($fechasSemanaActual, null, $profesional_id);
 
-
         foreach ($fechasSemanaActual as &$fecha) {
             $diaSemana = Horario::getDiaSemanaById($fecha[1]);
             $diaSemana = $diaSemana;
             $fecha[] = $diaSemana;
         }
 
-            return view('gymfit/horario/mostrarHorarioClasesPersonal', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias'));
+        return view('gymfit/horario/mostrarHorarioClasesPersonal', compact('clasesSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias'));
     }
 
     public function crearHorarioForm() {

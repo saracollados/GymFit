@@ -78,6 +78,15 @@ class Horario extends Model {
         return $horario;
     }
 
+    public static function getFechasHorario($horario_id) {
+        $fechas = DB::table('clases_historico')
+            ->where('horario_id', $horario_id)
+            ->orderBy('fecha')
+            ->get();
+
+        return $fechas;
+    }
+
     public static function createHistoricoClases(Request $request, $id_horario) {
         $fecha_desde = new DateTime($request->input('fecha_desde'));
         $fecha_hasta = new DateTime($request->input('fecha_hasta'));

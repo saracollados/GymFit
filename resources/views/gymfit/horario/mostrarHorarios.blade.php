@@ -43,6 +43,7 @@
                     <tr>
                         <th class="hidden">ID</th>
                         <th scope="col" class="px-6 py-3">Nombre</th>
+                        <th scope="col" class="px-6 py-3">Validez</th>
                         <th scope="col" class="px-6 py-3">Acciones</th>
                     </tr>
                 </thead>
