@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clases_historico', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
-            $table->unsignedBigInteger('horario_id');
+            $table->unsignedInteger('horario_id');
             $table->foreign('horario_id')->references('id')->on('horarios');
             $table->timestamps();
         });
