@@ -137,7 +137,7 @@ td.icon {
 /* Login */
 .tab.tab-active {
     background-color: #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 20px 27px 0px;
     font-weight: 600;
     color: #374151;
 }
@@ -178,6 +178,30 @@ td.icon {
     background: center / contain no-repeat url('/images/GymFit-Logo.png');
 }
 
+/* Menú nav */
 
+nav .active {
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 20px 27px 0px;
+    font-weight: 600;
+    color: rgb(51, 65, 85);
+}
 
+nav .active div {
+    background-image: linear-gradient(to top left, #7e22ce, #ec4899);
+}
 
+nav i {
+    color: #070d49;
+}
+
+nav .active i {
+    color: #ffffff;
+}
+
+/* Fechas */
+.dates-space {
+    padding: 0 8px;
+}
+
+/* Dashboard */

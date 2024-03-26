@@ -339,4 +339,129 @@ $(function() {
         $message = $(this).parent()[0];
         $message.style.display = 'none';
     })
+
+    // Menú nav
+    var currentUrl = window.location.pathname;
+    console.log(currentUrl);
+    
+    var secondSlashIndex = currentUrl.indexOf('/', currentUrl.indexOf('/') + 1);
+    if (secondSlashIndex !== -1) {
+        var newPath = currentUrl.substring(0, secondSlashIndex);
+        currentUrl = newPath;
+    }
+
+    const routes = {
+        dashboard: [
+            '/dashboard',
+        ],
+        usuarios: [
+            '/mostrarUsuarios',
+            '/crearUsuarioForm',
+            '/crearUsuario',
+            '/eliminarUsuarioForm',
+            '/eliminarUsuario',
+            '/restablecerContraseñaUsuario',
+            '/editarPerfilUsuario',
+            '/editarUsuario',
+            '/miPerfilUsuario',
+            '/verUsuario'
+        ],
+        personal: [
+            '/mostrarPersonal',
+            '/crearPersonalForm',
+            '/crearPersonal',
+            '/eliminarPersonalForm',
+            '/eliminarPersonal',
+            '/restablecerContraseñaPersonal',
+            '/editarPerfilPersonal',
+            '/editarPersonal',
+        ],
+        salas: [
+            '/mostrarSalas',
+            '/crearSalaForm',
+            '/crearSala',
+            '/editarSala',
+            '/editarSala',
+            '/eliminarSalaForm',
+            '/eliminarSala'
+        ],
+        clases: [
+            '/mostrarClases',
+            '/crearClaseForm',
+            '/crearClase',
+            '/eliminarClaseForm',
+            '/eliminarClase',
+            '/editarClase',
+            '/editarClase'
+        ],
+        horarios: [
+            '/mostrarHorarios',
+            '/crearHorarioForm',
+            '/crearHorario',
+            '/duplicarHorarioForm',
+            '/duplicarHorario',
+            '/editarHorarioForm',
+            '/eliminarHorarioModal',
+            '/eliminarHorarioForm',
+            '/eliminarHorario',
+            '/guardarHorario',
+            '/verHorario'
+        ],
+        servicios: [
+            '/mostrarHorariosServicios',
+            '/crearServicioHorario',
+            '/eliminarServicioHorarioForm',
+            '/eliminarServicioHorario'
+        ],
+        reservas: [
+            '/usuarioReservaForm',
+            '/mostrarReservasClases',
+            '/crearReservaClaseForm',
+            '/reservaClaseForm',
+            '/crearReservaClase',
+            '/eliminarReservaClase',
+            '/eliminarReservaClaseForm',
+            '/eliminarReservaClaseList',
+            '/mostrarReservasServicios',
+            '/crearReservaServicioForm',
+            '/reservaServicioForm',
+            '/crearReservaServicio',
+            '/eliminarReservaServicio',
+            '/eliminarReservaServicioForm',
+            '/eliminarReservaServicioList'
+        ],
+        perfil: [
+            '/editarPerfilUsuario',
+            '/editarUsuario',
+            '/miPerfilUsuario',
+            '/verUsuario',
+            '/editarPerfilPersonal',
+            '/editarPersonal',
+            '/miPerfilPersonal',
+        ]
+    };
+
+    function isActiveGroup(groupUrls) {
+        return groupUrls.some(function(url) {
+            return currentUrl.startsWith(url);
+        });
+    }
+
+    const enlacesMenu = document.querySelectorAll('nav li a');
+    enlacesMenu.forEach(enlace => {
+        enlace.classList.remove('active');
+    });
+
+
+    for (const grupo in routes) {
+        if (routes[grupo].includes(currentUrl)) {
+            const enlacesMenu = document.querySelectorAll(`nav li a[href^="${routes[grupo][0]}"]`);
+    
+            // Iterar sobre cada enlace y agregar la clase "active"
+            const enlacesGrupo = document.querySelectorAll(`.${grupo}`);
+            enlacesGrupo.forEach(enlace => {
+                enlace.classList.add('active');
+            });
+        }
+    }
 })

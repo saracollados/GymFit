@@ -47,67 +47,60 @@
                     @if(session('userType') == 'personal')
                         @if(session('isAdmin'))
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === '/') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === '/') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === '/') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="dashboard py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/dashboard">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-chart-line"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Dashboard</span>
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === '') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === '') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === '') #ffffff @else  #070d49 @endif;"></i>
-                                    </div>
-                                    <span class="ml-1 opacity-100">Estadísticas</span>
-                                </a>
-                            </li>
-                            <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarUsuarios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarUsuarios">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarUsuarios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarUsuarios') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="usuarios py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarUsuarios">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Usuarios</span>
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarPersonal') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarPersonal">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarPersonal') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarPersonal') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="personal py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarPersonal">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-user-tie"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Personal</span>
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarSalas') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarSalas">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarSalas') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarSalas') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="salas py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarSalas">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-person-shelter"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Salas</span>
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarClases') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarClases">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarClases') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarClases') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="clases py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarClases">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-dumbbell"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Clases</span>
                                 </a>
                             </li>
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarHorarios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarHorarios">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarHorarios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarHorarios') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="horarios py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarHorarios">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-table-columns"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Horarios</span>
                                 </a>
                             </li>
+                           
                         @endif
-                        @if(session('isClases') )
+                        @if(session('isClases'))
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarHorarioPersonalClases') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarHorarioPersonalClases">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarHorarioPersonalClases') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarHorarioPersonalClases') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="horarios py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarHorarioPersonalClases">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-house"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Mi horario</span>
                                 </a>
@@ -115,9 +108,9 @@
                         @endif
                         @if(session('isAdmin') || session('isServicios'))
                             <li class="mt-0.5 w-full">
-                                <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarHorariosServicios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarHorariosServicios">
-                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarHorariosServicios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                        <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarHorariosServicios') #ffffff @else  #070d49 @endif;"></i>
+                                <a class="servicios py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarHorariosServicios">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-spa"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">@if(session('isAdmin')) Servicios @else  Mi horario @endif</span>
                                 </a>
@@ -127,25 +120,29 @@
 
                     <li class="mt-0.5 w-full">
                         @if (session('isAdmin') || session('isClases') || session('userType') == 'usuario')
-                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarReservasClases') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarReservasClases">
-                                <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarReservasClases') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                    <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarReservasClases') #ffffff @else  #070d49 @endif;"></i>
-                                </div>
-                                @if(session('userType') == 'personal')
-                                    <span class="ml-1 opacity-100">Reservas</span>
-                                @endif
+                            <li class="mt-0.5 w-full">
+                                <a class="reservas py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarReservasClases">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-book"></i>
+                                    </div>
+                                    @if(session('userType') == 'personal')
+                                        <span class="ml-1 opacity-100">Reservas</span>
+                                    @endif
 
-                                @if(session('userType') == 'usuario') 
-                                    <span class="ml-1 opacity-100">Mis reservas</span>
-                                @endif
-                            </a>
+                                    @if(session('userType') == 'usuario') 
+                                        <span class="ml-1 opacity-100">Mis reservas</span>
+                                    @endif
+                                </a>
+                            </li>
                         @elseif (session('isServicios'))
-                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg @if($routeName === 'mostrarReservasServicios') bg-white custom-box-shadow-xl font-semibold text-slate-700 @endif" href="/mostrarReservasServicios">
-                                <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5 @if($routeName === 'mostrarReservasServicios') bg-gradient-to-tl from-purple-700 to-pink-500 @endif">
-                                    <i class="fa-solid fa-house" style="color: @if($routeName === 'mostrarReservasServicios') #ffffff @else  #070d49 @endif;"></i>
-                                </div>
-                                <span class="ml-1 opacity-100">Reservas</span>
-                            </a>
+                            <li class="mt-0.5 w-full">
+                                <a class="reservas py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/mostrarReservasServicios">
+                                    <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                                        <i class="fa-solid fa-book"></i>
+                                    </div>
+                                    <span class="ml-1 opacity-100">Reservas</span>
+                                </a>
+                            </li>
                         @endif
                     </li>
 
@@ -154,14 +151,13 @@
                     </li>
 
                     @authany
-                        {{-- Contenido visible para cualquier usuario autenticado --}}
                         <li class="mt-0.5 w-full"> 
                             <form action="{{session('userType') == 'personal' ? route('miPerfilPersonal') : route('miPerfilUsuario')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id" value="{{session('userInfo')['id']}}">
-                                <button type="submit" class="py-2.5 text-sm my-0 mx-4 flex items-center px-4">
+                                <button type="submit" class="perfil py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" id="perfil-nav" >
                                     <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                                        <i class="fa-solid fa-house" style="color: #070d49;"></i>
+                                        <i class="fa-solid fa-user-gear"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Mi perfil</span>
                                 </button>
@@ -173,7 +169,7 @@
                                 @csrf
                                 <button type="submit" class="py-2.5 text-sm my-0 mx-4 flex items-center px-4">
                                     <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                                        <i class="fa-solid fa-house" style="color: #070d49;"></i>
+                                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                     </div>
                                     <span class="ml-1 opacity-100">Cerrar sesión</span>
                                 </button>
@@ -182,16 +178,16 @@
                         </li>
                     @else
                         <li class="mt-0.5 w-full">
-                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4"  href="/login">
+                            <a class="py-2.5 text-sm my-0 mx-4 flex items-center px-4 rounded-lg" href="/login">
                                 <div class="custom-box-shadow-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                                    <i class="fa-solid fa-house" style="color: #070d49;"></i>
+                                    <i class="fa-solid fa-house"></i>
                                 </div>
                                 <span class="ml-1 opacity-100">Iniciar sesión</span>
                             </a>
                         </li>
                     @endauthany                 
-                  </ul>
-                </nav>
+                </ul>
+            </nav>
     
             <!-- Contenido principal -->
             <div class="flex-1 p-4">
