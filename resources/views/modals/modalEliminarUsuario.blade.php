@@ -2,13 +2,13 @@
     <div class="modal-dialog text-xs">
         <div class="modal-content shadow-md">
             <div class="modal-header text-dark-blue uppercase bg-slate-300 font-bold">
-                @if ($userType == 'usuario') {
+                @if ($userType == 'usuario') 
                     <h5 class="modal-title" id="modal-delete-content-label">¿Seguro que quieres eliminar este usuario?</h5>
-                }
+                
                 @endif
-                @if ($userType == 'personal') {
+                @if ($userType == 'personal') 
                     <h5 class="modal-title" id="modal-delete-content-label">¿Seguro que quieres eliminar este trabajador?</h5>
-                }
+                
                 @endif
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

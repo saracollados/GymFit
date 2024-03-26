@@ -27,7 +27,7 @@ class HorariosController extends Controller {
         return view('gymfit/horario/mostrarHorarios', compact('horarios'));
     }
 
-    public function periodosValidezHorarios($horario_id) {
+    public static function periodosValidezHorarios($horario_id) {
         $fechas_horario = Horario::getFechasHorario($horario_id);
 
         $periodosValidez = [];
