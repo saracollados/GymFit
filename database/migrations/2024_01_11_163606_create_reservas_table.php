@@ -11,11 +11,11 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('usuario_id');
+            $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('usuarios');
-            $table->unsignedInteger('clase_id');
+            $table->unsignedBigInteger('clase_id');
             $table->foreign('clase_id')->references('id')->on('horarios_clases');
-            $table->unsignedInteger('fecha_id');
+            $table->unsignedBigInteger('fecha_id');
             $table->foreign('fecha_id')->references('id')->on('clases_historico');
             $table->timestamps();
         });

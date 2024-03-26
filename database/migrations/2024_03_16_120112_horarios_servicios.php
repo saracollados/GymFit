@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void{
         Schema::create('horarios_servicios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('personal_id');
+            $table->unsignedBigInteger('personal_id');
             $table->foreign('personal_id')->references('id')->on('personal');
             $table->date('fecha');
-            $table->unsignedInteger('franja_horaria_id');
+            $table->unsignedBigInteger('franja_horaria_id');
             $table->foreign('franja_horaria_id')->references('id')->on('franjas_horarias_tabla_maestra');
             $table->timestamps();
         });

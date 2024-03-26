@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('dni', 9)->unique();
             $table->string('nombre');
-            $table->unsignedInteger('genero_id');
+            $table->unsignedBigInteger('genero_id');
             $table->foreign('genero_id')->references('id')->on('generos_tabla_maestra');
             $table->string('fecha_nacimiento');
             $table->string('email')->unique();

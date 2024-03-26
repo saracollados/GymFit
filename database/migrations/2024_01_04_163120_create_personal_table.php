@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('dni', 9)->unique();
             $table->string('nombre');
-            $table->unsignedInteger('role_id');
+            $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles_personal_tabla_maestra');
             $table->string('email')->unique();
             $table->string('password');
