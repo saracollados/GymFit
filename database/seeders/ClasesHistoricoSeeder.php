@@ -20,7 +20,7 @@ class ClasesHistoricoSeeder extends Seeder {
             ['fecha' => '2024-01-05', 'horario_id' => '1'],
             ['fecha' => '2024-01-06', 'horario_id' => '1'],
             ['fecha' => '2024-01-07', 'horario_id' => '1'],
-            ['fecha' => '2024-01-09', 'horario_id' => '1'],
+            ['fecha' => '2024-01-08', 'horario_id' => '1'],
             ['fecha' => '2024-01-09', 'horario_id' => '1'],
             ['fecha' => '2024-01-10', 'horario_id' => '1'],
             ['fecha' => '2024-01-11', 'horario_id' => '1'],

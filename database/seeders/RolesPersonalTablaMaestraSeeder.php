@@ -13,7 +13,7 @@ class RolesPersonalTablaMaestraSeeder extends Seeder {
     public function run(): void {
         DB::table('roles_personal_tabla_maestra')->insert([
             ['id' => '1', 'nombre' => 'Administrador'],
-            ['id' => '2', 'nombre' => 'Entrenador'],
+            ['id' => '2', 'nombre' => 'Monitor'],
             ['id' => '3', 'nombre' => 'Nutricionista'],
             ['id' => '4', 'nombre' => 'Fisioterapeuta']
         ]);

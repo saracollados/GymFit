@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('nombre');
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles_personal_tabla_maestra');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->boolean('activo')->default(true);
             $table->timestamps();

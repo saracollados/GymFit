@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('genero_id');
             $table->foreign('genero_id')->references('id')->on('generos_tabla_maestra');
             $table->string('fecha_nacimiento');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->boolean('activo')->default(true);
             $table->timestamps();
