@@ -76,6 +76,13 @@ class HorarioServicios extends Model {
         return $serviciosDia;
     }
 
+    public static function getServiciosByPersonalId($personal_id) {
+        $serviciosProfesional = HorarioServicios::where('personal_id', '=', $personal_id)
+            ->get();
+
+        return $serviciosProfesional;
+    }
+
     public static function getServicioById($servicio_id) {
         $servicioHorario = HorarioServicios::join ('personal', 'personal.id', '=', 'horarios_servicios.personal_id')
             ->join ('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')

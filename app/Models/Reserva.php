@@ -89,6 +89,13 @@ class Reserva extends Model {
         return $reserva;
     }
 
+    public static function getReservasByUsuarioId($usuario_id) {
+        $reservasUsuario = Reserva::where('usuario_id', $usuario_id)
+            ->get();
+
+        return $reservasUsuario;
+    }
+
 
     public static function getPlazasOcupadas($clase_id, $fecha_id) {
         $plazasOcupadas = Reserva::where('clase_id', $clase_id)

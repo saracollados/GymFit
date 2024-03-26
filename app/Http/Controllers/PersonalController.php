@@ -7,9 +7,14 @@ use App\Models\Usuario;
 use App\Models\Clase;
 use App\Models\Sala;
 use App\Models\Personal;
+use App\Models\Horario;
+use App\Models\ReservaServicio;
+use App\Models\HorarioServicios;
+use App\Models\HorarioClases;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
+use App\Http\Controllers\HorariosController; 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -192,6 +197,83 @@ class PersonalController extends Controller {
 
     public function eliminarPersonal(Request $request) {
         $personal_id = $request->post('usuario_id');
+
+        $personal = Personal::getPersonalById($personal_id);
+        $personal_role= $personal->role_id;
+
+        if ($personal_role == 3 || $personal_role == 4) {
+            $horarioServicios = HorarioServicios::getServiciosByPersonalId($personal_id);
+
+            foreach ($horarioServicios as $servicio) {
+                $reserva = ReservaServicio::existeReservaServicio($servicio->id);
+
+                if ($reserva) {
+                    $deleteReserva = ReservaServicio::deleteReservaByServicioId($servicio->id);
+                }
+
+                if (!$deleteReserva) {
+                    $error='No se ha podido eliminar el trabajador.';
+                    return direct('/mostrarPersonal')->with(compact('error'));
+                } 
+
+                $deleteServicio = HorarioServicios::eliminarServicio($servicio->id);
+
+                if (!$deleteServicio) {
+                    $error='No se ha podido eliminar el usuario.';
+                    return redirect('/mostrarUsuarios')->with(compact('error'));
+                }
+            }
+
+            $personal = Personal::deletepersonal($personal_id);
+
+            if($personal) {
+                $success='El trabajador se ha eliminado con éxito.';
+                return redirect('/mostrarPersonal')->with(compact('success'));
+            } else {
+                $error='No se ha podido eliminar el trabajador.';
+                return redirect('/mostrarPersonal')->with(compact('error'));
+            }
+        } elseif ($personal_role == 2) {
+            $horarios = Horario::getHorarios();
+
+            foreach($horarios as $horario) {
+
+                $periodo_validez = HorariosController::periodosValidezHorarios($horario->id);
+
+                if (count($periodo_validez) > 0) {
+                    $clasesHorario = HorarioClases::getClasesHorario($horario->id, $personal_id);
+
+                    if (count($clasesHorario) > 0) {
+                        $error='No se ha podido eliminar el trabajador ya que tiene clases en horarios activos. Actualice los horarios antes de eliminar al trabajador.';
+                        return redirect('/mostrarPersonal')->with(compact('error'));
+                    }
+                        
+                }
+            }
+
+            $personal = Personal::deletepersonal($personal_id);
+
+            if($personal) {
+                $success='El trabajador se ha eliminado con éxito.';
+                return redirect('/mostrarPersonal')->with(compact('success'));
+            } else {
+                $error='No se ha podido eliminar el trabajador.';
+                return redirect('/mostrarPersonal')->with(compact('error'));
+            }
+
+        } else {
+            $personal = Personal::deletepersonal($personal_id);
+
+            if($personal) {
+                $success='El trabajador se ha eliminado con éxito.';
+                return redirect('/mostrarPersonal')->with(compact('success'));
+            } else {
+                $error='No se ha podido eliminar el trabajador.';
+                return redirect('/mostrarPersonal')->with(compact('error'));
+            }
+        }
+
+
         $personal = Personal::deletepersonal($personal_id);
 
         if($personal) {

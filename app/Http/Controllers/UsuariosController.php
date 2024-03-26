@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use App\Models\Reserva;
+use App\Models\ReservaServicio;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
@@ -169,10 +171,32 @@ class UsuariosController extends Controller {
 
     public function eliminarUsuario(Request $request) {
         $usuario_id = $request->post('usuario_id');
+
+        $reservasClases = Reserva::getReservasByUsuarioId($usuario_id);
+        $reservasServicios = ReservaServicio::getReservasByUsuarioId($usuario_id);
+
+        foreach ($reservasClases as $reserva) {
+            $reserva_delete = Reserva::deleteReserva($reserva->id);
+
+            if (!$reserva_delete) {
+                $error='No se ha podido eliminar el usuario.';
+                return redirect('/mostrarUsuarios')->with(compact('error'));
+            }
+        }
+
+        foreach ($reservasServicios as $reserva) {
+            $reserva_delete = ReservaServicio::deleteReserva($reserva->id);
+
+            if (!$reserva_delete) {
+                $error='No se ha podido eliminar el usuario.';
+                return redirect('/mostrarUsuarios')->with(compact('error'));
+            }
+        }
+
         $usuario = Usuario::deleteUsuario($usuario_id);
 
         if($usuario) {
-            $success='El usuario se ha eliminado con éxito.';
+            $success='El usuario se ha eliminado correctamente.';
             return redirect('/mostrarUsuarios')->with(compact('success'));
         } else {
             $error='No se ha podido eliminar el usuario.';

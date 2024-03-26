@@ -81,8 +81,13 @@ class ReservaServicio extends Model {
 
         return $reserva;
     }
-
     
+    public static function getReservasByUsuarioId($usuario_id) {
+        $reservasUsuario = ReservaServicio::where('usuario_id', $usuario_id)
+            ->get();
+
+        return $reservasUsuario;
+    }
 
     public static function getReservaServicioId($usuario_id, $servicio_id) {
         $reserva_id =  ReservaServicio::where('usuario_id', '=', $usuario_id)
@@ -112,6 +117,13 @@ class ReservaServicio extends Model {
 
     public static function deleteReserva ($reserva_id) {
         $reserva = ReservaServicio::find($reserva_id);
+        $reserva->delete();
+
+        return true;
+    }
+
+    public static function deleteReservaByServicioId ($servicio_id) {
+        $reserva = ReservaServicio::where('servicio_id', '=', $servicio_id);
         $reserva->delete();
 
         return true;
