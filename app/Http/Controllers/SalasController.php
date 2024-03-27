@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sala;
+use App\Models\Horario;
+use App\Models\HorarioClases;
+use App\Http\Controllers\HorariosController; 
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
@@ -67,6 +70,24 @@ class SalasController extends Controller {
 
     public function eliminarSala(Request $request) {
         $sala_id = $request->post('sala_id');
+
+        $horarios = Horario::getHorarios();
+
+        foreach($horarios as $horario) {
+
+            $periodo_validez = HorariosController::periodosValidezHorarios($horario->id);
+
+            if (count($periodo_validez) > 0) {
+                $clasesHorario = HorarioClases::getClasesHorario($horario->id, null, $sala_id);
+
+                if (count($clasesHorario) > 0) {
+                    $error='No se ha podido eliminar la sala ya que tiene clases asignadas en horarios activos. Actualice los horarios antes de eliminar la sala.';
+                    return redirect('/mostrarSalas')->with(compact('error'));
+                }
+                    
+            }
+        }
+
         $sala = Sala::deleteSala($sala_id);
 
         if($sala) {
