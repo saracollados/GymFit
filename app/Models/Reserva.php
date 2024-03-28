@@ -58,6 +58,23 @@ class Reserva extends Model {
         return $reservas;
     }
 
+    public static function countReservasMes($fechasMes = null) {
+        $query = Reserva::join('clases_historico', 'reservas.fecha_id', '=', 'clases_historico.id')
+            ->select('reservas.id', 'clases_historico.fecha');
+
+        $query->when(!$fechasMes, function ($query) {
+            $query->whereYear('clases_historico.fecha', now()->year)
+                  ->whereMonth('clases_historico.fecha', now()->month);
+        });
+        $query->when($fechasMes, function ($query) use ($fechasMes) {
+            $query->whereBetween('clases_historico.fecha', [$fechasMes[0], $fechasMes[1]]);
+        });
+
+        $count = $query->count();
+        
+        return $count;
+    }
+
     public static function getReservaById($reserva_id) {
         $reserva = Reserva::join('usuarios', 'reservas.usuario_id', '=', 'usuarios.id')
             ->join('horarios_clases', 'reservas.clase_id', '=', 'horarios_clases.id')
@@ -94,6 +111,13 @@ class Reserva extends Model {
             ->get();
 
         return $reservasUsuario;
+    }
+
+    public static function getReservasByFechaId($fecha_id) {
+        $reservasFecha = Reserva::where('fecha_id', $fecha_id)
+            ->get();
+
+        return $reservasFecha;
     }
 
 

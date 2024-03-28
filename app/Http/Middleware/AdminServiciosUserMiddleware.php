@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminServiciosUserMiddleware {
     /**
@@ -21,6 +22,6 @@ class AdminServiciosUserMiddleware {
             return $next($request);
         }
         
-        return redirect('/login');
+        return Redirect::back()->with('error', 'No tienes permiso para acceder a esa página.');
     }
 }

@@ -9,18 +9,13 @@
 @endsection
 
 @section('content')
-    <?php 
-        $error = session('error');
-        $success = session('success');
-    ?>
-
-    @if ($error != '')
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10" role="alert">
+    @if (isset($error) && $error != '')
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10 flex justify-between" role="alert">
             <span class="block sm:inline">{{$error}}</span>
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        @elseif ($success != '')        
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-10" role="alert">
+    @elseif (isset($success) && $success != '')        
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-10 flex justify-between" role="alert">
             <span class="block sm:inline">{{$success}}</span>
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>

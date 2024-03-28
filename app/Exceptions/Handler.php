@@ -27,4 +27,12 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception) {
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return back()->withErrors(['message' => 'La página solicitada no es compatible con el método GET.']);
+        }
+
+        return parent::render($request, $exception);
+    }
 }

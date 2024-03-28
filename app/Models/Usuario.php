@@ -27,6 +27,12 @@ class Usuario extends Authenticatable {
         return $usuarios;
     }
 
+    public static function countUsuariosActivos() {
+        $count = Usuario::where('activo', 1)->count();
+        
+        return $count;
+    }
+
     public static function getGeneros() {
         $generos = DB::table('generos_tabla_maestra')
             ->select('*')

@@ -10,6 +10,12 @@ use App\Http\Controllers\HorariosController;
 use App\Http\Controllers\HorariosClasesController;
 use App\Http\Controllers\HorariosServiciosController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
+
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Support\Facades\Redirect;
+
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +37,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 // Rutas para usuarios no autenticados
 Route::middleware(['guest:usuarios,personal'])->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.show');
-    Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 });
 
 // Rutas para administradores
 Route::middleware(['admin'])->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'verDashboard']);
+
     Route::get('/mostrarUsuarios', [UsuariosController::class, 'mostrarUsuarios']);
     Route::get('/crearUsuarioForm', [UsuariosController::class, 'crearUsuarioForm']);
     Route::post('/crearUsuario', [UsuariosController::class, 'crearUsuario'])->name('crearUsuario');
@@ -71,8 +78,9 @@ Route::middleware(['admin'])->group(function() {
     Route::post('/crearHorario', [HorariosController::class, 'crearHorario'])->name('crearHorario');
     Route::post('/duplicarHorarioForm', [HorariosController::class, 'duplicarHorarioModal']);
     Route::post('/duplicarHorario', [HorariosController::class, 'duplicarHorario'])->name('duplicarHorario');
+    Route::post('/editarHorarioModal', [HorariosController::class, 'editarHorarioModal']);
+    Route::post('/editarHorario', [HorariosController::class, 'editarHorario'])->name('editarHorario');
     Route::get('/editarHorarioForm/{id}', [HorariosController::class, 'editarHorarioForm']);
-    Route::get('/eliminarHorarioModal', [HorariosController::class, 'eliminarHorarioForm']); //revisary crear
     Route::post('/eliminarHorarioForm', [HorariosController::class, 'eliminarHorarioModal']);
     Route::post('/eliminarHorario', [HorariosController::class, 'eliminarHorario'])->name('eliminarHorario');
     Route::post('/guardarHorario', [HorariosController::class, 'guardarHorario'])->name('guardarHorario');
@@ -84,9 +92,6 @@ Route::middleware(['admin'])->group(function() {
 });
 
 // Rutas para administradore y entrenadores
-Route::middleware(['adminClases'])->group(function() {
-    Route::get('/mostrarHorarioPersonalClases', [HorariosClasesController::class, 'mostrarHorarioPersonalClases']);
-});
 
 // Rutas para administradores, fisioterapeutas y nutricionistas
 Route::middleware(['adminServicios'])->group(function() {
@@ -128,6 +133,7 @@ Route::middleware(['adminUsuarios'])->group(function() {
 // Rutas para entrenadores
 Route::middleware(['clases'])->group(function () {
     Route::post('/mostrarHorarioPersonalClases', [HorariosClasesController::class, 'mostrarHorarioPersonalClases'])->name('mostrarHorarioPersonalClases');
+    Route::get('/mostrarHorarioPersonalClases', [HorariosClasesController::class, 'mostrarHorarioPersonalClases']);
 });
 
 // Rutas para usuarios
@@ -150,3 +156,12 @@ Route::middleware(['auth:usuarios,personal'])->group(function () {
 });
 
 // mostrarHorarioPersonalClases
+
+// Manejo de excepciones para rutas que solo admiten POST
+Route::fallback(function () {
+    if (request()->method() !== 'POST') {
+        return back()->with('error', 'No tienes permiso para acceder a esa página.');
+    } else {
+        throw new MethodNotAllowedHttpException([], 'The GET method is not supported for this route.');
+    }
+});

@@ -33,7 +33,7 @@ class SalasController extends Controller {
             $success='La sala se ha creado con éxito.';
             return redirect('/mostrarSalas')->with(compact('success'));
         } else {
-            $success='No se ha podido crear la sala.';
+            $error='No se ha podido crear la sala.';
             return redirect('/mostrarSalas')->with(compact('error'));
         }
     }

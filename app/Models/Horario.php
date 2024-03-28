@@ -63,17 +63,28 @@ class Horario extends Model {
         return $franja_horaria;
     }
 
-    public static function create(Request $request) {
+    public static function create($nombre) {
         $horario = new Horario();
-        $horario->nombre = $request->input('nombre');
+        $horario->nombre = $nombre;
         $horario->save(); 
     
         return $horario->id;
     }
 
+    public static function editarNombreHorario($horario_id, $nombre) {
+        $horario = Horario::where('id', $horario_id)->first();
+        if ($horario) {
+            $horario->nombre = $nombre;
+            $horario->save();
+    
+            return $horario->id;
+        } else {
+            return null;
+        }
+    }
+
     public static function eliminar($id) {
-        $horario = Horario::where('id', $id)
-            ->update(['activo' => 0]);
+        $horario = Horario::where('id', $id)->delete();
             
         return $horario;
     }
@@ -87,34 +98,33 @@ class Horario extends Model {
         return $fechas;
     }
 
-    public static function createHistoricoClases(Request $request, $id_horario) {
-        $fecha_desde = new DateTime($request->input('fecha_desde'));
-        $fecha_hasta = new DateTime($request->input('fecha_hasta'));
+    public static function getFechaId ($fecha) {
+        $fecha_id = DB::table('clases_historico')->where('fecha', $fecha)->first();
 
+        return $fecha_id;
+    }  
+
+    public static function existeFecha ($fecha) {
+        $existeFecha = DB::table('clases_historico')->where('fecha', $fecha)->exists();
+
+        return $existeFecha;
+    }          
+
+    public static function actualizarFecha ($horario_id, $fecha) {
+        $fecha = DB::table('clases_historico')
+            ->where('fecha', $fecha)
+            ->update(['horario_id' => $horario_id]);
+
+        return $fecha;
+    }    
+
+    public static function crearFecha ($horario_id, $fecha) {
+        $fecha = DB::table('clases_historico')
+            ->insert([
+                'fecha' => $fecha,
+                'horario_id' => $horario_id
+            ]);
         
-        $intervalo = new DateInterval('P1D');
-        $fecha_hasta->add(new DateInterval('P1D'));
-        $periodo = new DatePeriod($fecha_desde, $intervalo, $fecha_hasta);
-        
-        $fechas_entre = [];
-        foreach($periodo as $fecha) {
-            $fechas_entre[] = $fecha->format('Y-m-d');
-        }
-
-        foreach ($fechas_entre as $fecha) {
-            $existe_fecha = DB::table('clases_historico')->where('fecha', $fecha)->exists();
-
-            if ($existe_fecha) {
-                DB::table('clases_historico')
-                    ->where('fecha', $fecha)
-                    ->update(['horario_id' => $id_horario]);
-            } else {
-                DB::table('clases_historico')
-                    ->insert([
-                        'fecha' => $fecha,
-                        'horario_id' => $id_horario
-                ]);
-            }
-        }
-    }
+        return $fecha;
+    }     
 }

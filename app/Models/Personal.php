@@ -31,6 +31,16 @@ class Personal extends Authenticatable {
         return $personal;
     }
 
+    public static function countPersonalActivos($role_id = null) {
+        $count = Personal::where('activo', 1)
+        ->when($role_id, function ($query, $role_id) {
+            return $query->where('role_id', $role_id);
+        })
+        ->count();
+        
+        return $count;
+    }
+
     public static function create(Request $request) {
         $personal = new Personal();
         $personal->nombre = $request->input('nombre');

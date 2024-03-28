@@ -54,6 +54,9 @@ class HorariosServiciosController extends Controller {
         $usuarioInfo = session('userInfo');
         $usuarioTipo = session('userType');
 
+        $error = session('error');
+        $success = session('success');
+
         if ($usuarioTipo == 'usuario'){
             $reservasServicios = ReservaServicio::getReservasServicios($usuarioInfo['id']);
             $serviciosSemanaActual = HorariosServiciosController::getServiciosSemana($fechasSemanaActual, $usuarioInfo['id'], null);
@@ -152,23 +155,16 @@ class HorariosServiciosController extends Controller {
     
     public function eliminarServicioHorario(Request $request) {
         $servicio_id = $request->post('servicio_id');
-        $existeReserva = ReservaServicio::existeReservaServicio($servicio_id);
         $inicioSemana = $request->post('inicioSemana');
 
-        if($existeReserva) {
-            $error = 'No se puede eliminar este servicio ya que está reservado';
-            return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $inicioSemana]);
-        } else {
-            $id_servicio = HorarioServicios::eliminarServicio($servicio_id);
-            
+        $id_servicio = HorarioServicios::eliminarServicio($servicio_id);
     
-            if ($id_servicio) {
-                $success = 'La servicio se ha eliminado con éxito';
-                return Redirect::to('/mostrarHorariosServicios')->with(['success' => $success, 'inicioSemana' => $inicioSemana]);
-            } else {
-                $error = 'La servicio no se ha podido eliminar';
-                return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $inicioSemana]);
-            }
+        if ($id_servicio) {
+            $success = 'La servicio se ha eliminado con éxito';
+            return Redirect::to('/mostrarHorariosServicios')->with(['success' => $success, 'inicioSemana' => $inicioSemana]);
+        } else {
+            $error = 'La servicio no se ha podido eliminar';
+            return Redirect::to('/mostrarHorariosServicios')->with(['error' => $error, 'inicioSemana' => $inicioSemana]);
         }
     }
 }

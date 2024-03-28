@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(HorariosClasesSeeder::class);
         $this->call(ClasesHistoricoSeeder::class);
         $this->call(ReservasSeeder::class);
+        $this->call(HorarioServiciosSeeder::class);
+        $this->call(ReservasServiciosSeeder::class);
     }
 }

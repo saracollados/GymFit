@@ -36,6 +36,11 @@ class UsuariosController extends Controller {
     }
 
     public function crearUsuario(Request $request) {
+
+        if (!$request->isMethod('post')) {
+            return back();
+        }
+
         $id_usuario = Usuario::create($request);
 
         if($id_usuario) {

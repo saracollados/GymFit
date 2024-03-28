@@ -5,7 +5,8 @@ $(function() {
         "ordering": true,  
         "searching": true,
         language: {
-            search: 'Buscar:'
+            search: 'Buscar:',
+            sZeroRecords: 'No se encontraron registros coincidentes'
         }
     });
 
@@ -15,7 +16,8 @@ $(function() {
         "searching": true,
         "order": [[1, "desc"], [2, "desc"]], 
         language: {
-            search: 'Buscar:'
+            search: 'Buscar:',
+            sZeroRecords: 'No se encontraron registros coincidentes'
         }
     });
 
@@ -25,7 +27,8 @@ $(function() {
         "searching": true,
         "order": [[6, "desc"], [1, "desc"]], 
         language: {
-            search: 'Buscar:'
+            search: 'Buscar:',
+            sZeroRecords: 'No se encontraron registros coincidentes'
         }
     });
     
@@ -77,6 +80,72 @@ $(function() {
                     $('#horario-modal-content').empty().append(data);
                     // Muestra el modal
                     $('#modal-crear-horario').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error en la solicitud Ajax:', error);
+                }
+            });
+        }
+    });
+
+    $('.editar-horario').on("click", function(){
+        var object_id = $(this).data('id');
+
+        if(object_id) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: "post",
+                url: '/editarHorarioModal',
+                data: {
+                    id: object_id,
+                },
+                success: function(data) {
+                    // Actualiza el contenido del modal con las variables
+                    $('#horario-modal-content').empty().append(data);
+                    // Muestra el modal
+                    $('#modal-editar-horario').modal('show');
+
+                    // Espera a que el modal se muestre completamente
+                    $('#modal-editar-horario').on('shown.bs.modal', function (e) {
+                        $('#fecha_desde').on('change', function() {
+                            console.log($('#fecha_desde').val());
+                            if ($(this).val() !== '' && $('#fecha_hasta').val() === '') {
+                                $('#fecha_hasta').prop('required', true);
+                                console.log('Hasta requiered');
+                            }
+                            if ($(this).val() === '' && $('#fecha_hasta').val() !== '') {
+                                console.log('desde requiered');
+                                $(this).prop('required', true);
+                            }
+                            if ($(this).val() === '' && $('#fecha_hasta').val() === '') {
+                                $(this).prop('required', false);
+                                $('#fecha_hasta').prop('required', false);
+                                console.log('hasta no requiered');
+                                console.log('desde no requiered');
+                            }
+                        });
+
+                        $('#fecha_hasta').on('change', function() {
+                            console.log($('#fecha_desde').val());
+                            console.log($('#fecha_hasta').val());
+                            if ($(this).val() !== '' && $('#fecha_desde').val() === '') {
+                                $('#fecha_desde').prop('required', true);
+                                console.log('desde requiered');
+                            }
+                            if ($(this).val() === '' && $('#fecha_desde').val() !== '') {
+                                $(this).prop('required', true);
+                                console.log('hasta requiered');
+                            }
+                            if ($(this).val() === '' && $('#fecha_desde').val() === '') {
+                                $(this).prop('required', false);
+                                $('#fecha_desde').prop('required', false);
+                                console.log('hasta no requiered');
+                                console.log('desde no requiered');
+                            }
+                        });
+                    });
                 },
                 error: function(error) {
                     console.error('Error en la solicitud Ajax:', error);
@@ -342,7 +411,6 @@ $(function() {
 
     // Menú nav
     var currentUrl = window.location.pathname;
-    console.log(currentUrl);
     
     var secondSlashIndex = currentUrl.indexOf('/', currentUrl.indexOf('/') + 1);
     if (secondSlashIndex !== -1) {
@@ -400,6 +468,7 @@ $(function() {
             '/crearHorario',
             '/duplicarHorarioForm',
             '/duplicarHorario',
+            '/editarHorario',
             '/editarHorarioForm',
             '/eliminarHorarioModal',
             '/eliminarHorarioForm',

@@ -6,22 +6,25 @@
             <p>{{$periodo[0]}} <span class="dates-space">-</span> {{$periodo[1]}}</p>
         @endforeach
     </td>
-    <td class="px-6 py-3 text-center">
+    <td class="px-6 py-3 text-center flex flex-row justify-center">
         <a class="py-2 text-sm my-0 mx-0.5 px-3 text-dark-blue " href="/verHorario/{{$item->id}}" title="Ver Horario">
             <i class="fa-solid fa-eye"></i>
         </a>
         <button  type="button" class="duplicar-horario py-2.5 text-sm my-0 mx-0.5 px-4 text-dark-blue" title="Duplicar Horario" data-object="horario" data-id="{{$item->id}}" data>
             <i class="fa-solid fa-copy"></i>
         </button>
+        <a class="link-btn editar-horario py-2 text-sm my-0 mx-0.5 px-3 text-dark-blue" data-id="{{$item->id}}" title="Editar Horario">
+            <i class="fa-solid fa-pencil"></i>
+        </a>
 
-        @if ($item->periodosValidez == [])
+        {{-- @if ($item->periodosValidez == []) --}}
             <a class="link-btn eliminar-horario py-2 text-sm my-0 mx-0.5 px-3 text-dark-blue" data-id="{{$item->id}}" title="Eliminar Horario">
                 <i class="fa-solid fa-trash"></i>
             </a>
-        @else
+        {{-- @else
             <span class="py-2 text-sm my-0 mx-0.5 px-3 rounded-lg text-gray-400" title="Eliminar Reserva">
                 <i class="fa-solid fa-trash"></i>
             </span>
-        @endif
+        @endif --}}
     </td>
 </tr>

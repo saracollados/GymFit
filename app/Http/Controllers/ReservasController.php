@@ -59,8 +59,14 @@ class ReservasController extends Controller {
             $reservasServicios = ReservaServicio::getReservasServicios();
         }
 
+        foreach ($reservasServicios as &$reserva) {
+            $reserva->pasada = ReservasController::isClasePasada($reserva->fecha, $reserva->franja_horaria_nombre);
+        }
+
         $success = session('success');
         $error = session('error');
+
+        $error = 'No se ha podido eliminar la reserva.';
 
         return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios', 'success', 'error'));
     }
@@ -93,9 +99,9 @@ class ReservasController extends Controller {
 
         if(!$usuario) {
             $reservasClases = Reserva::getReservasClases();
-            $error = 'Ese usuario no existe';
+            $error = 'El usuario indicado no existe.';
 
-            return view('gymfit/reservas/mostrarReservasClases', compact('reservasClases', 'error'));
+            return redirect('/mostrarReservasClases')->with(compact('error'));
         } else {
 
             if (session('inicioSemana')) {
@@ -155,9 +161,9 @@ class ReservasController extends Controller {
 
         if(!$usuario) {
             $reservasServicios = ReservaServicio::getReservasServicios();
-            $error = 'Ese usuario no existe';
+            $error = 'El usuario indicado no existe.';
 
-            return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios', 'error'));
+            return redirect('/mostrarReservasServicios')->with(compact('error'));
         } else {    
             if (session('inicioSemana')) {
                 $inicioSemana = session('inicioSemana');
@@ -203,6 +209,8 @@ class ReservasController extends Controller {
                 $fecha[] = $diaSemana;
             }
 
+            $error = 'No se ha podido eliminar la reserva.';
+
             if (isset($error)) {
                 return view('gymfit/reservas/crearReservaServicioForm', compact('serviciosSemanaActual', 'fechasSemanaActual', 'fechasSemanaSiguiente', 'fechasSemanaAnterior', 'franjasHorarias', 'usuario', 'error'));
             } elseif (isset($success)) {
@@ -232,9 +240,6 @@ class ReservasController extends Controller {
             if ($horario_id_collection->isNotEmpty()) {
                 $horario_id = $horario_id_collection->first()->horario_id;
             } else {
-                /* ------------------------------------------
-                    ToDo: ¿QUÉ PASA SI EL HORARIO ES NULL?
-                -------------------------------------------*/
                 $horario_id = null;
             }
 

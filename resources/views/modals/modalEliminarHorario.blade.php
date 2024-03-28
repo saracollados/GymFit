@@ -2,10 +2,15 @@
     <div class="modal-dialog text-xs">
         <div class="modal-content shadow-md">
             <div class="modal-header text-dark-blue uppercase bg-slate-300 font-bold">
-                <h5 class="modal-title" id="modal-delete-content-label">¿Seguro que quieres eliminar {{$horario->nombre}}?</h5>
+                <h5 class="modal-title" id="modal-delete-content-label">¿Seguro que quieres eliminar este horario?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center text-base">
+                <table id="horario">
+                    <body>
+                        <p class="mb-2 uppercase"><b>{{$horario->nombre}}</b></p>
+                    </body>
+                </table>
                 <form action="{{route('eliminarHorario')}}" method="POST" autocomplete='off'>
                     @csrf
                     <input type="hidden" name="horario_id" value="{{$horario->id}}">

@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('horarios_clases', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('horario_id');
-            $table->foreign('horario_id')->references('id')->on('horarios');
+            $table->foreign('horario_id')->references('id')->on('horarios')->onDelete('cascade');
             $table->unsignedBigInteger('dia_semana_id');
             $table->foreign('dia_semana_id')->references('id')->on('dias_semana_tabla_maestra');
             $table->unsignedBigInteger('franja_horaria_id');

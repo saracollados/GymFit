@@ -36,7 +36,7 @@ class ClasesController extends Controller {
             $success='La clase se ha creado con éxito.';
             return redirect('/mostrarClases')->with(compact('success'));
         } else {
-            $success='No se ha podido crear al clase.';
+            $error='No se ha podido crear al clase.';
             return redirect('/mostrarClases')->with(compact('error'));
         }
     }

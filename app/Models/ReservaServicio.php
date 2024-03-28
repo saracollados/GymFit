@@ -58,6 +58,24 @@ class ReservaServicio extends Model {
 
         return $reservasServicios;
     }
+
+    public static function countReservasMes($fechasMes = null) {
+        $query = ReservaServicio::join('horarios_servicios', 'reservas_servicios.servicio_id', '=', 'horarios_servicios.id')
+            ->select('reservas_servicios.id', 'horarios_servicios.fecha');
+
+        $query->when(!$fechasMes, function ($query) {
+            $query->whereYear('horarios_servicios.fecha', now()->year)
+                  ->whereMonth('horarios_servicios.fecha', now()->month);
+        });
+        $query->when($fechasMes, function ($query) use ($fechasMes) {
+            $query->whereBetween('horarios_servicios.fecha', [$fechasMes[0], $fechasMes[1]]);
+        });
+
+        $count = $query->count();
+        
+        return $count;
+    }
+
     public static function getReservaById($reserva_id) {
         $reserva = ReservaServicio::join('usuarios', 'usuarios.id', '=', 'reservas_servicios.usuario_id')
             ->join ('horarios_servicios', 'horarios_servicios.id', '=', 'reservas_servicios.servicio_id')

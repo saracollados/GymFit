@@ -22,7 +22,7 @@
 
 @section('content')
     @if (isset($error) && $error != '')
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10" role="alert">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10 flex justify-between" role="alert">
             <span class="block sm:inline">{{$error}}</span>
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha');
             $table->unsignedBigInteger('horario_id');
-            $table->foreign('horario_id')->references('id')->on('horarios');
+            $table->foreign('horario_id')->references('id')->on('horarios')->onDelete('cascade');
             $table->timestamps();
         });
     }

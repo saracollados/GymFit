@@ -273,7 +273,6 @@ class PersonalController extends Controller {
             }
         }
 
-
         $personal = Personal::deletepersonal($personal_id);
 
         if($personal) {

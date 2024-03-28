@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('clase_id');
             $table->foreign('clase_id')->references('id')->on('horarios_clases');
             $table->unsignedBigInteger('fecha_id');
-            $table->foreign('fecha_id')->references('id')->on('clases_historico');
+            $table->foreign('fecha_id')->references('id')->on('clases_historico')->onDelete('cascade');
             $table->timestamps();
         });
     }

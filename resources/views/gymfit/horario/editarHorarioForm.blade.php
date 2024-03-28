@@ -5,9 +5,16 @@
 @section('header')
     <div class="flex justify-between items-center">
         <h6 class="text-base font-bold text-gray-900">Editar <?= $horario->nombre ?></h6>
-        <a class="btn secondaryBtn" href="/mostrarHorarios">
-            <span class="ml-1 opacity-100">Guardar Horario</span>
-        </a>
+
+        <form action="{{route('guardarHorario')}}" method="POST" autocomplete='off'>
+            @csrf
+
+            <div class="mt-10 text-center">
+                <button type="submit" class="btn secondaryBtn">
+                    Guardar horario
+                </button>
+            </div>
+        </form>
     </div>
 @endsection
 
@@ -18,12 +25,12 @@
     ?>
 
     @if ($error != '')
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10" role="alert">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-10 flex justify-between" role="alert">
             <span class="block sm:inline">{{$error}}</span>
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         @elseif ($success != '')        
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-10" role="alert">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-10 flex justify-between" role="alert">
             <span class="block sm:inline">{{$success}}</span>
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -35,7 +42,7 @@
         <div class="flex justify-between mb-6">
             <div class="w-3/12">
                 <label for="clase_id" class="block mb-2 text-sm font-medium text-gray-900">Clase:</label>
-                <select name="clase_id" id="clase_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
+                <select name="clase_id" id="clase_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50">
                     <option value="" selected disabled>Seleccione clase</option>
                     @foreach ($clases as $clase)
                         <option value="{{$clase->id}}">{{$clase->nombre}}</option>
@@ -44,7 +51,7 @@
             </div>
             <div class="w-3/12">
                 <label for="monitor_id" class="block mb-2 text-sm font-medium text-gray-900">Monitor:</label>
-                <select name="monitor_id" id="monitor_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50" required>
+                <select name="monitor_id" id="monitor_id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50">
                     <option value="" selected disabled>Seleccione un monitor</option>
                     @foreach ($monitores as $monitor)
                         <option value="{{$monitor->id}}">{{$monitor->nombre}}</option>

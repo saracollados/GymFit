@@ -26,7 +26,7 @@ class LoginController extends Controller {
             session(['userType' => 'personal']);
             if ($user->role_id == 1) {
                 session(['isAdmin' => true]);
-                return redirect()->intended('/mostrarReservasClases');
+                return redirect()->intended('/dashboard');
             } elseif ($user->role_id == 2) {
                 session(['isClases' => true]);
                 return redirect()->intended('/mostrarReservasClases');

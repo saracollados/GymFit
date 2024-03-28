@@ -27,6 +27,7 @@ class HorariosClasesController extends Controller {
         foreach ($clasesHorario as $clase) {
             $clasesHorarioOrganizado[$clase->dia_semana_id][$clase->franja_horaria_id][] = $clase;
         }
+
         return view('gymfit/horario/mostrarHorarioClases', compact('clasesHorarioOrganizado', 'diasSemana', 'franjasHorarias', 'horario'));
     }
 
@@ -146,7 +147,7 @@ class HorariosClasesController extends Controller {
             $success = 'La clase se ha eliminado con éxito';
             return Redirect::to('/editarHorarioForm'.'/'.$id_horario)->with('success', $success);
         } else {
-            $error = 'La clase no se ha podido eliminar';
+            $error = 'No se ha podido eliminar la clase';
             return Redirect::to('/editarHorarioForm'.'/'.$id_horario)->with('error', $error);
         }
     }
