@@ -14,6 +14,10 @@ class Sala extends Model {
         return $this->hasMany(Clase::class);
     }
 
+    public function horariosClases() {
+        return $this->hasMany(HorarioClase::class, 'sala_id');
+    }
+
     public static function getAll() {
         return Sala::where('activo', 1)->get();
     }

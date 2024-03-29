@@ -18,6 +18,10 @@ class Personal extends Authenticatable {
         return $this->hasMany(Clase::class);
     }
 
+    public function horariosClases() {
+        return $this->hasMany(HorarioClase::class, 'monitor_id');
+    }
+
     protected $table = 'personal';
 
     public static function getAll() {

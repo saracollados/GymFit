@@ -17,6 +17,14 @@ class Horario extends Model {
         return $this->hasMany(Clase::class);
     }
 
+    public function horariosClases() {
+        return $this->hasMany(HorarioClase::class, 'horario_id');
+    }
+    
+    public function clasesHistorico() {
+        return $this->hasMany(ClaseHistorico::class);
+    }
+
     public static function getHorarios() {
         $horarios = DB::table('horarios')
             ->select('*')

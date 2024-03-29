@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\DB;
 class ReservaServicio extends Model {
     use HasFactory;
 
-    public function clase() {
-        return $this->belongsTo(Clase::class);
-    }
-
     public function usuario() {
         return $this->belongsTo(Usuario::class);
     }

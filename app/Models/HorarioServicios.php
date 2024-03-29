@@ -11,7 +11,14 @@ use Illuminate\Support\Facades\DB;
 class HorarioServicios extends Model {
     use HasFactory;
 
-    // Añadir relaciones con otros modelos!!
+    public function monitor() {
+        return $this->belongsTo(Personal::class, 'personal_id');
+    }
+
+    public function franjaHoraria() {
+        return $this->belongsTo(FranjaHoraria::class, 'franja_horaria_id');
+    }
+
     protected $fillable = ['id'];
 
     protected $table = 'horarios_servicios';

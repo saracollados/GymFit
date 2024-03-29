@@ -10,7 +10,30 @@ use Illuminate\Support\Facades\DB;
 class HorarioClases extends Model {
     use HasFactory;
 
-    // Añadir relaciones con otros modelos!!
+    public function horario() {
+        return $this->belongsTo(Horario::class);
+    }
+
+    public function diaSemana() {
+        return $this->belongsTo(DiaSemana::class, 'dia_semana_id');
+    }
+
+    public function franjaHoraria() {
+        return $this->belongsTo(FranjaHoraria::class, 'franja_horaria_id');
+    }
+
+    public function clase() {
+        return $this->belongsTo(Clase::class);
+    }
+
+    public function monitor() {
+        return $this->belongsTo(Personal::class, 'monitor_id');
+    }
+    
+    public function sala() {
+        return $this->belongsTo(Sala::class);
+    }
+
     protected $fillable = ['id'];
 
     protected $table = 'horarios_clases';

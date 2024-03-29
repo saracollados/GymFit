@@ -11,7 +11,7 @@ class Reserva extends Model {
     use HasFactory;
 
     public function clase() {
-        return $this->belongsTo(Clase::class);
+        return $this->belongsTo(HorarioClase::class);
     }
 
     public function usuario() {
