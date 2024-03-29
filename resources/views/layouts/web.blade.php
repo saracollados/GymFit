@@ -32,10 +32,22 @@
             <nav>
                 <ul class="flex flex-row">
                     @authany
-                        @if(session('userType') == 'personal')
+                        @if(session('isAdmin'))
                             <li>
-                                <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/">
+                                <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/dashboard">
                                     <span class="ml-1 opacity-100">Dashboard</span>
+                                </a>
+                            </li>
+                        @elseif(session('isClases'))
+                            <li>
+                                <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/mostrarReservasClases">
+                                    <span class="ml-1 opacity-100">Rerservas</span>
+                                </a>
+                            </li>
+                        @elseif(session('isServicios'))
+                            <li>
+                                <a class="py-2.5 text-sm my-0 flex items-center px-4" href="/mostrarReservasServicios">
+                                    <span class="ml-1 opacity-100">Rerservas</span>
                                 </a>
                             </li>
                         @elseif ((session('userType') == 'usuario')) 

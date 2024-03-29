@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Log;
-
 class UsuariosController extends Controller {
     public function mostrarUsuarios() {
         $usuarios = Usuario::getAll();

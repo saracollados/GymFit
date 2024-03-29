@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\Log;
-
 class DashboardController extends Controller {
     public function verDashboard() {
         $fechaInicioMesAnterior = Carbon::now()->subMonth()->startOfMonth();

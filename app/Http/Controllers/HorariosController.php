@@ -14,8 +14,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\Log;
-
 class HorariosController extends Controller {
     public function mostrarHorarios() {
         $horarios = Horario::getHorarios();
@@ -283,7 +281,6 @@ class HorariosController extends Controller {
     }
 
     public function guardarHorario () {
-        Log::error('hola');
         $success = 'El horario se ha creado con éxito.';
         return redirect('/mostrarHorarios')->with('success', $success);
     }

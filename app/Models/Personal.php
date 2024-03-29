@@ -10,8 +10,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
-
 class Personal extends Authenticatable {
     use HasFactory;
     use Notifiable;

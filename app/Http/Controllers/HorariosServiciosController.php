@@ -15,8 +15,6 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
-
 class HorariosServiciosController extends Controller {
     public function mostrarHorariosServicios(Request $request) {
         $diasSemana = Horario::getDiasSemana();

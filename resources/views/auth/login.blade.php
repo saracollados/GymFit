@@ -42,21 +42,9 @@
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
                         <input name="password" type="password" id="password" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50 outline-1" required>
                     </div>
-        
-                    <div class="block mt-4">
-                        <label for="remember_me" class="flex items-center">
-                            <x-checkbox id="remember_me" name="remember" />
-                            <span class="ms-2 text-sm text-gray-600">Recuérdame</span>
-                        </label>
-                    </div>
 
                     <div class="flex items-center justify-end mt-4">
-                        @if (Route::has('password.request'))
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                                ¿Has olvidado tu contraseña?
-                            </a>
-                        @endif
-        
+       
                         <button type="submit" class="ms-4 btn primaryBtn">
                             ENTRAR
                         </button>
@@ -77,21 +65,8 @@
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
                     <input name="password" type="password" id="password" class="block w-full p-2 text-gray-900 border border-gray-300 rounded bg-gray-50 outline-1" required>
                 </div>
-    
-                <div class="block mt-4">
-                    <label for="remember_me" class="flex items-center">
-                        <x-checkbox id="remember_me" name="remember" />
-                        <span class="ms-2 text-sm text-gray-600">Recuérdame</span>
-                    </label>
-                </div>
 
                 <div class="flex items-center justify-end mt-4">
-                    @if (Route::has('password.request'))
-                        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                            ¿Has olvidado tu contraseña?
-                        </a>
-                    @endif
-
                     <button type="submit" class="ms-4 btn primaryBtn">
                         ENTRAR
                     </button>
@@ -99,8 +74,6 @@
             </form>
         </div>
     </x-authentication-card>
-
-
 </x-guest-layout>
 @endsection
 

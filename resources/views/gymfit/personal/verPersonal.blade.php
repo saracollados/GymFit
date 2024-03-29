@@ -43,7 +43,7 @@
     </div>
 
     <div class="mt-10 text-center">
-        <form action="{{route('editarPerfilPersonal')}}" method="POST">
+        <form action="{{route('editarMiPerfil')}}" method="POST">
             @csrf
             <input type="hidden" name="id" value="{{session('userInfo')['id']}}">
             <input type="hidden" name="page" value="perfil">

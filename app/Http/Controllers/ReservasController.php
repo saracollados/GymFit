@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 
-use Illuminate\Support\Facades\Log;
-
 class ReservasController extends Controller {
     public function mostrarReservasClases() {
         $usuarioInfo = session('userInfo');
@@ -65,8 +63,6 @@ class ReservasController extends Controller {
 
         $success = session('success');
         $error = session('error');
-
-        $error = 'No se ha podido eliminar la reserva.';
 
         return view('gymfit/reservas/mostrarReservasServicios', compact('reservasServicios', 'success', 'error'));
     }

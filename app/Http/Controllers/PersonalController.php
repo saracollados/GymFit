@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Log;
-
 class PersonalController extends Controller {
     public function mostrarDashboard() {
         $usuarios = Usuario::getAll();

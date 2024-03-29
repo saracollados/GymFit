@@ -504,8 +504,8 @@ $(function() {
             '/editarUsuario',
             '/miPerfilUsuario',
             '/verUsuario',
-            '/editarPerfilPersonal',
             '/editarPersonal',
+            '/editarMiPerfil',
             '/miPerfilPersonal',
         ]
     };

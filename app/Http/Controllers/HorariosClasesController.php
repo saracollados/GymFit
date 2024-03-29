@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\Log;
-
 class HorariosClasesController extends Controller {
     public function mostrarClasesHorario($id) {
         $clasesHorario = HorarioClases::getClasesHorario($id);

@@ -15,8 +15,6 @@ use App\Http\Controllers\DashboardController;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Support\Facades\Redirect;
 
-use Illuminate\Support\Facades\Log;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -147,6 +145,7 @@ Route::middleware(['auth:personal'])->group(function () {
     Route::post('/miPerfilPersonal', [PersonalController::class, 'verPersonal'])->name('miPerfilPersonal');
     Route::get('/miPerfilPersonal', [PersonalController::class, 'verPersonalGet']);
     Route::post('/editarPerfilPersonal', [PersonalController::class, 'editarPersonalForm'])->name('editarPerfilPersonal');
+    Route::post('/editarMiPerfil', [PersonalController::class, 'editarPersonalForm'])->name('editarMiPerfil');
     Route::post('/editarPersonal', [PersonalController::class, 'editarPersonal'])->name('editarPersonal');
 });
 

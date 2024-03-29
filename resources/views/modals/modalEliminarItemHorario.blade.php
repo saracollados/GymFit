@@ -46,8 +46,8 @@
                         <body>
                             <tr class="text-center">
                                 <td class="icon"><i class="fa-regular fa-star"></i></td>
+                                <td class="icon"><i class="fa-solid fa-person"></i></td>
                                 <td class="icon"><i class="fa-regular fa-calendar"></i></td>
-                                <td class="icon"><i class="fa-regular fa-clock"></i></td>
                                 <td class="icon"><i class="fa-regular fa-clock"></i></td>
                             </tr>
                             <tr class="text-center">
