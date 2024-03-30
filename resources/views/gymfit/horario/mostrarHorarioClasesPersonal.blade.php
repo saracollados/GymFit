@@ -73,7 +73,6 @@
                                                         </p>
                                                         <p class="">{{$clase->monitor_nombre ?? ''}} | {{$clase->sala_nombre ?? ''}}</p>
                                                         <p style="position: absolute; top:0px; right: 0px;" class="text-xs {{ $clase->plazas['libres'] == 0 ? 'text-red-500' : '' }}">{{$clase->plazas['libres']}}/{{$clase->plazas['total']}}</p>
-                                                        
                                                     </a>
                                                 @endif
                                             </div>

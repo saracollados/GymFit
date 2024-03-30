@@ -205,3 +205,32 @@ nav .active i {
 }
 
 /* Dashboard */
+.mes-anterior {
+    position: relative;
+}
+
+.mes-anterior .leyenda{
+    position: absolute; 
+    bottom: 5px; 
+    right: 9px;
+}
+
+.mes-anterior .leyenda .texto{
+    line-height: 0.9 !important;
+}
+
+.rojo {
+    color: red;
+}
+
+.naranja {
+    color: orange;
+}
+
+.verde {
+    color: green;
+}
+
+.otro {
+    color: black; /* Por si acaso */
+}

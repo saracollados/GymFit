@@ -409,6 +409,33 @@ $(function() {
         $message.style.display = 'none';
     })
 
+    // Dashboard 
+    $('.porcentaje-item').each(function() {
+        var porcentaje = parseInt($(this).text()); // Obtener el porcentaje del texto
+        if (porcentaje >= 0 && porcentaje <= 30) {
+            $(this).addClass('rojo');
+        } else if (porcentaje >= 31 && porcentaje <= 70) {
+            $(this).addClass('naranja');
+        } else if (porcentaje >= 71 && porcentaje <= 100) {
+            $(this).addClass('verde');
+        } else {
+            $(this).addClass('otro'); // Por si acaso el porcentaje está fuera de los rangos definidos
+        }
+    });
+
+    $('.porcentaje-signo').each(function() {
+        var porcentaje = parseInt($(this).text()); // Obtener el porcentaje del texto
+        if (porcentaje < 0) {
+            $(this).addClass('rojo');
+        } else if (porcentaje == 0) {
+            $(this).addClass('naranja');
+        } else if (porcentaje > 0) {
+            $(this).addClass('verde');
+        }else {
+            $(this).addClass('otro'); // Por si acaso el porcentaje está fuera de los rangos definidos
+        }
+    });
+
     // Menú nav
     var currentUrl = window.location.pathname;
     

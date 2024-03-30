@@ -23,7 +23,7 @@ class HorarioServicios extends Model {
 
     protected $table = 'horarios_servicios';
 
-    public static function getServiciosHorario() {
+    public static function getServiciosHorario($fechasMes = null) {
         $serviciosHorario = HorarioServicios::join ('personal', 'personal.id', '=', 'horarios_servicios.personal_id')
             ->join('roles_personal_tabla_maestra', 'personal.role_id', '=', 'roles_personal_tabla_maestra.id')
             ->join ('franjas_horarias_tabla_maestra', 'franjas_horarias_tabla_maestra.id', '=', 'horarios_servicios.franja_horaria_id')
@@ -36,6 +36,9 @@ class HorarioServicios extends Model {
                 'horarios_servicios.fecha as fecha',
                 'horarios_servicios.franja_horaria_id as franja_horaria_id',
                 'franjas_horarias_tabla_maestra.nombre as franja_horaria_nombre')
+            ->when($fechasMes, function ($query, $fechasMes) {
+                return $query->whereBetween('horarios_servicios.fecha', [$fechasMes[0], $fechasMes[1]]);
+            })
             ->get();
 
         return $serviciosHorario;

@@ -130,7 +130,8 @@ class HorarioClases extends Model {
                 'horarios_clases.monitor_id',
                 'personal.nombre as monitor_nombre',
                 'horarios_clases.sala_id',
-                'salas.nombre as sala_nombre')
+                'salas.nombre as sala_nombre',
+                'salas.aforo as sala_aforo')
             ->where('horarios_clases.horario_id', '=', $horario_id)
             ->where('horarios_clases.dia_semana_id', '=', $dia_semana_id)
             ->when($profesional_id, function ($query, $profesional_id) {

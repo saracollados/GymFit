@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller; 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Log;
+
 class HorariosClasesController extends Controller {
     public function mostrarClasesHorario($id) {
         $clasesHorario = HorarioClases::getClasesHorario($id);
@@ -128,6 +130,24 @@ class HorariosClasesController extends Controller {
         $success = 'La clase se ha añadido con éxito.';
         $id_clase = HorarioClases::create($request);
         return Redirect::to('/editarHorarioForm'.'/'.$horarioRequest)->with('success', $success);
+    }
+
+    public static function getClasesMes($fechasMesActual) {
+        $arrayFechasMesHorario = Horario::getFechasMes($fechasMesActual);
+        $clasesMes = [];
+        foreach ($arrayFechasMesHorario as $fechaMesHorario) {
+            $horario_id = $fechaMesHorario->horario_id;
+            $fecha = $fechaMesHorario->fecha;
+            $fechaCarbon = Carbon::createFromFormat('Y-m-d', $fecha);
+            $numeroDiaSemana = $fechaCarbon->dayOfWeek;
+            if ($numeroDiaSemana == 0) {
+                $numeroDiaSemana = 7;
+            }
+            $clasesDia = HorarioClases::getClasesByHorarioDia($horario_id, $numeroDiaSemana);
+            $clasesMes = array_merge($clasesMes, $clasesDia->toArray());
+        }
+
+        return $clasesMes;
     }
 
     public function eliminarClaseHorarioModal(Request $request) {

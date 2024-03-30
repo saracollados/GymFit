@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
+
 class Reserva extends Model {
     use HasFactory;
 
@@ -18,7 +20,7 @@ class Reserva extends Model {
         return $this->belongsTo(Usuario::class);
     }
 
-    public static function getReservasClases($usuario_id = null, $personal_id = null) {
+    public static function getReservasClases($usuario_id = null, $personal_id = null, $fechasMes = null) {
         $reservas = Reserva::join('usuarios', 'reservas.usuario_id', '=', 'usuarios.id')
             ->join('horarios_clases', 'reservas.clase_id', '=', 'horarios_clases.id')
             ->join('clases_historico', 'reservas.fecha_id', '=', 'clases_historico.id')
@@ -49,6 +51,9 @@ class Reserva extends Model {
             ->when($personal_id, function ($query, $personal_id) {
                 return $query->where('personal.id', $personal_id);
             })
+            ->when($fechasMes, function ($query, $fechasMes) {
+                return $query->whereBetween('clases_historico.fecha', [$fechasMes[0], $fechasMes[1]]);
+            })
             ->orderByDesc('clases_historico.id')
             ->orderByDesc('franjas_horarias_tabla_maestra.id')
             ->get();
@@ -56,17 +61,10 @@ class Reserva extends Model {
         return $reservas;
     }
 
-    public static function countReservasMes($fechasMes = null) {
+    public static function countReservasMes($fechasMes) {
         $query = Reserva::join('clases_historico', 'reservas.fecha_id', '=', 'clases_historico.id')
-            ->select('reservas.id', 'clases_historico.fecha');
-
-        $query->when(!$fechasMes, function ($query) {
-            $query->whereYear('clases_historico.fecha', now()->year)
-                  ->whereMonth('clases_historico.fecha', now()->month);
-        });
-        $query->when($fechasMes, function ($query) use ($fechasMes) {
-            $query->whereBetween('clases_historico.fecha', [$fechasMes[0], $fechasMes[1]]);
-        });
+            ->select('reservas.id', 'clases_historico.fecha')
+            ->whereBetween('clases_historico.fecha', [$fechasMes[0], $fechasMes[1]]);
 
         $count = $query->count();
         

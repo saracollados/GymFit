@@ -55,9 +55,15 @@ class Personal extends Authenticatable {
         return $personal->id;
     }
 
-    public static function getRoles() {
+    public static function getRoles($role_id = null, $role_id2 = null) {
         $roles = DB::table('roles_personal_tabla_maestra')
             ->select('*')
+            ->when($role_id, function ($query, $role_id) {
+                return $query->where('id', $role_id);
+            })
+            ->when($role_id2, function ($query, $role_id2) {
+                return $query->orwhere('id', $role_id2);
+            })
             ->get();
         return $roles;
     }

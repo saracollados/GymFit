@@ -16,7 +16,7 @@ class ReservaServicio extends Model {
 
     protected $table = 'reservas_servicios';
 
-    public static function getReservasServicios($usuario_id = null, $profesional_id = null, $fecha = null, $franja_horaria_id = null) {
+    public static function getReservasServicios($usuario_id = null, $profesional_id = null, $fecha = null, $franja_horaria_id = null, $fechasMes = null) {
         $reservasServicios = ReservaServicio::join('usuarios', 'usuarios.id', '=', 'reservas_servicios.usuario_id')
             ->join ('horarios_servicios', 'horarios_servicios.id', '=', 'reservas_servicios.servicio_id')
             ->join ('personal', 'personal.id', '=', 'horarios_servicios.personal_id')
@@ -46,6 +46,9 @@ class ReservaServicio extends Model {
             ->when($franja_horaria_id, function ($query, $franja_horaria_id) {
                 return $query->where('horarios_servicios.franja_horaria_id', $franja_horaria_id);
             })
+            ->when($fechasMes, function ($query, $fechasMes) {
+                return $query->whereBetween('horarios_servicios.fecha', [$fechasMes[0], $fechasMes[1]]);
+            })
             ->orderByDesc('horarios_servicios.fecha')
             ->orderByDesc('horarios_servicios.franja_horaria_id')
             ->get();
@@ -53,17 +56,10 @@ class ReservaServicio extends Model {
         return $reservasServicios;
     }
 
-    public static function countReservasMes($fechasMes = null) {
+    public static function countReservasMes($fechasMes) {
         $query = ReservaServicio::join('horarios_servicios', 'reservas_servicios.servicio_id', '=', 'horarios_servicios.id')
-            ->select('reservas_servicios.id', 'horarios_servicios.fecha');
-
-        $query->when(!$fechasMes, function ($query) {
-            $query->whereYear('horarios_servicios.fecha', now()->year)
-                  ->whereMonth('horarios_servicios.fecha', now()->month);
-        });
-        $query->when($fechasMes, function ($query) use ($fechasMes) {
-            $query->whereBetween('horarios_servicios.fecha', [$fechasMes[0], $fechasMes[1]]);
-        });
+            ->select('reservas_servicios.id', 'horarios_servicios.fecha')
+            ->whereBetween('horarios_servicios.fecha', [$fechasMes[0], $fechasMes[1]]);
 
         $count = $query->count();
         

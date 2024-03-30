@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Support\Facades\Log;
+
 class Horario extends Model {
     use HasFactory;
 
@@ -110,6 +112,14 @@ class Horario extends Model {
         $fecha_id = DB::table('clases_historico')->where('fecha', $fecha)->first();
 
         return $fecha_id;
+    }  
+
+    public static function getFechasMes ($fechasMes) {
+        $fechas = DB::table('clases_historico')
+            ->whereBetween('clases_historico.fecha', [$fechasMes[0], $fechasMes[1]])
+            ->get();
+
+        return $fechas;
     }  
 
     public static function existeFecha ($fecha) {
