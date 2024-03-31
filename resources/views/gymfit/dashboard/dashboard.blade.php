@@ -11,11 +11,11 @@
 @section('content')
     <div class="grid grid-cols-6 grid-flow-row gap-1 mb-12">
         <div class="pt-2.5 px-4 my-0 mx-1.5 flex flex-column justify-between items-center rounded-lg bg-white custom-box-shadow-xl">
-            <p class="text-sm font-semibold text-slate-700 text-center">Cientes activos</p>
+            <p class="text-sm font-semibold text-slate-700 text-center">Cientes</p>
             <p class="text-6xl font-semibold pt-2.5 pb-4">{{$datos['n_usuarios']}}</p>   
         </div>
         <div class="pt-2.5 px-4 my-0 mx-1.5 flex flex-column justify-between items-center rounded-lg bg-white custom-box-shadow-xl">
-            <p class="text-sm font-semibold text-slate-700 text-center">Personal activo</p>
+            <p class="text-sm font-semibold text-slate-700 text-center">Personal</p>
             <p class="text-6xl font-semibold pt-2.5 pb-4">{{$datos['n_personal']}}</p>   
         </div>
         <div class="pt-2.5 pb-4 px-4 my-0 mx-1.5 flex flex-column justify-between items-center rounded-lg bg-white custom-box-shadow-xl mes-anterior">
